@@ -31,7 +31,7 @@ type Commit {
 type Query {
     getUser: User
     getProjects(name: String, genre: String): [Project]
-    getChapter(_id: ID!: Chapter
+    getChapter(_id: ID!): Chapter
 }
 type Mutation {
 
