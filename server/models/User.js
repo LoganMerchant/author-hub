@@ -1,9 +1,6 @@
-//I added this so we could have an example model to code off of and edit
 const mongoose = require('mongoose');
-
 const { Schema } = mongoose;
 const bcrypt = require('bcrypt');
-const Order = require('./Order');
 
 const userSchema = new Schema({
     firstName: {
@@ -24,12 +21,22 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true,
-        minlength: 5
+        minlength: 6
     },
-    orders: [Order.schema]
+    projects: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Project'
+        }
+    ],
+    colaborations: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Project'
+        }
+    ]
 });
 
-// set up pre-save middleware to create password
 userSchema.pre('save', async function (next) {
     if (this.isNew || this.isModified('password')) {
         const saltRounds = 10;
@@ -39,7 +46,6 @@ userSchema.pre('save', async function (next) {
     next();
 });
 
-// compare the incoming password with the hashed password
 userSchema.methods.isCorrectPassword = async function (password) {
     return await bcrypt.compare(password, this.password);
 };
