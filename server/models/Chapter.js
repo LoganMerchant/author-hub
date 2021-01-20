@@ -7,16 +7,14 @@ const chapterSchema = new Schema(
     {
         chapterText: {
             type: String,
-            required: 'You need to write something!',
-            minlength: 1,
-            maxlength: 280
+            required: 'You need to write something!'
         },
         createdAt: {
             type: Date,
             default: Date.now,
             get: timestamp => dateFormat(timestamp)
         },
-        authorname: {
+        authorName: {
             type: String,
             required: true
         },

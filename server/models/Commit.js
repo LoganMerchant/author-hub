@@ -13,8 +13,6 @@ const commitSchema = new Schema(
         commitType: {
             type: String,
             required: 'Please enter the type of commit? Edit, Comment/Cirtique?',
-            minlength: 4,
-            maxlength: 20
         },
         createdAt: {
             type: Date,
