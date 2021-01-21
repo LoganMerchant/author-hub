@@ -8,11 +8,15 @@ const projectSchema = new Schema(
   {
     title: {
       type: String,
-      required: "Please Give This Project A Title",
+      required: "Please give this project a title.",
+    },
+    summary: {
+      type: String,
+      required: "Please give a summary of your work.",
     },
     genre: {
       type: String,
-      required: "Please Choose A Genre",
+      required: "Please choose a genre.",
     },
     createdAt: {
       type: Date,
@@ -22,6 +26,10 @@ const projectSchema = new Schema(
     authorName: {
       type: String,
       required: true,
+    },
+    isPublic: {
+      type: Boolean,
+      default: false,
     },
     collaborators: [
       {
