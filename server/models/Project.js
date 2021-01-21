@@ -3,6 +3,7 @@ const { Schema } = require("mongoose");
 const chapterSchema = require("./Chapter");
 const voteSchema = require("./Vote");
 const dateFormat = require("../utils/dateFormat");
+const collabToBeSchema = require("./CollabToBe");
 
 const projectSchema = new Schema(
   {
@@ -37,12 +38,7 @@ const projectSchema = new Schema(
         ref: "User",
       },
     ],
-    collabsToAddOrDenyList: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+    collabsToAddOrDenyList: [collabToBeSchema],
     chapters: [chapterSchema],
     upvotes: [voteSchema],
   },
