@@ -30,7 +30,7 @@ const userSchema = new Schema({
             ref: 'Project'
         }
     ],
-    colaborations: [
+    collaborations: [
         {
             type: Schema.Types.ObjectId,
             ref: 'Project'
