@@ -1,6 +1,7 @@
 import React from "react";
 import TableOfContents from '../components/TableOfContents';
 import CommentList from '../components/CommentList';
+import Auth from '../utils/auth';
 const ReadChapter = () => {
 
     addUpvote()
@@ -19,9 +20,11 @@ const ReadChapter = () => {
                 </div>
             </div>
             <div id="button-container">
-                <button className="float-center" onClick={addUpvote()}>Upvote</button>
-                <button className="float-center" onClick={addComment()}>Comment</button>
-                <button className="float-center" onClick={applyColaboration()}>Apply To Collaborate</button>
+                {Auth.loggedIn() &&
+                    <button className="float-center" onClick={addUpvote()}>Upvote</button> &&
+                    <button className="float-center" onClick={addComment()}>Comment</button> &&
+                    <button className="float-center" onClick={applyColaboration()}>Apply To Collaborate</button>
+                }
             </div>
             <div id="comments-area">
                 {chapter.commentCount > 0 && <CommentList comments={chapter.comments} />}
