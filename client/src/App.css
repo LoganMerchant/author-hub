@@ -2,6 +2,15 @@
   text-align: center;
 }
 
+:root {
+  --primary: #325453;
+  --secondary: #517174;
+  --tertiary: #EF5D58;
+  --light: #DCBE87;
+  --medium: #AD6A34;
+  --dark: #4E1D04;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -11,6 +20,17 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 5px 0;
+  line-height: 1.25;
 }
 
 .App-header {
