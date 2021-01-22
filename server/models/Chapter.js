@@ -5,6 +5,10 @@ const dateFormat = require("../utils/dateFormat");
 
 const chapterSchema = new Schema(
   {
+    author: {
+      type: String,
+      required: "You need to be logged in to write a chapter",
+    },
     title: {
       type: String,
       required: "You need a title for this work",
