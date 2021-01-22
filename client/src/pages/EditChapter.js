@@ -1,5 +1,6 @@
 import React from "react";
 import TableOfContents from '../components/TableOfContents';
+import CommitList from '../components/CommitList';
 const EditChapter = () => {
 
     getText()
