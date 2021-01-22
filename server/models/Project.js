@@ -43,12 +43,18 @@ const projectSchema = new Schema(
         ref: "User",
       },
     ],
-    chapters: [chapterSchema],
+    chapters: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Chapter'
+      }
+    ],
     upvotes: [voteSchema],
   },
   {
     toJSON: {
       getters: true,
+      virtuals: true
     },
   }
 );
