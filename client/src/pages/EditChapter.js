@@ -13,7 +13,12 @@ const EditChapter = () => {
                 <div className='col-9'>
                     <textarea id="chapter-text" name="chapter-text">{getText()}</textarea>
                 </div>
+            </div>
+            <div id="button-container">
                 <button className="float-center" onClick={commitChanges()}>Commit</button>
+            </div>
+            <div id="commit-container">
+                {chapter.commitCount > 0 && <CommitList commits={chapter.commits} />}
             </div>
         </div>
     );

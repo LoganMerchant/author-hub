@@ -18,12 +18,13 @@ const ReadChapter = () => {
                 </div>
             </div>
             <div id="button-container">
-                <button className="float-center" onClick={addUpvote()}>Upvote</button>
-                <button className="float-center" onClick={addComment()}>Comment</button>
-                <button className="float-center" onClick={applyColaboration()}>Apply To Collaborate</button>
+                {Auth.LoggedIn() &&
+                    <button className="float-center" onClick={addUpvote()}>Upvote</button> &&
+                    <button className="float-center" onClick={addComment()}>Comment</button> &&
+                    <button className="float-center" onClick={applyColaboration()}>Apply To Collaborate</button>}
             </div>
             <div id="comments-area">
-
+                {chapter.commentCount > 0 && <CommentList comments={chapter.comments} />}
             </div>
         </div>
     );
