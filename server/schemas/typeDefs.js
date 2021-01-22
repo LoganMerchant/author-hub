@@ -2,6 +2,7 @@ const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
   type User {
+    _id: ID
     username: String
     email: String
     projects: [Project]
@@ -9,6 +10,7 @@ const typeDefs = gql`
   }
 
   type Project {
+    _id: ID
     title: String
     summary: String
     genre: String
@@ -19,11 +21,14 @@ const typeDefs = gql`
     collaborators: [User]
     collabsToAddOrDenyList: [User]
     upvotes: [Vote]
+    upvoteCount: Int
   }
 
   type Chapter {
+    _id: ID
     title: String
     chapterText: String
+    authorName: String
     createdAt: String
     isPublic: Boolean
     collaborators: [User]
@@ -32,10 +37,12 @@ const typeDefs = gql`
   }
 
   type Vote {
+    _id: ID
     userId: ID
   }
 
   type Comment {
+    _id: ID
     commentText: String
     createdAt: String
     username: String
@@ -43,6 +50,7 @@ const typeDefs = gql`
   }
 
   type Commit {
+    _id: ID
     commitText: String
     commitType: String
     createdAt: String
@@ -50,6 +58,7 @@ const typeDefs = gql`
   }
 
   type Reaction {
+    _id: ID
     reactionBody: String
     username: String
     createdAt: String
@@ -61,34 +70,48 @@ const typeDefs = gql`
   }
 
   type Query {
-    getUser: User
-    getLoggedInUser: User
+    getUser(_id: ID!): User
+    getUsers: [User]
     getProjectsByUpvote: [Project]
-    getProjectsBySearch(
-      title: String
-      genre: String
-      authorName: String
-    ): Project
-    getChapter(bookId: ID!, _id: ID!): Chapter
+    getProjectsBySearch(genre: String!, searchTerm: String): [Project]
+    getProjectInfo(_id: ID!): Project
+    getChapter(projectId: ID!, chapterNumber: ID!): Chapter
   }
 
   type Mutation {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
-    addProject(title: String!, genre: String!): Project
+
+    addProject(
+      title: String!
+      genre: String!
+      summary: String!
+      authorName: String!
+    ): Project
+
     editProjectInfo(
+      projectId: ID!
       title: String
       summary: String
       genre: String
       isPublic: Boolean
     ): Project
+
     deleteProject(_id: ID): Project
     acceptCollaborator(projectId: ID!, userId: ID!): Project
     denyCollaborator(projectId: ID!, userId: ID!): Project
-    addChapter(projectId: ID!, title: String!, chapterText: String!): Project
-    addComment(commentText: String!): Project
-    addCommit(commitText: String!, commitType: String!): Project
-    upvoteProject(userId: ID!): Project
+
+    addChapter(
+      projectId: ID!
+      title: String!
+      chapterText: String!
+      authorName: String!
+    ): Chapter
+
+    addComment(chapterId: ID!, commentText: String!): Chapter
+    addCommit(chapterId: ID!, commitText: String!, commitType: String!): Chapter
+
+    upvoteProject(projectId: ID!): Project
   }
 `;
 
