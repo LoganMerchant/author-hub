@@ -18,7 +18,7 @@ const ReadChapter = () => {
                 </div>
             </div>
             <div id="button-container">
-                {Auth.LoggedIn() &&
+                {Auth.LoggedIn() && //Not gonna work, this needs to be reworked as the Auth file is different.
                     <button className="float-center" onClick={addUpvote()}>Upvote</button> &&
                     <button className="float-center" onClick={addComment()}>Comment</button> &&
                     <button className="float-center" onClick={applyColaboration()}>Apply To Collaborate</button>}
