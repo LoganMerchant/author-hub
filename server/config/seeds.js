@@ -13,7 +13,7 @@ db.once('open', async () => {
             isPublic: true,
             chapters: [
                 {
-                    author: 'TestTester', // I altered the model for chapter to include an author field.
+                    authorName: 'TestTester', // I altered the model for chapter to include an author field.
                     title: 'test chapter',
                     chapterText: 'lorem ipsum dromem, yadahahahaha',
                     comments: [
@@ -46,7 +46,7 @@ db.once('open', async () => {
             isPublic: true,
             chapters: [
                 {
-                    author: 'theotheruser',
+                    authorName: 'theotheruser',
                     title: 'test chapter2',
                     chapterText: 'lorem ipsum dromem, yadahahahaha',
                     comments: [
@@ -103,7 +103,7 @@ db.once('open', async () => {
             isPublic: true,
             chapters: [
                 {
-                    author: 'Testy', // I altered the model for chapter to include an author field.
+                    authorName: 'Testy', // I altered the model for chapter to include an author field.
                     title: 'test chapter3',
                     chapterText: 'lorem ipsum dromem, yadahahahaha',
                     comments: [
