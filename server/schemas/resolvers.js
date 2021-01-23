@@ -21,7 +21,7 @@ const resolvers = {
     // Get all of the projects, sorting them by most upvotes
     getProjectsByUpvote: async () => {
       return await Project.find({
-        isPublic: true
+        isPublic: true,
       })
         .sort({ upvotes: -1 })
         .populate("chapters")
@@ -33,6 +33,7 @@ const resolvers = {
       return await Project.find({
         $and: [{ genre }, { title: { $regex: searchTerm, $options: "i" } }],
       })
+        .omitUndefined()
         .populate("chapters")
         .populate("collaborators");
     },
