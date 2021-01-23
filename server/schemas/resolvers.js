@@ -20,7 +20,9 @@ const resolvers = {
 
     // Get all of the projects, sorting them by most upvotes
     getProjectsByUpvote: async () => {
-      return await Project.find()
+      return await Project.find({
+        isPublic: true
+      })
         .sort({ upvotes: -1 })
         .populate("chapters")
         .populate("collaborators");
