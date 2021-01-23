@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useMutation } from "@apollo/react-hooks";
-import { LOGIN } from "../utils/mutations";
-import Auth from "../utils/auth";
+import { LOGIN } from "../../utils/mutations";
+import Auth from "../../utils/auth";
 
 const LoginForm = () => {
   const [validated] = useState(false);
