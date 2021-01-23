@@ -3,12 +3,7 @@ const { Schema } = mongoose;
 const bcrypt = require('bcrypt');
 
 const userSchema = new Schema({
-    firstName: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    lastName: {
+    username: {
         type: String,
         required: true,
         trim: true
@@ -30,7 +25,7 @@ const userSchema = new Schema({
             ref: 'Project'
         }
     ],
-    colaborations: [
+    collaborations: [
         {
             type: Schema.Types.ObjectId,
             ref: 'Project'
