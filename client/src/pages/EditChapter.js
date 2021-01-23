@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { useStoreContext } from "../utils/GlobalState";
 import { UPDATE_CHAPTERS, ADD_COMMIT } from "../utils/actions";
 import { QUERY_CHAPTER } from "../utils/queries";
+import { idbPromise } from "../../utils/helpers";
 import TableOfContents from '../components/TableOfContents';
 import CommitList from '../components/CommitList';
 const EditChapter = () => {

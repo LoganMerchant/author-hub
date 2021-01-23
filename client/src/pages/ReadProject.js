@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { useStoreContext } from "../utils/GlobalState";
 import { UPDATE_CHAPTERS, ADD_COMMENT, ADD_UPVOTE, ADD_COLLABORATOR } from "../utils/actions";
 import { QUERY_CHAPTER } from "../utils/queries";
+import { idbPromise } from "../../utils/helpers";
 import TableOfContents from '../components/TableOfContents';
 import CommentList from '../components/CommitList';
 import Auth from '../utils/auth';
