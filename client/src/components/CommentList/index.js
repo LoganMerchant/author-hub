@@ -1,6 +1,8 @@
 import React from 'react';
 
 const CommentList = ({ comments }) => {
+
+
     return (
         <div className="card mb-3">
             <div className="card-header">
@@ -14,6 +16,7 @@ const CommentList = ({ comments }) => {
                                 {comment.commentText} {'// '}
                                 {comment.username} on {comment.createdAt}
                             </p>
+                            <button id="add-reaction" onClick={addReaction()}>Add Reaction</button>
                             {comment.reactionCount > 0 && <ReactionList reactions={comment.reactions} />}
                         </div>
                     ))}

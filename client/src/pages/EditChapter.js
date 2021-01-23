@@ -40,7 +40,7 @@ const EditChapter = () => {
             type: ADD_COMMIT,
             chapter: { ...currentChapter, commitText, commitType, username }// after the , would be the commit info, as I do not have the modal, I have no idea how to handle this...
         })
-        idbPromise('chapter', 'put', { ...currentChapter, commitText, commitType, username }) //again guesing here.
+        idbPromise('chapter', 'put', { ...currentChapter, chapterText, commitText, commitType, username }) //again guesing here.
     }
 
     return (
@@ -55,7 +55,7 @@ const EditChapter = () => {
                 <button className="float-center" onClick={commitChanges()}>Commit</button>
             </div>
             <div id="commit-container">
-                {chapter.commitCount > 0 && <CommitList commits={chapter.commits} />}
+                {currentChapter.commitCount > 0 && <CommitList commits={chapter.commits} />}
             </div>
         </div>
     );
