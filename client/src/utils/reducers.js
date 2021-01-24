@@ -1,14 +1,26 @@
 import { useReducer } from 'react';
 import {
-    EXAMPLE_CASE
+    UPDATE_CURRENT_PROJECT,
+    UPDATE_CURRENT_CHAPTER,
+    UPDATE_CHAPTERS
 } from "./actions";
 
 export const reducer = (state, action) => {
     switch (action.type) {
-        case EXAMPLE_CASE:
+        case UPDATE_CURRENT_PROJECT:
             return {
                 ...state,
-                something: [...action.products],
+                currentProject: action.currentProject
+            };
+        case UPDATE_CURRENT_CHAPTER:
+            return {
+                ...state,
+                currentChapter: action.currentProject,
+            };
+        case UPDATE_CHAPTERS:
+            return {
+                ...state,
+                chapters: [...action.chapters],
             };
         default:
             return state;
