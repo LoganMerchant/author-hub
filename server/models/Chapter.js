@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const { Schema } = require("mongoose");
 const commentSchema = require("./Comment");
 const commitSchema = require("./Commit");
@@ -12,6 +13,10 @@ const chapterSchema = new Schema(
     chapterText: {
       type: String,
       required: "You need to write something!",
+    },
+    authorName: {
+      type: String,
+      required: "You need to be logged in to write a chapter",
     },
     createdAt: {
       type: Date,
@@ -34,6 +39,7 @@ const chapterSchema = new Schema(
   {
     toJSON: {
       getters: true,
+      virtuals: true,
     },
   }
 );
@@ -45,4 +51,6 @@ chapterSchema.virtual("commitCount").get(function () {
   return this.commits.length;
 });
 
-module.exports = chapterSchema;
+const Chapter = mongoose.model("Chapter", chapterSchema);
+
+module.exports = Chapter;

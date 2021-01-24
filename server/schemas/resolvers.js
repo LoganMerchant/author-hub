@@ -1,5 +1,5 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { User, Project } = require("../models");
+const { User, Project, Chapter } = require("../models");
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
@@ -10,51 +10,41 @@ const resolvers = {
         _id,
       })
         .populate("projects")
-        .populate("collaborations")
-        .execPopulate();
+        .populate("collaborations");
     },
 
-    // Get the loggedin user
-    getLoggedInUser: async (parent, args, context) => {
-      if (context.user) {
-        return await User.findOne({
-          _id: context._id,
-        })
-          .populate("projects")
-          .populate("collaborations")
-          .execPopulate();
-      }
-
-      throw new AuthenticationError(`You're not logged in...`);
+    // Get all users in database
+    getUsers: async () => {
+      return await User.find().populate("projects").populate("collaborations");
     },
 
     // Get all of the projects, sorting them by most upvotes
     getProjectsByUpvote: async () => {
       return await Project.find({
-        sort: { upvotes: -1 },
+        isPublic: true,
       })
-        .populate("collaborators")
-        .execPopulate();
+        .sort({ upvotes: -1 })
+        .populate("chapters")
+        .populate("collaborators");
     },
 
     // Get all of the projects that match the searched title, genre or authorName
-    getProjectsBySearch: async (parent, { title, genre, authorName }) => {
-      return await Project.finc({
-        title,
-        genre,
-        authorName,
+    getProjectsBySearch: async (parent, { searchTerm, genre }) => {
+      return await Project.find({
+        $and: [{ genre }, { title: { $regex: searchTerm, $options: "i" } }],
       })
-        .populate("collaborators")
-        .execPopulate();
+        .omitUndefined()
+        .populate("chapters")
+        .populate("collaborators");
     },
 
     // Get all of the project info
     getProjectInfo: async (parent, { _id }, context) => {
       if (context.user) {
         return await Project.findOne({ _id })
+          .populate("chapters")
           .populate("collaborators")
-          .populate("collabsToAddOrDenyList")
-          .execPopulate();
+          .populate("collabsToAddOrDenyList");
       }
 
       throw new AuthenticationError(
@@ -63,15 +53,8 @@ const resolvers = {
     },
 
     // Get a chapter of a book
-    getChapter: async (parent, { bookId, _id }) => {
-      await Project.findOne({
-        _id: bookId,
-      })
-        .populate("chapters")
-        .execPopulate()
-        .then((book) => {
-          book.chapters.forEach((chapter) => chapter._id === _id);
-        });
+    getChapter: async (parent, { _id }) => {
+      return await Chapter.findOne({ _id });
     },
   },
   Mutation: {
@@ -105,22 +88,31 @@ const resolvers = {
     // Creates a new project(book)
     addProject: async (parent, args, context) => {
       if (context.user) {
-        return await Project.create(args);
+        const newProject = await Project.create(args);
+
+        await User.findByIdAndUpdate(
+          { _id: context.user._id },
+          { $addToSet: { projects: newProject._id } },
+          { runValidators: true }
+        );
+
+        return newProject;
       }
 
       throw new AuthenticationError("You need to be logged in...");
     },
 
+    // Edit a project's details according to what is passed to this resolver
     editProjectInfo: async (
       parent,
-      { title, summary, genre, isPublic },
+      { projectId, title, summary, genre, isPublic },
       context
     ) => {
       if (context.user) {
         const project = await Project.findByIdAndUpdate(
-          { _id },
+          { _id: projectId },
           { title, summary, genre, isPublic },
-          { new: true, runValidators: true }
+          { new: true, runValidators: true, omitUndefined: true }
         );
 
         return project;
@@ -132,7 +124,7 @@ const resolvers = {
     // Deletes a project
     deleteProject: async (parent, { _id }, context) => {
       if (context.user) {
-        return await Project.deleteOne({ _id });
+        return await Project.findByIdAndDelete({ _id });
       }
 
       throw new AuthenticationError("You need to be logged in...");
@@ -172,44 +164,38 @@ const resolvers = {
     },
 
     // Add chapter
-    addChapter: async (parent, { projectId, ...args }, context) => {
+    addChapter: async (
+      parent,
+      { projectId, title, chapterText, authorName },
+      context
+    ) => {
       if (context.user) {
-        const project = await Project.findByIdAndUpdate(
-          {
-            _id: projectId,
-          },
-          { $addToSet: { chapters: args } },
-          { new: true, runValidators: true }
+        const newChapter = await Chapter.create(title, chapterText, authorName);
+
+        await Project.findByIdAndUpdate(
+          { _id: projectId },
+          { $addToSet: { chapters: newChapter._id } },
+          { runValidators: true }
         );
 
-        return project;
+        return newChapter;
       }
 
       throw new AuthenticationError("You need to be logged in...");
     },
 
     // Add comment to a chapter nested within a project (public)
-    addComment: async (
-      parent,
-      { projectId, chapterId, commentText },
-      context
-    ) => {
+    addComment: async (parent, { chapterId, commentText }, context) => {
       if (context.user) {
-        const project = await Project.findByIdAndUpdate(
-          { _id: projectId, "chapters._id": chapterId },
+        return await Chapter.findByIdAndUpdate(
+          { _id: chapterId },
           {
             $addToSet: {
-              "chapters.$.comments": {
-                commentText,
-                username: context.user.username,
-              },
+              comments: { commentText, username: context.user.username },
             },
           },
           { new: true, runValidators: true }
         );
-        // MAY WANT TO DO A `Project.findOne().then()` IF THIS FAILS
-
-        return project;
       }
 
       throw new AuthenticationError("You need to be logged in...");
@@ -218,15 +204,15 @@ const resolvers = {
     // Add commit to a chapter nested within a project (private)
     addCommit: async (
       parent,
-      { projectId, chapterId, commitText, commitType },
+      { chapterId, commitText, commitType },
       context
     ) => {
       if (context.user) {
-        const project = await Project.findByIdAndUpdate(
-          { _id: projectId, "chapters._id": chapterId },
+        return await Chapter.findByIdAndUpdate(
+          { _id: chapterId },
           {
             $addToSet: {
-              "chapters.$.commits": {
+              commits: {
                 commitText,
                 commitType,
                 username: context.user.username,
@@ -235,8 +221,6 @@ const resolvers = {
           },
           { new: true, runValidators: true }
         );
-
-        return project;
       }
 
       throw new AuthenticationError("You need to be logged in...");
@@ -245,13 +229,12 @@ const resolvers = {
     // Upvote a project
     upvoteProject: async (parent, { projectId }, context) => {
       if (context.user) {
-        const project = await Project.findByIdAndUpdate(
+        console.log(context.user);
+        return await Project.findByIdAndUpdate(
           { _id: projectId },
           { $addToSet: { upvotes: context.user._id } },
           { new: true, runValidators: true }
         );
-
-        return project;
       }
 
       throw new AuthenticationError("You need to be logged in...");
