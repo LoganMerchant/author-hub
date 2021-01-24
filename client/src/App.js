@@ -1,21 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { ApolloProvider } from '@apollo/react-hooks';
-import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from "@apollo/react-hooks";
+import ApolloClient from "apollo-boost";
 import { StoreProvider } from "./utils/GlobalState";
+import Home from "./pages/Home";
+import Search from "./pages/Search";
+import Navbar from "./components/Navbar";
 
 const client = new ApolloClient({
   request: (operation) => {
-    const token = localStorage.getItem('id_token')
+    const token = localStorage.getItem("id_token");
     operation.setContext({
       headers: {
-        authorization: token ? `Bearer ${token}` : ''
-      }
-    })
+        authorization: token ? `Bearer ${token}` : "",
+      },
+    });
   },
-  uri: '/graphql',
-})
+  uri: "/graphql",
+});
 
 function App() {
   return (
@@ -23,9 +26,10 @@ function App() {
       <Router>
         <div>
           <StoreProvider>
-            <Nav />
+            <Navbar />
             <Switch>
-
+              <Route exact path="/" component={Home} />
+              <Route exact path="/search" component={Search} />
             </Switch>
           </StoreProvider>
         </div>
