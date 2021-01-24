@@ -15,7 +15,7 @@ export const reducer = (state, action) => {
     case UPDATE_CURRENT_CHAPTER:
       return {
         ...state,
-        currentChapter: action.currentProject,
+        currentChapter: action.currentChapter,
       };
     case UPDATE_CHAPTERS:
       return {
