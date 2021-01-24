@@ -10,7 +10,6 @@ import {
 } from "react-bootstrap";
 
 // import Auth from "../utils/auth";
-// import { searchBooks } from "../utils/queries";
 import { QUERY_GET_PROJECTS_BY_SEARCH } from "../utils/queries";
 import { useQuery } from "@apollo/react-hooks";
 
@@ -20,7 +19,10 @@ const SearchBooks = () => {
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState("");
   const [searchGenre, setGenreInput] = useState("");
-  const { loading, searchBooks } = useQuery(QUERY_GET_PROJECTS_BY_SEARCH);
+  const { loading, data } = useQuery(QUERY_GET_PROJECTS_BY_SEARCH, {
+    variables: searchInput,
+    searchGenre,
+  });
 
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
@@ -31,23 +33,19 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await searchBooks(searchInput, searchGenre);
+      // const response = await searchBooks(searchInput, searchGenre);
+      const bookData = data;
+      // const { items } = await response.json();
 
-      if (!response.ok) {
-        throw new Error("something went wrong!");
-      }
-
-      const { items } = await response.json();
-
-      const bookData = items.map((book) => ({
-        bookId: book.id,
-        authorName: book.authorName,
-        genre: book.genre,
-        title: book.title,
-        isPublic: book.isPublic,
-        collaborators: book.collaborators || "",
-        summary: book.summary,
-      }));
+      // const bookData = items.map((book) => ({
+      //   bookId: book.id,
+      //   authorName: book.authorName,
+      //   genre: book.genre,
+      //   title: book.title,
+      //   isPublic: book.isPublic,
+      //   collaborators: book.collaborators || "",
+      //   summary: book.summary,
+      // }));
 
       setSearchedBooks(bookData);
       setSearchInput("");
@@ -81,7 +79,6 @@ const SearchBooks = () => {
                   placeholder="Choose your genre"
                   onChange={(e) => {
                     setGenreInput(e.target.value);
-                    console.log(searchGenre);
                   }}
                 >
                   <option value="All">All</option>
