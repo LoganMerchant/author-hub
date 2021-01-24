@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import SelectSearch from "react-select-search";
+import React, { useState, useEffect } from "react";
 import {
   Jumbotron,
   Container,
@@ -11,8 +10,8 @@ import {
 } from "react-bootstrap";
 
 // import Auth from "../utils/auth";
-import { searchBooks } from "../utils/queries";
-// import { useMutation } from "@apollo/react-hooks";
+import { QUERY_GET_PROJECTS_BY_SEARCH } from "../utils/queries";
+import { useQuery } from "@apollo/react-hooks";
 
 const SearchBooks = () => {
   // create state for holding returned Book data
@@ -20,28 +19,10 @@ const SearchBooks = () => {
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState("");
   const [searchGenre, setGenreInput] = useState("");
-
-  const options = [
-    { name: "All", value: "All" },
-    { name: "Action/Adventure", value: "Action/Adventure" },
-    { name: "Fantasy", value: "Fantasy" },
-    { name: "Historical Fiction", value: "Historical Fiction" },
-    { name: "Literary Fiction", value: "Literary Fiction" },
-    { name: "Romance", value: "Romance" },
-    { name: "Science Fiction", value: "Science Fiction" },
-    { name: "Short Story", value: "Short Story" },
-    { name: "Suspense/Thriller", value: "Suspense/Thriller" },
-    { name: "Women's Fiction", value: "Women's Fiction" },
-    { name: "Biography", value: "Biography" },
-    { name: "Autobiography", value: "Autobiography" },
-    { name: "Cookbook", value: "Cookbook" },
-    { name: "Essay", value: "Essay" },
-    { name: "History", value: "History" },
-    { name: "Memoir", value: "Memoir" },
-    { name: "Poetry", value: "Poetry" },
-    { name: "Self Help", value: "Self Help" },
-    { name: "True Crime", value: "True Crime" },
-  ];
+  const { loading, data } = useQuery(QUERY_GET_PROJECTS_BY_SEARCH, {
+    variables: searchInput,
+    searchGenre,
+  });
 
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
@@ -52,23 +33,19 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await searchBooks(searchInput, searchGenre);
+      // const response = await searchBooks(searchInput, searchGenre);
+      const bookData = data;
+      // const { items } = await response.json();
 
-      if (!response.ok) {
-        throw new Error("something went wrong!");
-      }
-
-      const { items } = await response.json();
-
-      const bookData = items.map((book) => ({
-        bookId: book.id,
-        authorName: book.authorName,
-        genre: book.genre,
-        title: book.title,
-        isPublic: book.isPublic,
-        collaborators: book.collaborators || "",
-        summary: book.summary,
-      }));
+      // const bookData = items.map((book) => ({
+      //   bookId: book.id,
+      //   authorName: book.authorName,
+      //   genre: book.genre,
+      //   title: book.title,
+      //   isPublic: book.isPublic,
+      //   collaborators: book.collaborators || "",
+      //   summary: book.summary,
+      // }));
 
       setSearchedBooks(bookData);
       setSearchInput("");
@@ -94,13 +71,36 @@ const SearchBooks = () => {
                   size="md"
                   placeholder="Search for a project."
                 />
-                <SelectSearch
-                  options={options}
-                  value="All"
+
+                <Form.Control
+                  as="select"
+                  value={searchGenre}
                   name="genreInput"
                   placeholder="Choose your genre"
-                  onChange={(e) => setGenreInput(e.target.value)}
-                />
+                  onChange={(e) => {
+                    setGenreInput(e.target.value);
+                  }}
+                >
+                  <option value="All">All</option>
+                  <option value="Action/Adventure">Action/Adventure</option>
+                  <option value="Fantasy">Fantasy</option>
+                  <option value="Historical Fiction">Historical Fiction</option>
+                  <option value="Literary Fiction">Literary Fiction</option>
+                  <option value="Romance">Romance</option>
+                  <option value="Science Fiction">Science Fiction</option>
+                  <option value="Short Story">Short Story</option>
+                  <option value="Suspense/Thriller">Suspense/Thriller</option>
+                  <option value="Women's Fiction">Women's Fiction</option>
+                  <option value="Biography">Biography</option>
+                  <option value="Autobiography">Autobiography</option>
+                  <option value="Cookbook">Cookbook</option>
+                  <option value="Essay">Essay</option>
+                  <option value="History">History</option>
+                  <option value="Memoir">Memoir</option>
+                  <option value="Poetry">Poetry</option>
+                  <option value="Self Help">Self Help</option>
+                  <option value="True Crime">True Crime</option>
+                </Form.Control>
               </Col>
               <Col xs={12} md={4}>
                 <Button type="submit" variant="success" size="lg">
