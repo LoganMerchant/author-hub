@@ -5,8 +5,12 @@ import { useQuery } from '@apollo/react-hooks';
 const TitleCard = () => {
 
     return (
-        <div className="titleCard">
+        <div id="titleCard" className="container">
             <h3>{title}</h3>
+            <img src={`images/${title.image}`}
+            alt={title.name} 
+            />
+            <h5>Summary</h5>
             <p>{summary}</p>
             <h6>{collaborators}</h6>
         </div>
