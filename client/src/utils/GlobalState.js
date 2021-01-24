@@ -5,13 +5,13 @@ const StoreContext = createContext();
 const { Provider } = StoreContext;
 
 const StoreProvider = ({ value = [], ...props }) => {
+  //establish initialState
   const [state, dispatch] = useProjectReducer({
     //this will need to be changed to match the top
-    products: [],
-    cart: [],
-    cartOpen: false,
-    categories: [],
-    currentCategory: "",
+    isPublic: false,
+    chapters: [],
+    currentChapter: "",
+    currentProject: "",
   });
   console.log(state); //when everything is working this should probably be deleted.
   return <Provider value={[state, dispatch]} {...props} />;
