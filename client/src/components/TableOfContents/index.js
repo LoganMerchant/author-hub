@@ -1,7 +1,7 @@
 import React from 'react';
 //change the name of the folder, the function, and the export value.
 
-const Example2 = () => {
+const TableOfContents = () => {
 
     return (
         <div>
@@ -10,4 +10,4 @@ const Example2 = () => {
     );
 }
 
-export default Example2;
+export default TableOfContents;
