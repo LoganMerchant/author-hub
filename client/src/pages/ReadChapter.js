@@ -6,29 +6,37 @@ import { UPDATE_CHAPTER } from "../utils/actions";
 import { QUERY_CHAPTER } from "../utils/queries";
 import { idbPromise } from "../../utils/helpers";
 import TableOfContents from '../components/TableOfContents';
-import CommitList from '../components/CommitList';
-const EditChapter = () => {
+import CommentList from '../components/CommitList';
+import Auth from '../utils/auth';
+const ReadChapter = () => {
 
-    function commitChanges() {
+    function addUpvote() {
 
     }
 
+    function addComment() {
+
+    }
     return (
         <div>
             <div className="row">
                 <div className="col-3"><TableOfContents /></div>
                 <div className='col-9'>
-                    <textarea id="chapter-text" name="chapter-text">{currentChapter.chapterText}</textarea>
+                    <p className='text-center'>{chapter.title}</p>
+                    <p className='text-left'>{chapter.chapterText}</p>
                 </div>
             </div>
             <div id="button-container">
-                <button className="float-center" onClick={commitChanges()}>Commit</button>
+                {Auth.loggedIn() &&
+                    <button className="float-center" onClick={addUpvote()}>Upvote</button> &&
+                    <button className="float-center" onClick={addComment()}>Comment</button>
+                }
             </div>
-            <div id="commit-container">
-                <CommitList />
+            <div id="comments-area">
+                <CommentList />
             </div>
         </div>
     );
 };
 
-export default EditChapter;
+export default ReadChapter;

@@ -1,19 +1,10 @@
 import React, { useState } from 'react';
 import { useStoreContext } from '../../utils/GlobalState';
-import ReactionList from './ReactionList';
-import { ADD_REACTION } from '../../utils/actions';
-import { idbPromise } from "../../utils/helpers";
-import Auth from '../../utils/auth';
-const CommentList = ({ comments }) => {
-    const [state, dispatch] = useStoreContext();
-    const [currentComment, setCurrentComment] = useState({});
+//import ReactionList from './ReactionList';
 
-    addReaction = () => {
-        dispatch({
-            type: ADD_REACTION,
-            chapter: { ...currentComment, username }
-        })
-        idbPromise('comment', 'put', { ...currentComment, username })
+const CommentList = ({ comment }) => {
+    //get the store specifically for chapter or use a prop?
+    function addReaction() {
     }
     return (
         <div className="card mb-3">
@@ -28,8 +19,6 @@ const CommentList = ({ comments }) => {
                                 {comment.commentText} {'// '}
                                 {comment.username} on {comment.createdAt}
                             </p>
-                            {Auth.loggedIn && <button id="add-reaction" onClick={addReaction()}>Add Reaction</button>}
-                            {comment.reactionCount > 0 && <ReactionList reactions={comment.reactions} />}
                         </div>
                     ))}
             </div>
@@ -38,3 +27,7 @@ const CommentList = ({ comments }) => {
 };
 
 export default CommentList;
+
+
+//{Auth.loggedIn && <button id="add-reaction" onClick={addReaction()}>Add Reaction</button>}
+//{comment.reactionCount > 0 && <ReactionList reactions={comment.reactions} />} add these later for reactions
