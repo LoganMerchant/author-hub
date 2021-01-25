@@ -19,7 +19,7 @@ const SearchBooks = () => {
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState("");
   const [searchGenre, setGenreInput] = useState("");
-  const { loading, data } = useQuery(QUERY_GET_PROJECTS_BY_SEARCH, {
+  const { loading, data: searchData } = useQuery(QUERY_GET_PROJECTS_BY_SEARCH, {
     variables: searchInput,
     searchGenre,
   });
@@ -34,7 +34,7 @@ const SearchBooks = () => {
 
     try {
       // const response = await searchBooks(searchInput, searchGenre);
-      const bookData = data;
+      const bookData = searchData;
       // const { items } = await response.json();
 
       // const bookData = items.map((book) => ({
@@ -47,7 +47,8 @@ const SearchBooks = () => {
       //   summary: book.summary,
       // }));
 
-      setSearchedBooks(bookData);
+      // setSearchedBooks(bookData);
+
       setSearchInput("");
       setGenreInput("");
     } catch (err) {

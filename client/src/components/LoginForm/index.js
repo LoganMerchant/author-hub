@@ -8,8 +8,8 @@ import Auth from "../../utils/auth";
 const LoginForm = () => {
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [login] = useMutation(LOGIN);
-  const [formState, setFormState] = useState({ email: "", password: "" });
+  const [login, { error }] = useMutation(LOGIN);
+  const [formState, setFormState] = useState({ username: "", password: "" });
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -22,28 +22,38 @@ const LoginForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+    // // check if form has everything (as per react-bootstrap docs)
+    // const form = event.currentTarget;
+    // if (form.checkValidity() === false) {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    // }
 
+    // try {
+    //   const mutationResponse = await login({
+    //     variables: {
+    //       username: formState.username,
+    //       password: formState.password,
+    //     },
+    //   });
+    //   const token = mutationResponse.data.login.token;
+    //   Auth.login(token);
+    // } catch (e) {
+    //   console.log(e);
+    // }
+
+    // setFormState({
+    //   username: "",
+    //   password: "",
+    // });
     try {
-      const mutationResponse = await login({
-        variables: { email: formState.email, password: formState.password },
+      const { data } = await login({
+        variables: { ...formState },
       });
-      const token = mutationResponse.data.login.token;
-      Auth.login(token);
+      Auth.login(data.login.token);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
-
-    setFormState({
-      username: "",
-      email: "",
-      password: "",
-    });
   };
 
   return (
@@ -58,17 +68,17 @@ const LoginForm = () => {
           Something went wrong with your login credentials!
         </Alert>
         <Form.Group>
-          <Form.Label htmlFor="email">Email</Form.Label>
+          <Form.Label htmlFor="username">Username</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Your email"
-            name="email"
+            placeholder="Your username"
+            name="username"
             onChange={handleInputChange}
-            value={formState.email}
+            value={formState.username}
             required
           />
           <Form.Control.Feedback type="invalid">
-            Email is required!
+            Username is required!
           </Form.Control.Feedback>
         </Form.Group>
 
@@ -87,7 +97,7 @@ const LoginForm = () => {
           </Form.Control.Feedback>
         </Form.Group>
         <Button
-          disabled={!(formState.email && formState.password)}
+          disabled={!(formState.username && formState.password)}
           type="submit"
           variant="success"
         >

@@ -59,8 +59,8 @@ const resolvers = {
   },
   Mutation: {
     // Allows user to login and set their data to the JWT
-    login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email });
+    login: async (parent, { username, password }) => {
+      const user = await User.findOne({ username });
 
       if (!user) {
         throw new AuthenticationError("Incorrect credentials...");
