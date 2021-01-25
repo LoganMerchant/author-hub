@@ -1,7 +1,4 @@
 import React from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
 
 import { useStoreContext } from "../../utils/GlobalState";
@@ -20,21 +17,14 @@ const TableOfContents = () => {
   };
 
   return (
-    <Container fluid>
-      <ListGroup variant="flush">
-        <Row>
+      <ListGroup>
           {/* Header of ToC */}
-          <Col sm={12} md={3}>
             <ListGroup.Item>
               <h2>Table of Contents</h2>
             </ListGroup.Item>
-          </Col>
-        </Row>
         {chapters.map((chapter) =>
           // If the chapter is set to be public....
           chapter.isPublic ? (
-            <Row>
-              <Col sm={12} md={3}>
                 <ListGroup.Item
                   action
                   key={chapter._id}
@@ -47,22 +37,15 @@ const TableOfContents = () => {
                     <h4>{chapter.title}</h4>
                   )}
                 </ListGroup.Item>
-              </Col>
-            </Row>
           ) : (
             // If the chapter is set to be private...
-            <Row>
-              <Col sm={12} md={3}>
                 <ListGroup.Item disabled key={chapter._id}>
                   <h4>{chapter.title}</h4>
                   <p>(Unpublished)</p>
                 </ListGroup.Item>
-              </Col>
-            </Row>
           )
         )}
       </ListGroup>
-    </Container>
   );
 };
 
