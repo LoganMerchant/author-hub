@@ -14,8 +14,6 @@ export function idbPromise(storeName, method, object) {
             const db = request.result;
             db.createObjectStore('projects', { keyPath: '_id' });
             db.createObjectStore('chapters', { keyPath: '_id' });
-            db.createObjectStore('comments', { keyPath: '_id' });
-            db.createObjectStore('commits', { keyPath: '_id' });
         };
         request.onerror = function (e) {
             console.log('There was an error')
