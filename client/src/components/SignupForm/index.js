@@ -6,11 +6,15 @@ import Auth from "../../utils/auth";
 
 const SignupForm = () => {
   // set initial form state
-  const [formState, setFormState] = useState({ email: "", password: "" });
+  const [formState, setFormState] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
   // set state for form validation
   const [validated] = useState(false);
 
-  const [addUser] = useMutation(ADD_USER);
+  const [addUser, { error }] = useMutation(ADD_USER);
   const [showAlert, setShowAlert] = useState(false);
 
   const handleInputChange = (event) => {
@@ -23,30 +27,36 @@ const SignupForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
-    const mutationResponse = await addUser({
-      variables: {
-        email: formState.email,
-        password: formState.password,
-        firstName: formState.firstName,
-        lastName: formState.lastName,
-      },
-    });
-
-    // check if form has everything (as per react-bootstrap docs)
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+    try {
+      // execute addUser mutation and pass in variable data from form
+      const { data } = await addUser({
+        variables: { ...formState },
+      });
+      Auth.login(data.addUser.token);
+    } catch (e) {
+      console.error(e);
     }
+    // const mutationResponse = await addUser({
+    //   variables: {
+    //     email: formState.email,
+    //     password: formState.password,
+    //     username: formState.username,
+    //   },
+    // });
 
-    const token = mutationResponse.data.addUser.token;
-    Auth.login(token);
-    setFormState({
-      username: "",
-      email: "",
-      password: "",
-    });
+    // // check if form has everything (as per react-bootstrap docs)
+    // const form = event.currentTarget;
+    // if (form.checkValidity() === false) {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    // }
+
+    // const token = mutationResponse.data.addUser.token;
+    // Auth.login(token);
+    // setFormState({
+    //   username: "",
+    //   password: "",
+    // });
   };
 
   return (
