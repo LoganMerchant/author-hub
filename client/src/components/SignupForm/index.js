@@ -14,7 +14,7 @@ const SignupForm = () => {
   // set state for form validation
   const [validated] = useState(false);
 
-  const [addUser, { error }] = useMutation(ADD_USER);
+  const [addUser] = useMutation(ADD_USER);
   const [showAlert, setShowAlert] = useState(false);
 
   const handleInputChange = (event) => {
@@ -36,27 +36,6 @@ const SignupForm = () => {
     } catch (e) {
       console.error(e);
     }
-    // const mutationResponse = await addUser({
-    //   variables: {
-    //     email: formState.email,
-    //     password: formState.password,
-    //     username: formState.username,
-    //   },
-    // });
-
-    // // check if form has everything (as per react-bootstrap docs)
-    // const form = event.currentTarget;
-    // if (form.checkValidity() === false) {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    // }
-
-    // const token = mutationResponse.data.addUser.token;
-    // Auth.login(token);
-    // setFormState({
-    //   username: "",
-    //   password: "",
-    // });
   };
 
   return (

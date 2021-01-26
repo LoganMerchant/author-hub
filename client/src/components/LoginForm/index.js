@@ -8,8 +8,8 @@ import Auth from "../../utils/auth";
 const LoginForm = () => {
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [login, { error }] = useMutation(LOGIN);
-  const [formState, setFormState] = useState({ username: "", password: "" });
+  const [login] = useMutation(LOGIN);
+  const [formState, setFormState] = useState({ email: "", password: "" });
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -22,30 +22,6 @@ const LoginForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // // check if form has everything (as per react-bootstrap docs)
-    // const form = event.currentTarget;
-    // if (form.checkValidity() === false) {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    // }
-
-    // try {
-    //   const mutationResponse = await login({
-    //     variables: {
-    //       username: formState.username,
-    //       password: formState.password,
-    //     },
-    //   });
-    //   const token = mutationResponse.data.login.token;
-    //   Auth.login(token);
-    // } catch (e) {
-    //   console.log(e);
-    // }
-
-    // setFormState({
-    //   username: "",
-    //   password: "",
-    // });
     try {
       const { data } = await login({
         variables: { ...formState },
@@ -68,17 +44,17 @@ const LoginForm = () => {
           Something went wrong with your login credentials!
         </Alert>
         <Form.Group>
-          <Form.Label htmlFor="username">Username</Form.Label>
+          <Form.Label htmlFor="email">Email</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Your username"
-            name="username"
+            placeholder="Your email"
+            name="email"
             onChange={handleInputChange}
-            value={formState.username}
+            value={formState.email}
             required
           />
           <Form.Control.Feedback type="invalid">
-            Username is required!
+            Email is required!
           </Form.Control.Feedback>
         </Form.Group>
 
@@ -97,7 +73,7 @@ const LoginForm = () => {
           </Form.Control.Feedback>
         </Form.Group>
         <Button
-          disabled={!(formState.username && formState.password)}
+          disabled={!(formState.email && formState.password)}
           type="submit"
           variant="success"
         >

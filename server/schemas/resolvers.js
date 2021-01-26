@@ -33,7 +33,6 @@ const resolvers = {
       return await Project.find({
         $and: [{ genre }, { title: { $regex: searchTerm, $options: "i" } }],
       })
-        .omitUndefined()
         .populate("chapters")
         .populate("collaborators");
     },
@@ -59,8 +58,8 @@ const resolvers = {
   },
   Mutation: {
     // Allows user to login and set their data to the JWT
-    login: async (parent, { username, password }) => {
-      const user = await User.findOne({ username });
+    login: async (parent, { email, password }) => {
+      const user = await User.findOne({ email });
 
       if (!user) {
         throw new AuthenticationError("Incorrect credentials...");
