@@ -21,7 +21,14 @@ import {
 const TitleCard = () => {
 
     const [state, dispatch] = useStoreContext();
-    const {}
+    const { addProject, projects } = state;
+
+    const handleOnClick = (title) => {
+        dispatch({
+            type: ADD_PROJECT,
+            addProject: projects,
+        });
+    };
     return (
         <Container id="titleContainer">
             <Card id="titleCard">
@@ -30,12 +37,18 @@ const TitleCard = () => {
                         <img src={cover} alt="Book Cover" />
                     </Col>
                     <Col sm={12} md={4} lg={4}>
-                        <h3>{title}</h3>
+                        <h3
+                            action
+                            key={projects._id}
+                            onClick={() => handleOnClick(title)}
+                            >
+                        </h3>
                         <h5>SUMMARY</h5>
                         <p>{summary}</p>
                         <p id="tileCollaborators">{collaborators}</p>
                     </Col>
                 </Row>
+                {projects.map((title) => title)}
                 <Row>
                 <Col sm={sm} md={4} lg={4}>
                         <img src={cover} alt="Book Cover" />
