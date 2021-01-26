@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Jumbotron,
   Container,
@@ -9,7 +9,7 @@ import {
   CardColumns,
 } from "react-bootstrap";
 
-// import Auth from "../utils/auth";
+import { Link } from "react-router-dom";
 import { QUERY_GET_PROJECTS_BY_SEARCH } from "../utils/queries";
 import { useQuery } from "@apollo/react-hooks";
 
@@ -17,38 +17,24 @@ const SearchBooks = () => {
   // create state for holding returned Book data
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
-  const [searchInput, setSearchInput] = useState("");
-  const [searchGenre, setGenreInput] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [genre, setGenreInput] = useState("");
   const { loading, data } = useQuery(QUERY_GET_PROJECTS_BY_SEARCH, {
-    variables: searchInput,
-    searchGenre,
+    variables: { searchTerm: searchTerm, genre: genre },
   });
-
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
-    if (!searchInput) {
+    if (!searchTerm) {
       return false;
     }
 
     try {
-      // const response = await searchBooks(searchInput, searchGenre);
-      const bookData = data;
-      // const { items } = await response.json();
-
-      // const bookData = items.map((book) => ({
-      //   bookId: book.id,
-      //   authorName: book.authorName,
-      //   genre: book.genre,
-      //   title: book.title,
-      //   isPublic: book.isPublic,
-      //   collaborators: book.collaborators || "",
-      //   summary: book.summary,
-      // }));
+      const bookData = data.getProjectsBySearch;
 
       setSearchedBooks(bookData);
-      setSearchInput("");
+
+      setSearchTerm("");
       setGenreInput("");
     } catch (err) {
       console.error(err);
@@ -64,9 +50,9 @@ const SearchBooks = () => {
             <Form.Row>
               <Col xs={12} md={8}>
                 <Form.Control
-                  name="searchInput"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
+                  name="searchTerm"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   type="text"
                   size="md"
                   placeholder="Search for a project."
@@ -74,7 +60,7 @@ const SearchBooks = () => {
 
                 <Form.Control
                   as="select"
-                  value={searchGenre}
+                  value={genre}
                   name="genreInput"
                   placeholder="Choose your genre"
                   onChange={(e) => {
@@ -100,6 +86,7 @@ const SearchBooks = () => {
                   <option value="Poetry">Poetry</option>
                   <option value="Self Help">Self Help</option>
                   <option value="True Crime">True Crime</option>
+                  <option value="test">test</option>
                 </Form.Control>
               </Col>
               <Col xs={12} md={4}>
@@ -121,14 +108,14 @@ const SearchBooks = () => {
         <CardColumns>
           {searchedBooks.map((book) => {
             return (
-              <Card key={book.bookId} border="dark">
+              <Card key={book._id} border="dark">
                 <Card.Body>
-                  <Card.Title>{book.title}</Card.Title>
+                  <Card.Title>
+                    <Link to={`/readproject/${book._id}`}>{book.title}</Link>
+                  </Card.Title>
                   <p className="small">Author: {book.authorName}</p>
                   <Card.Text>{book.summary}</Card.Text>
-                  <Card.Footer>{book.collaborators}</Card.Footer>
                 </Card.Body>
-                {/* Need to check for login and access if not public for it to be clickable*/}
               </Card>
             );
           })}
