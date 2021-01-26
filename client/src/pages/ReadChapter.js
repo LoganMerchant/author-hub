@@ -2,20 +2,30 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from '@apollo/react-hooks';
 import { useStoreContext } from "../utils/GlobalState";
-import { UPDATE_CHAPTER } from "../utils/actions";
-import { QUERY_CHAPTER } from "../utils/queries";
+import { UPDATE_CURRENT_CHAPTER } from "../utils/actions";
+import { QUERY_GET_CHAPTER } from "../utils/queries";
 import { idbPromise } from "../../utils/helpers";
 import TableOfContents from '../components/TableOfContents';
 import CommentList from '../components/CommitList';
-import Auth from '../utils/auth';
+import CommentForm from '../components/CommentForm';
+
 const ReadChapter = () => {
+    //still need to add GS logic to add current chapter to the global store
 
-    function addUpvote() {
+    //Variables gained through alternate means
+    const { chapterId } = useParams;
 
-    }
+    //Queries
+    const { loading, data } = useQuery(QUERY_GET_CHAPTER, {
+        variables: { id: chapterId }
+    });
 
-    function addComment() {
+    //Queried variables
+    const chapter = data?.chapter || {};
 
+    //Actual returned HTML
+    if (loading) {
+        return <div>Loading...</div>
     }
     return (
         <div>
@@ -27,9 +37,11 @@ const ReadChapter = () => {
                 </div>
             </div>
             <div id="button-container">
-                {Auth.loggedIn() &&
-                    <button className="float-center" onClick={addUpvote()}>Upvote</button> &&
-                    <button className="float-center" onClick={addComment()}>Comment</button>
+                {Auth.loggedIn() && (
+                    <div>
+                        <CommentForm />
+                    </div>
+                )
                 }
             </div>
             <div id="comments-area">
