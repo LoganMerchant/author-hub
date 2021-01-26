@@ -1,25 +1,46 @@
 import React, { useEffect, useState } from "react";
-import CollaboratorList from "../components/CollaboratorList";
-import { UPVOTE_PROJECT } from "../utils/mutations";
+import { EDIT_PROJECT_INFO, UPVOTE_PROJECT } from "../utils/mutations";
 import Auth from '../utils/auth';
+import { useParams } from "react-router-dom";
+import { useQuery } from '@apollo/react-hooks';
+import { QUERY_GET_PROJECT_INFO, QUERY_GET_USER } from "../utils/queries";
+import { Link } from 'react-router-dom';
 
 const ReadProject = () => {
-
+    //I need to set current project in the GS still.
     const [upvoteProject] = useMutation(UPVOTE_PROJECT);
+    const [editProjectInfo] = useMutation(EDIT_PROJECT_INFO);
+    const { projectId } = useParams;
     const userId = Auth.getProfile().data._id;
+    const { loading, data } = useQuery(QUERY_GET_PROJECT_INFO, {
+        variables: { id: projectId }
+    });
+    const { userloading, userData } = useQuery(QUERY_GET_USER, {
+        variables: { id: userId }
+    });
+    const [upvotes, setUpvotes] = useState(data.upvoteCount);
+    const user = userData?.user || {};
+    const project = data?.project || {};
+    const collaborators = data?.project.collaborators || [];
+    const chapters = data?.project.chapters || [];
     function addUpvote() {
-        event.preventDefault();
         try {
-            // add comment to database
             await upvoteProject({
                 variables: { userId: userId }
             });
+            setUpvotes(data.upvoteCount);
         } catch (e) {
             console.error(e);
         }
     }
     function applyCollaboration() {
-
+        try {
+            await editProjectInfo({
+                variables: { collabsToAddOrDenyList: [...project.collabsToAddOrDenyList, user] }
+            });
+        } catch (e) {
+            console.error(e);
+        }
     }
     return (
         <div>
@@ -27,12 +48,32 @@ const ReadProject = () => {
             <h2 className="text-center">By: {project.author}</h2>
             <h3>Summary:</h3>
             <p>{project.summary}</p>
-            <h3 className="text-center">Public Chapters For Your Enjoyment</h3>
-            <ChapterList />
-            <h3 className="text-center">This Project Currently has: {project.upvoteCount}</h3>
+            {chapters &&
+                <div>
+                    <h3 className="text-center">Public Chapters For Your Enjoyment</h3>
+                    <ul>
+                        {chapter.map(chapter => (
+                            <li>
+                                <Link to={`/chapter/${chapter._id}`}>{chapter.title}</Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            }
+            <h3 className="text-center">This Project Currently has: {upvotes}</h3>
             <button className="float-center" onClick={addUpvote()}>Like What You've Been Reading Press Here to Upvote</button>
-            <h3 className="text-center">Project Collaborators</h3>
-            <CollaboratorList />
+            {collaborators &&
+                <div>
+                    <h3 className="text-center">Project Collaborators</h3>
+                    <ul>
+                        {collaborators.map(collaborator => (
+                            <li>
+                                {collaborator.username}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            }
             <button className="float-center" onClick={applyCollaboration()}>Apply To Collaborate</button>
         </div>
     );
