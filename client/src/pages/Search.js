@@ -17,24 +17,24 @@ const SearchBooks = () => {
   // create state for holding returned Book data
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
-  const [searchInput, setSearchInput] = useState("");
-  const [searchGenre, setGenreInput] = useState("");
-  const { loading, data: searchData } = useQuery(QUERY_GET_PROJECTS_BY_SEARCH, {
-    variables: searchInput,
-    searchGenre,
+  const [searchTerm, setSearchTerm] = useState("");
+  const [genre, setGenreInput] = useState("");
+  const { loading, data } = useQuery(QUERY_GET_PROJECTS_BY_SEARCH, {
+    variables: searchTerm,
+    genre,
   });
-
+  console.log(data);
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    if (!searchInput) {
+    if (!searchTerm) {
       return false;
     }
 
     try {
-      // const response = await searchBooks(searchInput, searchGenre);
-      const bookData = searchData;
+      // const response = await searchBooks(searchTerm, genre);
+      const bookData = data;
       // const { items } = await response.json();
 
       // const bookData = items.map((book) => ({
@@ -49,7 +49,7 @@ const SearchBooks = () => {
 
       // setSearchedBooks(bookData);
 
-      setSearchInput("");
+      setSearchTerm("");
       setGenreInput("");
     } catch (err) {
       console.error(err);
@@ -65,9 +65,9 @@ const SearchBooks = () => {
             <Form.Row>
               <Col xs={12} md={8}>
                 <Form.Control
-                  name="searchInput"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
+                  name="searchTerm"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   type="text"
                   size="md"
                   placeholder="Search for a project."
@@ -75,7 +75,7 @@ const SearchBooks = () => {
 
                 <Form.Control
                   as="select"
-                  value={searchGenre}
+                  value={genre}
                   name="genreInput"
                   placeholder="Choose your genre"
                   onChange={(e) => {
