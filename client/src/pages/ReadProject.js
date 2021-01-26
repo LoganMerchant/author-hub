@@ -4,8 +4,8 @@ import Auth from '../utils/auth';
 import { useStoreContext } from "../utils/GlobalState";
 import { UPDATE_CURRENT_PROJECT } from "../utils/actions";
 import { useParams } from "react-router-dom";
-import { useQuery } from '@apollo/react-hooks';
-import { QUERY_GET_PROJECT_INFO, QUERY_GET_USER } from "../utils/queries";
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import { QUERY_GET_PROJECT_INFO } from "../utils/queries";
 import { Link } from 'react-router-dom';
 
 const ReadProject = () => {

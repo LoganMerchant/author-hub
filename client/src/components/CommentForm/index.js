@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { ADD_COMMENT } from '../../utils/mutations';
-import { QUERY_GET_USER } from '../../utils/queries';
 import Auth from '../../utils/auth';
 import { useStoreContext } from "../../utils/GlobalState";
 
