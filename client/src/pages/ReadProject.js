@@ -63,7 +63,7 @@ const ReadProject = () => {
                 <div>
                     <h3 className="text-center">Public Chapters For Your Enjoyment</h3>
                     <ul>
-                        {chapter.map(chapter => (
+                        {chapters.map(chapter => (
                             <li>
                                 <Link to={`/chapter/${chapter._id}`}>{chapter.title}</Link>
                             </li>
