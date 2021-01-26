@@ -9,7 +9,7 @@ import {
     CardColumns,
 } from "react-bootstrap";
 
-import {useStoreContext } from "../../utils/GlobalState";
+import { useStoreContext } from "../../utils/GlobalState";
 
 import { 
     ADD_USER,
@@ -45,6 +45,9 @@ const TitleCard = () => {
                         </h3>
                         <h5>SUMMARY</h5>
                         <p>{summary}</p>
+                        <button className="btn">
+                            READ
+                        </button>
                         <p id="tileCollaborators">{collaborators}</p>
                     </Col>
                 </Row>
