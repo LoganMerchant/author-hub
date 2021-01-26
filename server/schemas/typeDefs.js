@@ -98,6 +98,7 @@ const typeDefs = gql`
     ): Project
 
     deleteProject(_id: ID): Project
+    addApplicant(projectId: ID!): Project
     acceptCollaborator(projectId: ID!, userId: ID!): Project
     denyCollaborator(projectId: ID!, userId: ID!): Project
 
@@ -109,7 +110,7 @@ const typeDefs = gql`
     ): Chapter
 
     addComment(chapterId: ID!, commentText: String!): Chapter
-    addCommit(chapterId: ID!, commitText: String!, commitType: String!): Chapter
+    addCommit(chapterId: ID!, chapterText: String! commitText: String!, commitType: String!): Chapter
 
     upvoteProject(projectId: ID!): Project
   }
