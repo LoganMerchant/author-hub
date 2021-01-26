@@ -9,6 +9,7 @@ import {
   CardColumns,
 } from "react-bootstrap";
 
+import { Link } from "react-router-dom";
 // import Auth from "../utils/auth";
 import { QUERY_GET_PROJECTS_BY_SEARCH } from "../utils/queries";
 import { useQuery } from "@apollo/react-hooks";
@@ -20,21 +21,19 @@ const SearchBooks = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [genre, setGenreInput] = useState("");
   const { loading, data } = useQuery(QUERY_GET_PROJECTS_BY_SEARCH, {
-    variables: searchTerm,
-    genre,
+    variables: { searchTerm: searchTerm, genre: genre },
   });
-  console.log(data);
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
+    console.log(data);
     if (!searchTerm) {
       return false;
     }
 
     try {
       // const response = await searchBooks(searchTerm, genre);
-      const bookData = data;
+      const bookData = data.getProjectsBySearch;
       // const { items } = await response.json();
 
       // const bookData = items.map((book) => ({
@@ -47,7 +46,7 @@ const SearchBooks = () => {
       //   summary: book.summary,
       // }));
 
-      // setSearchedBooks(bookData);
+      setSearchedBooks(bookData);
 
       setSearchTerm("");
       setGenreInput("");
@@ -101,6 +100,7 @@ const SearchBooks = () => {
                   <option value="Poetry">Poetry</option>
                   <option value="Self Help">Self Help</option>
                   <option value="True Crime">True Crime</option>
+                  <option value="test">test</option>
                 </Form.Control>
               </Col>
               <Col xs={12} md={4}>
@@ -124,10 +124,11 @@ const SearchBooks = () => {
             return (
               <Card key={book.bookId} border="dark">
                 <Card.Body>
-                  <Card.Title>{book.title}</Card.Title>
+                  <Card.Title>
+                    <Link to={`/readproject/${book._id}`}>{book.title}</Link>
+                  </Card.Title>
                   <p className="small">Author: {book.authorName}</p>
                   <Card.Text>{book.summary}</Card.Text>
-                  <Card.Footer>{book.collaborators}</Card.Footer>
                 </Card.Body>
                 {/* Need to check for login and access if not public for it to be clickable*/}
               </Card>
