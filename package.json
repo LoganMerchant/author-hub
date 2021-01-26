@@ -23,7 +23,23 @@
   },
   "homepage": "https://github.com/ChazzKreutzkamp/final-team-project#readme",
   "dependencies": {
-    "if-env": "^1.0.4"
+    "@apollo/react-hooks": "^4.0.0",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.3",
+    "@testing-library/user-event": "^12.6.2",
+    "apollo-boost": "^0.4.9",
+    "apollo-link-context": "^1.0.20",
+    "bootstrap": "^4.6.0",
+    "graphql": "^15.5.0",
+    "graphql-tag": "^2.11.0",
+    "if-env": "^1.0.4",
+    "jwt-decode": "^3.1.2",
+    "react": "^17.0.1",
+    "react-bootstrap": "^1.4.3",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.1",
+    "web-vitals": "^1.1.0"
   },
   "devDependencies": {
     "concurrently": "^5.3.0"
