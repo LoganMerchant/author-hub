@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { EDIT_PROJECT_INFO, UPVOTE_PROJECT } from "../utils/mutations";
+import { ADD_APPLICANT, UPVOTE_PROJECT } from "../utils/mutations";
 import Auth from '../utils/auth';
 import { useStoreContext } from "../utils/GlobalState";
 import { UPDATE_CURRENT_PROJECT } from "../utils/actions";
@@ -20,16 +20,13 @@ const ReadProject = () => {
     const { loading, data } = useQuery(QUERY_GET_PROJECT_INFO, {
         variables: { id: projectId }
     });
-    const { userloading, userData } = useQuery(QUERY_GET_USER, {
-        variables: { id: userId }
-    });
 
     //Mutations
     const [upvoteProject] = useMutation(UPVOTE_PROJECT);
-    const [editProjectInfo] = useMutation(EDIT_PROJECT_INFO);
+    const [addApplicant] = useMutation(ADD_APPLICANT);
 
     //query based variables
-    const user = userData?.user || {};
+
     const project = data?.project || {};
     const collaborators = data?.project.collaborators || [];
     const chapters = data?.project.chapters || [];
@@ -47,8 +44,8 @@ const ReadProject = () => {
     }
     function applyCollaboration() {
         try {
-            await editProjectInfo({
-                variables: { collabsToAddOrDenyList: [...project.collabsToAddOrDenyList, user] }
+            await addApplicant({
+                variables: { collabsToAddOrDenyList: [...project.collabsToAddOrDenyList, userId] }
             });
         } catch (e) {
             console.error(e);

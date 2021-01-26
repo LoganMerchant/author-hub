@@ -11,18 +11,12 @@ const CommentForm = () => {
     const { currentChapter } = state;
     const [commentText, setText] = useState('');
     const [characterCount, setCharacterCount] = useState(0);
-    const commenterId = Auth.getProfile().data._id;
-
-    //Queries
-    const { data } = useQuery(QUERY_GET_USER, {
-        variables: { id: commenterId }
-    });
+    const username = Auth.getProfile().data.username;
 
     //Mutations
     const [addComment, { error }] = useMutation(ADD_COMMENT);
 
     //query based variables
-    const username = data.username;
     const chapterId = currentChapter._id;
 
 
