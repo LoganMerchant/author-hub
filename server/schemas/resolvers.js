@@ -204,13 +204,16 @@ const resolvers = {
     // Add commit to a chapter nested within a project (private)
     addCommit: async (
       parent,
-      { chapterId, commitText, commitType },
+      { chapterId, title, chapterText, isPublic, commitText, commitType },
       context
     ) => {
       if (context.user) {
         return await Chapter.findByIdAndUpdate(
           { _id: chapterId },
           {
+            title,
+            chapterText,
+            isPublic,
             $addToSet: {
               commits: {
                 commitText,
