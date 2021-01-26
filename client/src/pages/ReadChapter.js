@@ -10,12 +10,20 @@ import CommentList from '../components/CommitList';
 import CommentForm from '../components/CommentForm';
 
 const ReadChapter = () => {
+    //still need to add GS logic to add current chapter to the global store
+
+    //Variables gained through alternate means
     const { chapterId } = useParams;
+
+    //Queries
     const { loading, data } = useQuery(QUERY_GET_CHAPTER, {
         variables: { id: chapterId }
     });
+
+    //Queried variables
     const chapter = data?.chapter || {};
 
+    //Actual returned HTML
     if (loading) {
         return <div>Loading...</div>
     }

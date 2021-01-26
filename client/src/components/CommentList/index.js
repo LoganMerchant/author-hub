@@ -4,8 +4,11 @@ import { useStoreContext } from '../../utils/GlobalState';
 
 const CommentList = () => {
     const [state] = useStoreContext();
+
     const { currentChapter } = state;
+
     const comments = currentChapter.comments;
+
     return (
         <div className="card mb-3">
             <div className="card-header">

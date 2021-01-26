@@ -6,19 +6,27 @@ import Auth from '../../utils/auth';
 import { useStoreContext } from "../../utils/GlobalState";
 
 const CommentForm = () => {
+    //state and variables gained through alternate means other than quieries
     const [state] = useStoreContext();
     const { currentChapter } = state;
     const [commentText, setText] = useState('');
     const [characterCount, setCharacterCount] = useState(0);
-    const [addComment, { error }] = useMutation(ADD_COMMENT);
     const commenterId = Auth.getProfile().data._id;
+
+    //Queries
     const { data } = useQuery(QUERY_GET_USER, {
         variables: { id: commenterId }
     });
 
+    //Mutations
+    const [addComment, { error }] = useMutation(ADD_COMMENT);
+
+    //query based variables
     const username = data.username;
     const chapterId = currentChapter._id;
 
+
+    //Functions
     const handleChange = event => {
         if (event.target.value.length <= 280) {
             setText(event.target.value);
@@ -42,6 +50,7 @@ const CommentForm = () => {
         }
     };
 
+    //Returned HTML
     return (
         <div>
             <p className={`m-0 ${characterCount === 280 || error ? 'text-error' : ''}`}>
