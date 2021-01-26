@@ -2,20 +2,35 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from '@apollo/react-hooks';
 import { useStoreContext } from "../utils/GlobalState";
-import { UPDATE_CHAPTER } from "../utils/actions";
-import { QUERY_CHAPTER } from "../utils/queries";
+import { UPDATE_CURRENT_CHAPTER } from "../utils/actions";
+import { QUERY_GET_CHAPTER } from "../utils/queries";
 import { idbPromise } from "../../utils/helpers";
 import TableOfContents from '../components/TableOfContents';
 import CommentList from '../components/CommitList';
+import CommentForm from '../components/CommentForm';
 import Auth from '../utils/auth';
+import { UPVOTE_PROJECT } from "../utils/mutations";
 const ReadChapter = () => {
-
+    const { chapterId } = useParams;
+    const { loading, data } = useQuery(QUERY_GET_CHAPTER, {
+        variables: { id: chapterId }
+    });
+    const [upvoteProject] = useMutation(UPVOTE_PROJECT);
+    const chapter = data?.chapter || {};
+    const
     function addUpvote() {
-
+        event.preventDefault();
+        try {
+            // add comment to database
+            await upvoteProject({
+                variables: { userId:  }
+            });
+        } catch (e) {
+            console.error(e);
+        }
     }
-
-    function addComment() {
-
+    if (loading) {
+        return <div>Loading...</div>
     }
     return (
         <div>
@@ -27,9 +42,12 @@ const ReadChapter = () => {
                 </div>
             </div>
             <div id="button-container">
-                {Auth.loggedIn() &&
-                    <button className="float-center" onClick={addUpvote()}>Upvote</button> &&
-                    <button className="float-center" onClick={addComment()}>Comment</button>
+                {Auth.loggedIn() && (
+                    <div>
+                        <button className="float-center" onClick={addUpvote()}>Upvote</button>
+                        <CommentForm />
+                    </div>
+                )
                 }
             </div>
             <div id="comments-area">
