@@ -71,6 +71,7 @@ button {
   outline: none;
   margin: 0 1px;
   background-color: var(--light);
+  color: var(--dark);
 }
 
 .App-header {
