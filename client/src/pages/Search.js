@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Jumbotron,
   Container,
@@ -10,7 +10,6 @@ import {
 } from "react-bootstrap";
 
 import { Link } from "react-router-dom";
-// import Auth from "../utils/auth";
 import { QUERY_GET_PROJECTS_BY_SEARCH } from "../utils/queries";
 import { useQuery } from "@apollo/react-hooks";
 
@@ -26,25 +25,12 @@ const SearchBooks = () => {
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    console.log(data);
     if (!searchTerm) {
       return false;
     }
 
     try {
-      // const response = await searchBooks(searchTerm, genre);
       const bookData = data.getProjectsBySearch;
-      // const { items } = await response.json();
-
-      // const bookData = items.map((book) => ({
-      //   bookId: book.id,
-      //   authorName: book.authorName,
-      //   genre: book.genre,
-      //   title: book.title,
-      //   isPublic: book.isPublic,
-      //   collaborators: book.collaborators || "",
-      //   summary: book.summary,
-      // }));
 
       setSearchedBooks(bookData);
 
@@ -122,7 +108,7 @@ const SearchBooks = () => {
         <CardColumns>
           {searchedBooks.map((book) => {
             return (
-              <Card key={book.bookId} border="dark">
+              <Card key={book._id} border="dark">
                 <Card.Body>
                   <Card.Title>
                     <Link to={`/readproject/${book._id}`}>{book.title}</Link>
@@ -130,7 +116,6 @@ const SearchBooks = () => {
                   <p className="small">Author: {book.authorName}</p>
                   <Card.Text>{book.summary}</Card.Text>
                 </Card.Body>
-                {/* Need to check for login and access if not public for it to be clickable*/}
               </Card>
             );
           })}
