@@ -33,23 +33,16 @@ const resolvers = {
       return await Project.find({
         $and: [{ genre }, { title: { $regex: searchTerm, $options: "i" } }],
       })
-        .omitUndefined()
         .populate("chapters")
         .populate("collaborators");
     },
 
     // Get all of the project info
-    getProjectInfo: async (parent, { _id }, context) => {
-      if (context.user) {
-        return await Project.findOne({ _id })
-          .populate("chapters")
-          .populate("collaborators")
-          .populate("collabsToAddOrDenyList");
-      }
-
-      throw new AuthenticationError(
-        "You need to be logged in to view this project."
-      );
+    getProjectInfo: async (parent, { _id }) => {
+      return await Project.findOne({ _id })
+        .populate("chapters")
+        .populate("collaborators")
+        .populate("collabsToAddOrDenyList");
     },
 
     // Get a chapter of a book

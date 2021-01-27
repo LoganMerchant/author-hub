@@ -67,7 +67,7 @@ const typeDefs = gql`
     getProjectsByUpvote: [Project]
     getProjectsBySearch(genre: String!, searchTerm: String): [Project]
     getProjectInfo(_id: ID!): Project
-    getChapter(projectId: ID!, chapterNumber: ID!): Chapter
+    getChapter(_id: ID!): Chapter
   }
   type Mutation {
     login(email: String!, password: String!): Auth

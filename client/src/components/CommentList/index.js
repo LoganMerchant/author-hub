@@ -1,18 +1,13 @@
 import React from 'react';
-import { useStoreContext } from '../../utils/GlobalState';
+
 //import ReactionList from './ReactionList';
 
-const CommentList = () => {
-    const [state] = useStoreContext();
-
-    const { currentChapter } = state;
-
-    const comments = currentChapter.comments;
-
+const CommentList = ({ comments }) => {
+    console.log(comments);
     return (
         <div className="card mb-3">
             <div className="card-header">
-                <span className="text-light">Comment</span>
+                <span className="text-dark text-center">Comments Section</span>
             </div>
             <div className="card-body">
                 {comments &&

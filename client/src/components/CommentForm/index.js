@@ -3,11 +3,12 @@ import { useMutation } from '@apollo/react-hooks';
 import { ADD_COMMENT } from '../../utils/mutations';
 import Auth from '../../utils/auth';
 import { useStoreContext } from "../../utils/GlobalState";
+import { useParams } from "react-router-dom";
 
 const CommentForm = () => {
     //state and variables gained through alternate means other than quieries
-    const [state] = useStoreContext();
-    const { currentChapter } = state;
+    const { id } = useParams;
+    const chapterId = id;
     const [commentText, setText] = useState('');
     const [characterCount, setCharacterCount] = useState(0);
     const username = Auth.getProfile().data.username;
@@ -16,7 +17,7 @@ const CommentForm = () => {
     const [addComment, { error }] = useMutation(ADD_COMMENT);
 
     //query based variables
-    const chapterId = currentChapter._id;
+
 
 
     //Functions
