@@ -19,7 +19,7 @@ const SearchBooks = () => {
   // create state for holding our search field data
   const [searchTerm, setSearchTerm] = useState("");
   const [genre, setGenreInput] = useState("");
-  const { loading, data } = useQuery(QUERY_GET_PROJECTS_BY_SEARCH, {
+  const { data } = useQuery(QUERY_GET_PROJECTS_BY_SEARCH, {
     variables: { searchTerm: searchTerm, genre: genre },
   });
   // create method to search for books and set state on form submit

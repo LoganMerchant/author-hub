@@ -1,7 +1,6 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Project, Chapter } = require("../models");
 const { signToken, readTokenFromHeader } = require("../utils/auth");
-const jwt = require("jsonwebtoken");
 
 const resolvers = {
   Query: {
@@ -39,17 +38,11 @@ const resolvers = {
     },
 
     // Get all of the project info
-    getProjectInfo: async (parent, { _id }, context) => {
-      if (context.user) {
-        return await Project.findOne({ _id })
-          .populate("chapters")
-          .populate("collaborators")
-          .populate("collabsToAddOrDenyList");
-      }
-
-      throw new AuthenticationError(
-        "You need to be logged in to view this project."
-      );
+    getProjectInfo: async (parent, { _id }) => {
+      return await Project.findOne({ _id })
+        .populate("chapters")
+        .populate("collaborators")
+        .populate("collabsToAddOrDenyList");
     },
 
     // Get a chapter of a book

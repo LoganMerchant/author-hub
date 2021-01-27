@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { Jumbotron, Container, Col, Form, Button } from "react-bootstrap";
+import {
+  Jumbotron,
+  Container,
+  Col,
+  Form,
+  Button,
+  Card,
+  CardColumns,
+} from "react-bootstrap";
 import { useMutation } from "@apollo/react-hooks";
 
 import { Link } from "react-router-dom";
-
+import { QUERY_GET_USER } from "../utils/queries";
 import { ADD_PROJECT } from "../utils/mutations";
 import { useQuery } from "@apollo/react-hooks";
 // import UserProject from "../components/UserProject";
@@ -14,11 +22,14 @@ const Projects = () => {
   const [title, setTitle] = useState("");
   const [genre, setGenreInput] = useState("");
   const [summary, setSummary] = useState("");
-  // get user from token as they need to be signed in to use this page
-
   const [addProject] = useMutation(ADD_PROJECT);
-  const { username: authorName } = Auth.getProfile().data;
-  // find user _id and pass it on
+  //defining these variables globally so they can be accessed after loading
+  let projects = [];
+  let collaborations = [];
+
+  // get user from token as they need to be signed in to use this page
+  const { username: authorName, _id: currentUser } = Auth.getProfile().data;
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     if (!title) {
@@ -39,10 +50,16 @@ const Projects = () => {
       console.error(e);
     }
   };
-  //useState for projects
-  //fetch projects after addProjects is successful
-  //projects.map
+  // query for current user to access their projects and collaborations
 
+  const { loading, data } = useQuery(QUERY_GET_USER, {
+    variables: { _id: currentUser },
+  });
+
+  if (!loading) {
+    projects = data?.getUser.projects || [];
+    collaborations = data?.getUser.collaborations || [];
+  }
   return (
     <>
       <Jumbotron fluid className="text-light bg-dark">
@@ -112,11 +129,28 @@ const Projects = () => {
         {/* <UserProject projects={projects} />
         projects will be value of useState
         */}
+        <CardColumns>
+          {projects.map((myProjects) => {
+            return (
+              <Card key={myProjects._id} border="dark">
+                <Card.Body>
+                  <Card.Title>
+                    <Link to={`/editproject/${myProjects._id}`}>
+                      {myProjects.title}
+                    </Link>
+                  </Card.Title>
+                  <p className="small">Genre: {myProjects.genre}</p>
+                  <Card.Text>{myProjects.summary}</Card.Text>
+                </Card.Body>
+              </Card>
+            );
+          })}
+        </CardColumns>
 
         <br></br>
         <h1>Collaborations</h1>
         <hr></hr>
-        {/* <UserCollaborations /> */}
+        {/* <UserCollaborations collaborations={collaborations} /> */}
       </Container>
     </>
   );
