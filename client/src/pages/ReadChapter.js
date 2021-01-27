@@ -4,10 +4,11 @@ import { useQuery } from '@apollo/react-hooks';
 import { useStoreContext } from "../utils/GlobalState";
 import { UPDATE_CURRENT_CHAPTER } from "../utils/actions";
 import { QUERY_GET_CHAPTER } from "../utils/queries";
-import { idbPromise } from "../../utils/helpers";
+import { idbPromise } from "../utils/helpers";
 import TableOfContents from '../components/TableOfContents';
 import CommentList from '../components/CommitList';
 import CommentForm from '../components/CommentForm';
+import Auth from '../utils/auth';
 
 const ReadChapter = () => {
     const [state, dispatch] = useStoreContext();

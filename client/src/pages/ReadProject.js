@@ -12,11 +12,6 @@ import { idbPromise } from "../utils/helpers";
 const ReadProject = () => {
     const [state, dispatch] = useStoreContext();
 
-    // variables based on other factors like state and params
-    const { projectId } = useParams;
-    const userId = Auth.getProfile().data._id;
-    const [upvotes, setUpvotes] = useState(data.upvoteCount);
-
     //Queries
     const { loading, data: projectData } = useQuery(QUERY_GET_PROJECT_INFO, {
         variables: { id: projectId }
@@ -26,11 +21,16 @@ const ReadProject = () => {
     const [upvoteProject] = useMutation(UPVOTE_PROJECT);
     const [addApplicant] = useMutation(ADD_APPLICANT);
 
+    // variables based on other factors like state and params
+    const { projectId } = useParams;
+    const userId = Auth.getProfile().data._id;
+    const [upvotes, setUpvotes] = useState(projectData.upvoteCount);
+
     //query based variables
     const { currentProject, chapters } = state;
     const collaborators = currentProject?.project.collaborators || [];
     const initialChapters = chapters?.chapters || [];
-    const chapters = initialChapters?.initialChapters.filter(chapter => chapter.isPublic) || [];
+    const pageChapters = initialChapters?.initialChapters.filter(chapter => chapter.isPublic) || [];
 
     //updating the current project and chapters in the GS
     //for currentproject
@@ -50,7 +50,7 @@ const ReadProject = () => {
                 });
             });
         }
-    }, [project, dispatch]);
+    }, [projectData, dispatch]);
     //for chapters
     useEffect(() => {
         if (projectData) {
@@ -65,7 +65,7 @@ const ReadProject = () => {
         else if (!loading) {
             idbPromise('project-chapters', 'get').then(chapters => {
                 dispatch({
-                    type: UPDATE_CHAPTER,
+                    type: UPDATE_CHAPTERS,
                     chapters: chapters
                 });;
             });
@@ -73,20 +73,20 @@ const ReadProject = () => {
     }, [chapters, dispatch]);
 
     //functions
-    function addUpvote() {
+    async function addUpvote() {
         try {
             await upvoteProject({
                 variables: { userId: userId }
             });
-            setUpvotes(data.upvoteCount);
+            setUpvotes(projectData.upvoteCount);
         } catch (e) {
             console.error(e);
         }
     }
-    function applyCollaboration() {
+    async function applyCollaboration() {
         try {
             await addApplicant({
-                variables: { collabsToAddOrDenyList: [...project.collabsToAddOrDenyList, userId] }
+                variables: { collabsToAddOrDenyList: [...projectData.collabsToAddOrDenyList, userId] }
             });
         } catch (e) {
             console.error(e);
@@ -96,15 +96,15 @@ const ReadProject = () => {
     //The Actual returned HTML
     return (
         <div>
-            <h1 className="text-center">{project.title}</h1>
-            <h2 className="text-center">By: {project.author}</h2>
+            <h1 className="text-center">{currentProject.title}</h1>
+            <h2 className="text-center">By: {currentProject.author}</h2>
             <h3>Summary:</h3>
-            <p>{project.summary}</p>
-            {chapters &&
+            <p>{currentProject.summary}</p>
+            {pageChapters &&
                 <div>
                     <h3 className="text-center">Public Chapters For Your Enjoyment</h3>
                     <ul>
-                        {chapters.map(chapter => (
+                        {pageChapters.map(chapter => (
                             <li>
                                 <Link to={`/chapter/${chapter._id}`}>{chapter.title}</Link>
                             </li>
