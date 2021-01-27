@@ -33,6 +33,7 @@ const resolvers = {
       return await Project.find({
         $and: [{ genre }, { title: { $regex: searchTerm, $options: "i" } }],
       })
+        .omitUndefined()
         .populate("chapters")
         .populate("collaborators");
     },

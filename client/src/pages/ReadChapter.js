@@ -2,20 +2,49 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from '@apollo/react-hooks';
 import { useStoreContext } from "../utils/GlobalState";
-import { UPDATE_CHAPTER } from "../utils/actions";
-import { QUERY_CHAPTER } from "../utils/queries";
+import { UPDATE_CURRENT_CHAPTER } from "../utils/actions";
+import { QUERY_GET_CHAPTER } from "../utils/queries";
 import { idbPromise } from "../../utils/helpers";
 import TableOfContents from '../components/TableOfContents';
 import CommentList from '../components/CommitList';
-import Auth from '../utils/auth';
+import CommentForm from '../components/CommentForm';
+
 const ReadChapter = () => {
+    const [state, dispatch] = useStoreContext();
 
-    function addUpvote() {
+    //Variables gained through alternate means
+    const { chapterId } = useParams;
 
-    }
+    //Queries
+    const { loading, data: chapterData } = useQuery(QUERY_GET_CHAPTER, {
+        variables: { id: chapterId }
+    });
 
-    function addComment() {
+    //Queried variables
+    const { currentChapter } = state;
+    const chapter = currentChapter;
+    //Updating Current Chapter in the GS
+    useEffect(() => {
+        if (chapterData) {
+            dispatch({
+                type: UPDATE_CURRENT_CHAPTER,
+                currentProject: chapterData
+            });
+            idbPromise('current-chapter', 'put', chapterData);
+        }
+        else if (!loading) {
+            idbPromise('current-chapter', 'get').then(currentChapter => {
+                dispatch({
+                    type: UPDATE_CURRENT_CHAPTER,
+                    currentChapter: currentChapter
+                });
+            });
+        }
+    }, [currentChapter, dispatch]);
 
+    //Actual returned HTML
+    if (loading) {
+        return <div>Loading...</div>
     }
     return (
         <div>
@@ -27,9 +56,11 @@ const ReadChapter = () => {
                 </div>
             </div>
             <div id="button-container">
-                {Auth.loggedIn() &&
-                    <button className="float-center" onClick={addUpvote()}>Upvote</button> &&
-                    <button className="float-center" onClick={addComment()}>Comment</button>
+                {Auth.loggedIn() && (
+                    <div>
+                        <CommentForm />
+                    </div>
+                )
                 }
             </div>
             <div id="comments-area">
