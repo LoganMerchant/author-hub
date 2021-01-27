@@ -15,28 +15,26 @@ const EditChapter = () => {
   const { currentChapter } = state;
 
   // Setup of local state for keeping track of the chapter's data
-  const [updatedChapter, setUpdatedChapter] = useState(currentChapter);
+  const [updatedTitle, setUpdatedTitle] = useState(currentChapter.title);
+  const [updatedText, setUpdatedText] = useState(currentChapter.chapterText);
+  const [updatedIsPublic, setUpdatedIsPublic] = useState(
+    currentChapter.isPublic
+  );
 
   // Function that runs anytime a change is made to the chapter's text or title
-  function handleChange() {
-    const updatedTitle = document.querySelector("#formChapterTitle").value;
-    const updatedText = document.querySelector("#formChapterText").value;
+  function handleChange(evt) {
+    evt.preventDefault();
 
-    setUpdatedChapter({
-      ...updatedChapter,
-      title: updatedTitle,
-      chapterText: updatedText,
-    });
-  }
+    const name = evt.target.id;
+    const value = evt.target.value;
 
-  // Toggles the isPublic value of local state, which will eventually be used to update the chapter's
-  function toggleIsPublic() {
-    const booleanValue = !updatedChapter.isPublic;
-
-    setUpdatedChapter({
-      ...updatedChapter,
-      isPublic: booleanValue,
-    });
+    if (name === "title") {
+      setUpdatedTitle(value);
+    } else if (name === "chapterText") {
+      setUpdatedText(value);
+    } else {
+      setUpdatedIsPublic(!updatedIsPublic);
+    }
   }
 
   // JSX
@@ -51,27 +49,27 @@ const EditChapter = () => {
         {/* Chapter Edit Form */}
         <Col sm={12} md={8}>
           {/* Toggles isPublic */}
-          <Form.Group controlId="formChapterIsPublic">
-            {updatedChapter.isPublic === true ? (
+          <Form.Group controlId="isPublic">
+            {updatedIsPublic === true ? (
               <Form.Check
                 type="switch"
-                defaultChecked={updatedChapter.isPublic}
+                defaultChecked={updatedIsPublic}
                 label="Published"
                 isValid
-                onClick={toggleIsPublic}
+                onClick={handleChange}
               />
             ) : (
               <Form.Check
                 type="switch"
                 label="Unpublished"
                 isInvalid
-                onClick={toggleIsPublic}
+                onClick={handleChange}
               />
             )}
           </Form.Group>
 
           {/* Edits chapter's title */}
-          <Form.Group controlId="formChapterTitle">
+          <Form.Group controlId="title">
             <Form.Label column="lg">Title:</Form.Label>
             <Form.Control
               as="textarea"
@@ -81,7 +79,7 @@ const EditChapter = () => {
           </Form.Group>
 
           {/* Edits chapter's text */}
-          <Form.Group controlId="formChapterText">
+          <Form.Group controlId="chapterText">
             <Form.Label column="lg">Content:</Form.Label>
             <Form.Control
               as="textarea"
@@ -95,7 +93,11 @@ const EditChapter = () => {
         {/* Commit Form, which is passed updatedChapter as a prop */}
         <Col sm={12} md={2}>
           <div id="commit-container">
-            <CommitForm updatedChapter={updatedChapter} />
+            <CommitForm
+              updatedTitle={updatedTitle}
+              updatedText={updatedText}
+              updatedIsPublic={updatedIsPublic}
+            />
             <CommitList commits={currentChapter.commits} />
           </div>
         </Col>
