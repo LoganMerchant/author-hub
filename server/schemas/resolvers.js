@@ -106,7 +106,10 @@ const resolvers = {
           { _id: projectId },
           { title, summary, genre, isPublic },
           { new: true, runValidators: true, omitUndefined: true }
-        );
+        )
+          .populate("chapters")
+          .populate("collaborators")
+          .populate("collabsToAddOrDenyList");
 
         return project;
       }
@@ -145,7 +148,10 @@ const resolvers = {
             $pull: { collabsToAddOrDenyList: userId },
           },
           { new: true, runValidators: true }
-        );
+        )
+          .populate("chapters")
+          .populate("collaborators")
+          .populate("collabsToAddOrDenyList");
 
         return project;
       }
@@ -160,7 +166,10 @@ const resolvers = {
           { _id: projectId },
           { $pull: { collabsToAddOrDenyList: userId } },
           { new: true, runValidators: true }
-        );
+        )
+          .populate("chapters")
+          .populate("collaborators")
+          .populate("collabsToAddOrDenyList");
 
         return project;
       }
@@ -209,13 +218,16 @@ const resolvers = {
     // Add commit to a chapter nested within a project (private)
     addCommit: async (
       parent,
-      { chapterId, chapterText, commitText, commitType },
+      { chapterId, title, chapterText, isPublic, commitText, commitType },
       context
     ) => {
       if (context.user) {
         return await Chapter.findByIdAndUpdate(
           { _id: chapterId },
           {
+            title,
+            chapterText,
+            isPublic,
             $addToSet: {
               commits: {
                 commitText,
@@ -223,7 +235,6 @@ const resolvers = {
                 username: context.user.username,
               },
             },
-            chapterText: chapterText,
           },
           { new: true, runValidators: true }
         );

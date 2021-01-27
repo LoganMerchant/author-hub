@@ -80,8 +80,8 @@ export const QUERY_GET_PROJECTS_BY_SEARCH = gql`
 `;
 
 export const QUERY_GET_PROJECT_INFO = gql`
-  query getProjectInfo($id: ID!) {
-    getProjectInfo(_id: $id) {
+  query getProjectInfo($_id: ID!) {
+    getProjectInfo(_id: $_id) {
       _id
       title
       summary
