@@ -76,7 +76,7 @@ export const EDIT_PROJECT_INFO = gql`
       title: $title
       summary: $summary
       genre: $genre
-      isPublic: isPublic
+      isPublic: $isPublic
     ) {
       _id
       title
