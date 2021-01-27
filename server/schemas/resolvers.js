@@ -1,6 +1,6 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Project, Chapter } = require("../models");
-const { signToken } = require("../utils/auth");
+const { signToken, readTokenFromHeader } = require("../utils/auth");
 
 const resolvers = {
   Query: {
@@ -38,17 +38,11 @@ const resolvers = {
     },
 
     // Get all of the project info
-    getProjectInfo: async (parent, { _id }, context) => {
-      if (context.user) {
-        return await Project.findOne({ _id })
-          .populate("chapters")
-          .populate("collaborators")
-          .populate("collabsToAddOrDenyList");
-      }
-
-      throw new AuthenticationError(
-        "You need to be logged in to view this project."
-      );
+    getProjectInfo: async (parent, { _id }) => {
+      return await Project.findOne({ _id })
+        .populate("chapters")
+        .populate("collaborators")
+        .populate("collabsToAddOrDenyList");
     },
 
     // Get a chapter of a book
@@ -72,7 +66,6 @@ const resolvers = {
       }
 
       const token = signToken(user);
-
       return { token, user };
     },
 
@@ -87,10 +80,11 @@ const resolvers = {
     // Creates a new project(book)
     addProject: async (parent, args, context) => {
       if (context.user) {
+        const user = readTokenFromHeader(context.headers.authorization);
         const newProject = await Project.create(args);
 
         await User.findByIdAndUpdate(
-          { _id: context.user._id },
+          { _id: user._id },
           { $addToSet: { projects: newProject._id } },
           { runValidators: true }
         );
@@ -124,6 +118,18 @@ const resolvers = {
     deleteProject: async (parent, { _id }, context) => {
       if (context.user) {
         return await Project.findByIdAndDelete({ _id });
+      }
+
+      throw new AuthenticationError("You need to be logged in...");
+    },
+
+    addApplicant: async (parent, { projectId }, context) => {
+      if (context.user) {
+        return await Project.findByIdAndUpdate(
+          { _id: projectId },
+          { $addToSet: { collabsToAddOrDenyList: context.user._id } },
+          { new: true, runValidators: true }
+        );
       }
 
       throw new AuthenticationError("You need to be logged in...");
@@ -203,16 +209,13 @@ const resolvers = {
     // Add commit to a chapter nested within a project (private)
     addCommit: async (
       parent,
-      { chapterId, title, chapterText, isPublic, commitText, commitType },
+      { chapterId, chapterText, commitText, commitType },
       context
     ) => {
       if (context.user) {
         return await Chapter.findByIdAndUpdate(
           { _id: chapterId },
           {
-            title,
-            chapterText,
-            isPublic,
             $addToSet: {
               commits: {
                 commitText,
@@ -220,6 +223,7 @@ const resolvers = {
                 username: context.user.username,
               },
             },
+            chapterText: chapterText,
           },
           { new: true, runValidators: true }
         );

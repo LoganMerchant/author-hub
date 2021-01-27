@@ -7,6 +7,11 @@ import { StoreProvider } from "./utils/GlobalState";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import ReadProject from "./pages/ReadProject";
+import ReadChapter from "./pages/ReadChapter";
+import Projects from "./pages/Projects";
+
 
 const client = new ApolloClient({
   request: (operation) => {
@@ -30,7 +35,11 @@ function App() {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/search" component={Search} />
+              <Route exact path='/readproject/:projectId' component={ReadProject} />
+              <Route exact path='/readchapter/:chapterId' component={ReadChapter} />
+              <Route exact path="/projects" component={Projects} />
             </Switch>
+            <Footer />
           </StoreProvider>
         </div>
       </Router>

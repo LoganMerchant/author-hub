@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
-import { useStoreContext } from '../../utils/GlobalState';
+import React from 'react';
+
 //import ReactionList from './ReactionList';
 
-const CommentList = ({ comment }) => {
-    //get the store specifically for chapter or use a prop?
-    function addReaction() {
-    }
+const CommentList = ({ comments }) => {
+    console.log(comments);
     return (
         <div className="card mb-3">
             <div className="card-header">
-                <span className="text-light">Comment</span>
+                <span className="text-dark text-center">Comments Section</span>
             </div>
             <div className="card-body">
                 {comments &&
