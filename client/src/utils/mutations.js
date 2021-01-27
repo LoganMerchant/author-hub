@@ -275,12 +275,16 @@ export const ADD_COMMENT = gql`
 export const ADD_COMMIT = gql`
   mutation addCommit(
     $chapterId: ID!
+    $title: String!
+    $isPublic: Boolean!
     $chapterText: String!
     $commitText: String!
     $commitType: String!
   ) {
     addCommit(
       chapterId: $chapterId
+      title: $title
+      isPublic: $isPublic
       chapterText: $chapterText
       commitText: $commitText
       commitType: $commitType
