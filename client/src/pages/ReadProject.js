@@ -16,7 +16,7 @@ const ReadProject = () => {
     const [upvotes, setUpvotes] = useState(0);
     //Queries
     const { loading, data } = useQuery(QUERY_GET_PROJECT_INFO, {
-        variables: { id: projectId }
+        variables: { _id: projectId }
     });
     if (!loading) {
         console.log(data);

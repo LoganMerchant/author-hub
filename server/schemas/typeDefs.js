@@ -95,7 +95,7 @@ const typeDefs = gql`
       chapterText: String!
       authorName: String!
     ): Chapter
-    addComment(chapterId: ID!, commentText: String!): Chapter
+    addComment(chapterId: ID!, commentText: String!, username: String!): Chapter
     addCommit(
       chapterId: ID!
       title: String!

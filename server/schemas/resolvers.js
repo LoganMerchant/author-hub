@@ -199,20 +199,16 @@ const resolvers = {
     },
 
     // Add comment to a chapter nested within a project (public)
-    addComment: async (parent, { chapterId, commentText }, context) => {
-      if (context.user) {
-        return await Chapter.findByIdAndUpdate(
-          { _id: chapterId },
-          {
-            $addToSet: {
-              comments: { commentText, username: context.user.username },
-            },
+    addComment: async (parent, { chapterId, commentText, username }) => {
+      return await Chapter.findByIdAndUpdate(
+        { _id: chapterId },
+        {
+          $addToSet: {
+            comments: { commentText: commentText, username: username },
           },
-          { new: true, runValidators: true }
-        );
-      }
-
-      throw new AuthenticationError("You need to be logged in...");
+        },
+        { new: true, runValidators: true }
+      );
     },
 
     // Add commit to a chapter nested within a project (private)

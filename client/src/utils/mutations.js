@@ -247,8 +247,8 @@ export const ADD_CHAPTER = gql`
 `;
 
 export const ADD_COMMENT = gql`
-  mutation addComment($chapterId: ID!, $commentText: String!) {
-    addComment(chapterId: $chapterId, commentText: $commentText) {
+  mutation addComment($chapterId: ID!, $commentText: String!, $username: String!) {
+    addComment(chapterId: $chapterId, commentText: $commentText, username: $username) {
       _id
       title
       chapterText

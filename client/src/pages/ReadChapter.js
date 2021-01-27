@@ -42,12 +42,12 @@ const ReadChapter = () => {
 
                 {Auth.loggedIn() && (
                     <div>
-                        <CommentForm />
+                        <CommentForm chapterId={chapterId} />
                     </div>
                 )
                 }
                 <div id="comments-area">
-                    <CommentList comments={chapter.comments} />
+                    {chapter.comments.length > 0 && <CommentList comments={chapter.comments} />}
                 </div>
             </div>
         );
