@@ -1,12 +1,14 @@
 import React from "react";
+import TitleCard from "../components/TitleCard";
 
 const Home = () => {
     return (
-        <div className="container">
-            <h2>Most Popular Projects</h2>
+        <Container>
+            <h2>Most Popular Reads</h2>
             <div className="titleCard">
+                <TitleCard />
             </div>
-        </div>
+        </Container>
     );
 };
 
