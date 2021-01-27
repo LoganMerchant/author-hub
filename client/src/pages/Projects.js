@@ -77,6 +77,7 @@ const Projects = () => {
                   placeholder="Title your project."
                 />
                 <Form.Control
+                  as="textarea"
                   name="summary"
                   value={summary}
                   onChange={(e) => setSummary(e.target.value)}
@@ -150,7 +151,23 @@ const Projects = () => {
         <br></br>
         <h1>Collaborations</h1>
         <hr></hr>
-        {/* <UserCollaborations collaborations={collaborations} /> */}
+        <CardColumns>
+          {collaborations.map((myCollaborations) => {
+            return (
+              <Card key={myCollaborations._id} border="dark">
+                <Card.Body>
+                  <Card.Title>
+                    <Link to={`/editproject/${myCollaborations._id}`}>
+                      {myCollaborations.title}
+                    </Link>
+                  </Card.Title>
+                  <p className="small">Genre: {myCollaborations.genre}</p>
+                  <Card.Text>{myCollaborations.summary}</Card.Text>
+                </Card.Body>
+              </Card>
+            );
+          })}
+        </CardColumns>
       </Container>
     </>
   );
