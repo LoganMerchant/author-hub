@@ -106,7 +106,10 @@ const resolvers = {
           { _id: projectId },
           { title, summary, genre, isPublic },
           { new: true, runValidators: true, omitUndefined: true }
-        );
+        )
+          .populate("chapters")
+          .populate("collaborators")
+          .populate("collabsToAddOrDenyList");
 
         return project;
       }
@@ -145,7 +148,10 @@ const resolvers = {
             $pull: { collabsToAddOrDenyList: userId },
           },
           { new: true, runValidators: true }
-        );
+        )
+          .populate("chapters")
+          .populate("collaborators")
+          .populate("collabsToAddOrDenyList");
 
         return project;
       }
@@ -160,7 +166,10 @@ const resolvers = {
           { _id: projectId },
           { $pull: { collabsToAddOrDenyList: userId } },
           { new: true, runValidators: true }
-        );
+        )
+          .populate("chapters")
+          .populate("collaborators")
+          .populate("collabsToAddOrDenyList");
 
         return project;
       }
