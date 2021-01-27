@@ -8,6 +8,7 @@ import { useStoreContext } from "../utils/GlobalState";
 import TableOfContents from "../components/TableOfContents";
 import CommitForm from "../components/CommitForm";
 import CommitList from "../components/CommitList";
+import IsPublicToggleButton from "../components/IsPublicToggleButton";
 
 const EditChapter = () => {
   // Get currentChapter from global store
@@ -23,8 +24,6 @@ const EditChapter = () => {
 
   // Function that runs anytime a change is made to the chapter's text or title
   function handleChange(evt) {
-    evt.preventDefault();
-
     const name = evt.target.id;
     const value = evt.target.value;
 
@@ -49,24 +48,10 @@ const EditChapter = () => {
         {/* Chapter Edit Form */}
         <Col sm={12} md={8}>
           {/* Toggles isPublic */}
-          <Form.Group controlId="isPublic">
-            {updatedIsPublic === true ? (
-              <Form.Check
-                type="switch"
-                defaultChecked={updatedIsPublic}
-                label="Published"
-                isValid
-                onClick={handleChange}
-              />
-            ) : (
-              <Form.Check
-                type="switch"
-                label="Unpublished"
-                isInvalid
-                onClick={handleChange}
-              />
-            )}
-          </Form.Group>
+          <IsPublicToggleButton
+            updatedIsPublic={updatedIsPublic}
+            setUpdatedIsPublic={setUpdatedIsPublic}
+          />
 
           {/* Edits chapter's title */}
           <Form.Group controlId="title">
