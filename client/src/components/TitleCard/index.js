@@ -1,34 +1,28 @@
-import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import React, { useState } from 'react';
 import {
     Container, 
     Col,
     Row,
     Button,
     Card,
-    CardColumns,
 } from "react-bootstrap";
 
-import { useStoreContext } from "../../utils/GlobalState";
-
-import { 
-    QUERY_GET_PROJECT_INFO,
-    ADD_PROJECT,
-
-} from "../../utils/actions";
-//change the name of the folder, the function, and the export value.
+import { QUERY_GET_PROJECTS_BY_UPVOTE } from "../../utils/queries";
+import { useQuery } from '@apollo/react-hooks';
 
 const TitleCard = () => {
 
-    const [state, dispatch] = useStoreContext();
-    const { addProject, projects } = state;
+    //create state for holding returned book info for popular projects
+    const [popularBook, setBooks] = useState([]);
 
-    const handleOnClick = (title) => {
-        dispatch({
-            type: ADD_PROJECT,
-            addProject: projects,
-        });
-    };
+    const { loading, data } = useQuery(QUERY_GET_PROJECTS_BY_UPVOTE);
+    
+    // function filterBooks() {
+    //     if (!popularBook) {
+    //         return book;
+    //     }
+    // }
+
     return (
         <Container id="titleContainer">
             <Card id="titleCard">
@@ -39,30 +33,23 @@ const TitleCard = () => {
                     <Col sm={12} md={4} lg={4}>
                         <h3
                             action
-                            key={projects._id}
-                            onClick={() => handleOnClick(title)}
+                            key={book._id}
+                            onClick={() => handleOnClick(book)}
                             >
                         </h3>
-                        <h5>SUMMARY</h5>
-                        <p>{state.summary}</p>
-                        <button className="btn">
+                        <h4>by {book.authorName}</h4>
+                        <h5>GENRE: {book.genre}</h5>
+                        <h6>SUMMARY</h6>
+                        <p>{book.summary}</p>
+                        <Button className="btn">
                             READ
-                        </button>
-                        <p id="tileCollaborators">{collaborators}</p>
+                        </Button>
+                        <p id="titleCollaborators">COLLABORATORS
+                        {book.collaborators}</p>
                     </Col>
                 </Row>
-                {projects.map((title) => title)}
-                <Row>
-                <Col sm={sm} md={4} lg={4}>
-                        <img src={cover} alt="Book Cover" />
-                    </Col>
-                    <Col sm={12} md={4} lg={4}>
-                        <h3>{title}</h3>
-                        <h5>SUMMARY</h5>
-                        <p>{summary}</p>
-                        <p id="tileCollaborators">{collaborators}</p>
-                    </Col>
-                </Row>
+                {popularBooks.map((book) => book)}
+                
             </Card>
         </Container>
     );
