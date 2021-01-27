@@ -1,73 +1,59 @@
+
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from '@apollo/react-hooks';
-import { useStoreContext } from "../utils/GlobalState";
-import { UPDATE_CURRENT_CHAPTER } from "../utils/actions";
 import { QUERY_GET_CHAPTER } from "../utils/queries";
-import { idbPromise } from "../../utils/helpers";
-import TableOfContents from '../components/TableOfContents';
-import CommentList from '../components/CommitList';
+//import TableOfContents from '../components/TableOfContents';
+import CommentList from '../components/CommentList';
 import CommentForm from '../components/CommentForm';
+import Auth from '../utils/auth';
 
 const ReadChapter = () => {
-    const [state, dispatch] = useStoreContext();
-
     //Variables gained through alternate means
-    const { chapterId } = useParams;
-
+    const { chapterId } = useParams();
+    console.log(chapterId);
+    let chapter;
     //Queries
-    const { loading, data: chapterData } = useQuery(QUERY_GET_CHAPTER, {
+    const { loading, data } = useQuery(QUERY_GET_CHAPTER, {
         variables: { id: chapterId }
     });
 
-    //Queried variables
-    const { currentChapter } = state;
-    const chapter = currentChapter;
-    //Updating Current Chapter in the GS
-    useEffect(() => {
-        if (chapterData) {
-            dispatch({
-                type: UPDATE_CURRENT_CHAPTER,
-                currentProject: chapterData
-            });
-            idbPromise('current-chapter', 'put', chapterData);
-        }
-        else if (!loading) {
-            idbPromise('current-chapter', 'get').then(currentChapter => {
-                dispatch({
-                    type: UPDATE_CURRENT_CHAPTER,
-                    currentChapter: currentChapter
-                });
-            });
-        }
-    }, [currentChapter, dispatch]);
+    if (!loading) {
+        chapter = data?.getChapter || {};
+    }
+    console.log(chapter);
+
 
     //Actual returned HTML
     if (loading) {
         return <div>Loading...</div>
     }
-    return (
-        <div>
-            <div className="row">
-                <div className="col-3"><TableOfContents /></div>
-                <div className='col-9'>
-                    <p className='text-center'>{chapter.title}</p>
-                    <p className='text-left'>{chapter.chapterText}</p>
+    if (!loading) {
+        return (
+            <div>
+                <div className="row">
+
+                    <div className='col-9'>
+                        <h1 className='text-center'>{chapter.title}</h1>
+                        <h2>Chapter Contents:</h2>
+                        <p className='text-left'>{chapter.chapterText}</p>
+                    </div>
                 </div>
-            </div>
-            <div id="button-container">
+
                 {Auth.loggedIn() && (
                     <div>
                         <CommentForm />
                     </div>
                 )
                 }
+                <div id="comments-area">
+                    <CommentList comments={chapter.comments} />
+                </div>
             </div>
-            <div id="comments-area">
-                <CommentList />
-            </div>
-        </div>
-    );
+        );
+    }
 };
 
 export default ReadChapter;
+
+//<div className="col-3"><TableOfContents /></div> implementing this later

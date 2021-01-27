@@ -67,7 +67,7 @@ const typeDefs = gql`
     getProjectsByUpvote: [Project]
     getProjectsBySearch(genre: String!, searchTerm: String): [Project]
     getProjectInfo(_id: ID!): Project
-    getChapter(projectId: ID!, chapterNumber: ID!): Chapter
+    getChapter(_id: ID!): Chapter
   }
   type Mutation {
     login(email: String!, password: String!): Auth
@@ -86,6 +86,7 @@ const typeDefs = gql`
       isPublic: Boolean
     ): Project
     deleteProject(_id: ID): Project
+    addApplicant(projectId: ID!): Project
     acceptCollaborator(projectId: ID!, userId: ID!): Project
     denyCollaborator(projectId: ID!, userId: ID!): Project
     addChapter(
@@ -95,15 +96,7 @@ const typeDefs = gql`
       authorName: String!
     ): Chapter
     addComment(chapterId: ID!, commentText: String!): Chapter
-    
-    addCommit(
-      chapterId: ID!
-      title: String!
-      isPublic: Boolean!
-      chapterText: String!
-      commitText: String!
-      commitType: String!
-    ): Chapter
+    addCommit(chapterId: ID!, chapterText: String! commitText: String!, commitType: String!): Chapter
     upvoteProject(projectId: ID!): Project
   }
 `;

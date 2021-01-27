@@ -80,8 +80,8 @@ export const QUERY_GET_PROJECTS_BY_SEARCH = gql`
 `;
 
 export const QUERY_GET_PROJECT_INFO = gql`
-  query getProjectInfo($_id: ID!) {
-    getProjectInfo(_id: $_id) {
+  query getProjectInfo($id: ID!) {
+    getProjectInfo(_id: $id) {
       _id
       title
       summary
@@ -92,6 +92,7 @@ export const QUERY_GET_PROJECT_INFO = gql`
       chapters {
         _id
         title
+        isPublic
       }
       collaborators {
         _id
@@ -110,8 +111,8 @@ export const QUERY_GET_PROJECT_INFO = gql`
 `;
 
 export const QUERY_GET_CHAPTER = gql`
-  query getChapter($_id: ID!) {
-    getChapter(_id: $_id) {
+  query getChapter($id: ID!) {
+    getChapter(_id: $id) {
       _id
       title
       chapterText
@@ -125,6 +126,8 @@ export const QUERY_GET_CHAPTER = gql`
       comments {
         _id
         commentText
+        username
+        createdAt
       }
       commits {
         _id
