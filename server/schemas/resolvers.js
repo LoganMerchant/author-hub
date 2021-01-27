@@ -1,6 +1,6 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Project, Chapter } = require("../models");
-const { signToken } = require("../utils/auth");
+const { signToken, readTokenFromHeader } = require("../utils/auth");
 
 const resolvers = {
   Query: {
@@ -66,7 +66,6 @@ const resolvers = {
       }
 
       const token = signToken(user);
-
       return { token, user };
     },
 
@@ -81,10 +80,11 @@ const resolvers = {
     // Creates a new project(book)
     addProject: async (parent, args, context) => {
       if (context.user) {
+        const user = readTokenFromHeader(context.headers.authorization);
         const newProject = await Project.create(args);
 
         await User.findByIdAndUpdate(
-          { _id: context.user._id },
+          { _id: user._id },
           { $addToSet: { projects: newProject._id } },
           { runValidators: true }
         );
