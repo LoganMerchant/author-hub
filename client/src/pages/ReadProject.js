@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import { ADD_APPLICANT, UPVOTE_PROJECT } from "../utils/mutations";
 import Auth from '../utils/auth';
 import { useStoreContext } from "../utils/GlobalState";
-import { UPDATE_CURRENT_PROJECT } from "../utils/actions";
+import { UPDATE_CURRENT_PROJECT, UPDATE_CHAPTERS } from "../utils/actions";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { QUERY_GET_PROJECT_INFO } from "../utils/queries";
 import { Link } from 'react-router-dom';
+import { idbPromise } from "../utils/helpers";
 
 const ReadProject = () => {
-    //I need to set current project in the GS still.
+    const [state, dispatch] = useStoreContext();
 
     // variables based on other factors like state and params
     const { projectId } = useParams;
@@ -17,7 +18,7 @@ const ReadProject = () => {
     const [upvotes, setUpvotes] = useState(data.upvoteCount);
 
     //Queries
-    const { loading, data } = useQuery(QUERY_GET_PROJECT_INFO, {
+    const { loading, data: projectData } = useQuery(QUERY_GET_PROJECT_INFO, {
         variables: { id: projectId }
     });
 
@@ -26,10 +27,50 @@ const ReadProject = () => {
     const [addApplicant] = useMutation(ADD_APPLICANT);
 
     //query based variables
+    const { currentProject, chapters } = state;
+    const collaborators = currentProject?.project.collaborators || [];
+    const initialChapters = chapters?.chapters || [];
+    const chapters = initialChapters?.initialChapters.filter(chapter => chapter.isPublic) || [];
 
-    const project = data?.project || {};
-    const collaborators = data?.project.collaborators || [];
-    const chapters = data?.project.chapters || [];
+    //updating the current project and chapters in the GS
+    //for currentproject
+    useEffect(() => {
+        if (projectData) {
+            dispatch({
+                type: UPDATE_CURRENT_PROJECT,
+                currentProject: projectData
+            });
+            idbPromise('current-project', 'put', projectData);
+        }
+        else if (!loading) {
+            idbPromise('current-project', 'get').then(project => {
+                dispatch({
+                    type: UPDATE_CURRENT_PROJECT,
+                    currentProject: project
+                });
+            });
+        }
+    }, [project, dispatch]);
+    //for chapters
+    useEffect(() => {
+        if (projectData) {
+            dispatch({
+                type: UPDATE_CHAPTERS,
+                chapters: projectData.chapters
+            });
+            projectData.chapters.forEach(chapter => {
+                idbPromise('project-chapters', 'put', chapter)
+            })
+        }
+        else if (!loading) {
+            idbPromise('project-chapters', 'get').then(chapters => {
+                dispatch({
+                    type: UPDATE_CHAPTER,
+                    chapters: chapters
+                });;
+            });
+        }
+    }, [chapters, dispatch]);
 
     //functions
     function addUpvote() {

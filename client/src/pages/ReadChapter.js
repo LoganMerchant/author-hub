@@ -10,18 +10,37 @@ import CommentList from '../components/CommitList';
 import CommentForm from '../components/CommentForm';
 
 const ReadChapter = () => {
-    //still need to add GS logic to add current chapter to the global store
+    const [state, dispatch] = useStoreContext();
 
     //Variables gained through alternate means
     const { chapterId } = useParams;
 
     //Queries
-    const { loading, data } = useQuery(QUERY_GET_CHAPTER, {
+    const { loading, data: chapterData } = useQuery(QUERY_GET_CHAPTER, {
         variables: { id: chapterId }
     });
 
     //Queried variables
-    const chapter = data?.chapter || {};
+    const { currentChapter } = state;
+    const chapter = currentChapter;
+    //Updating Current Chapter in the GS
+    useEffect(() => {
+        if (chapterData) {
+            dispatch({
+                type: UPDATE_CURRENT_CHAPTER,
+                currentProject: chapterData
+            });
+            idbPromise('current-chapter', 'put', chapterData);
+        }
+        else if (!loading) {
+            idbPromise('current-chapter', 'get').then(currentChapter => {
+                dispatch({
+                    type: UPDATE_CURRENT_CHAPTER,
+                    currentChapter: currentChapter
+                });
+            });
+        }
+    }, [currentChapter, dispatch]);
 
     //Actual returned HTML
     if (loading) {
