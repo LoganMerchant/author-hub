@@ -8,7 +8,6 @@ const typeDefs = gql`
     projects: [Project]
     collaborations: [Project]
   }
-
   type Project {
     _id: ID
     title: String
@@ -23,7 +22,6 @@ const typeDefs = gql`
     upvotes: [Vote]
     upvoteCount: Int
   }
-
   type Chapter {
     _id: ID
     title: String
@@ -35,12 +33,10 @@ const typeDefs = gql`
     comments: [Comment]
     commits: [Commit]
   }
-
   type Vote {
     _id: ID
     userId: ID
   }
-
   type Comment {
     _id: ID
     commentText: String
@@ -48,7 +44,6 @@ const typeDefs = gql`
     username: String
     reactions: [Reaction]
   }
-
   type Commit {
     _id: ID
     commitText: String
@@ -56,19 +51,16 @@ const typeDefs = gql`
     createdAt: String
     username: String
   }
-
   type Reaction {
     _id: ID
     reactionBody: String
     username: String
     createdAt: String
   }
-
   type Auth {
     token: ID
     user: User
   }
-
   type Query {
     getUser(_id: ID!): User
     getUsers: [User]
@@ -77,18 +69,15 @@ const typeDefs = gql`
     getProjectInfo(_id: ID!): Project
     getChapter(projectId: ID!, chapterNumber: ID!): Chapter
   }
-
   type Mutation {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
-
     addProject(
       title: String!
       genre: String!
       summary: String!
       authorName: String!
     ): Project
-
     editProjectInfo(
       projectId: ID!
       title: String
@@ -96,22 +85,25 @@ const typeDefs = gql`
       genre: String
       isPublic: Boolean
     ): Project
-
     deleteProject(_id: ID): Project
-    addApplicant(projectId: ID!): Project
     acceptCollaborator(projectId: ID!, userId: ID!): Project
     denyCollaborator(projectId: ID!, userId: ID!): Project
-
     addChapter(
       projectId: ID!
       title: String!
       chapterText: String!
       authorName: String!
     ): Chapter
-
     addComment(chapterId: ID!, commentText: String!): Chapter
-    addCommit(chapterId: ID!, chapterText: String! commitText: String!, commitType: String!): Chapter
-
+    
+    addCommit(
+      chapterId: ID!
+      title: String!
+      isPublic: Boolean!
+      chapterText: String!
+      commitText: String!
+      commitType: String!
+    ): Chapter
     upvoteProject(projectId: ID!): Project
   }
 `;

@@ -129,33 +129,6 @@ export const DELETE_PROJECT = gql`
   }
 `;
 
-export const ADD_APPLICANT = gql`
-  mutation addApplicant($projectId: ID!) {
-    addApplicant(projectId: $projectId) {
-      _id
-      title
-      summary
-      genre
-      createdAt
-      authorName
-      isPublic
-      chapters {
-        _id
-        title
-      }
-      collaborators {
-        _id
-        username
-      }
-      collabsToAddOrDenyList {
-        _id
-        username
-      }
-      upvoteCount
-    }
-  }
-`;
-
 export const ACCEPT_COLLABORATOR = gql`
   mutation acceptCollaborator($projectId: ID!, $userId: ID!) {
     acceptCollaborator(projectId: $projectId, userId: $userId) {
@@ -275,12 +248,16 @@ export const ADD_COMMENT = gql`
 export const ADD_COMMIT = gql`
   mutation addCommit(
     $chapterId: ID!
+    $title: String!
+    $isPublic: Boolean!
     $chapterText: String!
     $commitText: String!
     $commitType: String!
   ) {
     addCommit(
       chapterId: $chapterId
+      title: $title
+      isPublic: $isPublic
       chapterText: $chapterText
       commitText: $commitText
       commitType: $commitType

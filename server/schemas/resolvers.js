@@ -130,18 +130,6 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in...");
     },
 
-    addApplicant: async (parent, { projectId }, context) => {
-      if (context.user) {
-        return await Project.findByIdAndUpdate(
-          { _id: projectId },
-          { $addToSet: { collabsToAddOrDenyList: context.user._id } },
-          { new: true, runValidators: true }
-        );
-      }
-
-      throw new AuthenticationError("You need to be logged in...");
-    },
-
     // Accept a collaborator to project
     acceptCollaborator: async (parent, { projectId, userId }, context) => {
       if (context.user) {
@@ -216,13 +204,16 @@ const resolvers = {
     // Add commit to a chapter nested within a project (private)
     addCommit: async (
       parent,
-      { chapterId, chapterText, commitText, commitType },
+      { chapterId, title, chapterText, isPublic, commitText, commitType },
       context
     ) => {
       if (context.user) {
         return await Chapter.findByIdAndUpdate(
           { _id: chapterId },
           {
+            title,
+            chapterText,
+            isPublic,
             $addToSet: {
               commits: {
                 commitText,
@@ -230,7 +221,6 @@ const resolvers = {
                 username: context.user.username,
               },
             },
-            chapterText: chapterText,
           },
           { new: true, runValidators: true }
         );
