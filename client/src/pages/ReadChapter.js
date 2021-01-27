@@ -35,7 +35,7 @@ const ReadChapter = () => {
 
                     <div className='col-9'>
                         <h1 className='text-center'>{chapter.title}</h1>
-                        <h2>chapter contents:</h2>
+                        <h2>Chapter Contents:</h2>
                         <p className='text-left'>{chapter.chapterText}</p>
                     </div>
                 </div>
