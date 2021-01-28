@@ -89,11 +89,14 @@ const Projects = () => {
                   as="select"
                   value={genre}
                   name="genreInput"
-                  placeholder="Choose your genre"
+                  placeholder="Please choose a genre"
                   onChange={(e) => {
                     setGenreInput(e.target.value);
                   }}
                 >
+                  <option value="Please choose a genre">
+                    Please choose a genre
+                  </option>
                   <option value="Action/Adventure">Action/Adventure</option>
                   <option value="Fantasy">Fantasy</option>
                   <option value="Historical Fiction">Historical Fiction</option>

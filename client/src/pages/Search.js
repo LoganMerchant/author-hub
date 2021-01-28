@@ -62,11 +62,14 @@ const SearchBooks = () => {
                   as="select"
                   value={genre}
                   name="genreInput"
-                  placeholder="Choose your genre"
+                  placeholder="Choose genre to search"
                   onChange={(e) => {
                     setGenreInput(e.target.value);
                   }}
                 >
+                  <option value="Choose genre to search">
+                    Choose genre to search
+                  </option>
                   <option value="Action/Adventure">Action/Adventure</option>
                   <option value="Fantasy">Fantasy</option>
                   <option value="Historical Fiction">Historical Fiction</option>
