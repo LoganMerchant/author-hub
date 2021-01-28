@@ -104,7 +104,7 @@ const typeDefs = gql`
       commitText: String!
       commitType: String!
     ): Chapter
-    upvoteProject(projectId: ID!): Project
+    upvoteProject(projectId: ID!, userId: ID!): Project
   }
 `;
 

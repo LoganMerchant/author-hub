@@ -54,4 +54,5 @@ const ReadProject = () => {
 
 export default ReadProject;
 
-//                           
+//                  {Auth.loggedIn() && <UpvoteButton projectId={projectId} />}
+//                {Auth.loggedIn() && <AddApplicantButton projectId={projectId} />}

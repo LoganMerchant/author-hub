@@ -313,8 +313,8 @@ export const ADD_COMMIT = gql`
 `;
 
 export const UPVOTE_PROJECT = gql`
-  mutation upvoteProject($projectId: ID!) {
-    upvoteProject(projectId: $projectId) {
+  mutation upvoteProject($projectId: ID!, $userId: ID!) {
+    upvoteProject(projectId: $projectId, userId: $userId) {
       _id
       title
       summary

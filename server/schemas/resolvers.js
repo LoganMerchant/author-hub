@@ -236,17 +236,12 @@ const resolvers = {
     },
 
     // Upvote a project
-    upvoteProject: async (parent, { projectId }, context) => {
-      if (context.user) {
-        console.log(context.user);
-        return await Project.findByIdAndUpdate(
-          { _id: projectId },
-          { $addToSet: { upvotes: context.user._id } },
-          { new: true, runValidators: true }
-        );
-      }
-
-      throw new AuthenticationError("You need to be logged in...");
+    upvoteProject: async (parent, { projectId, userId }) => {
+      return await Project.findByIdAndUpdate(
+        { _id: projectId },
+        { $addToSet: { upvotes: userId } },
+        { new: true, runValidators: true }
+      );
     },
   },
 };
