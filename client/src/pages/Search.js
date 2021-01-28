@@ -67,7 +67,6 @@ const SearchBooks = () => {
                     setGenreInput(e.target.value);
                   }}
                 >
-                  <option value="All">All</option>
                   <option value="Action/Adventure">Action/Adventure</option>
                   <option value="Fantasy">Fantasy</option>
                   <option value="Historical Fiction">Historical Fiction</option>
@@ -86,7 +85,6 @@ const SearchBooks = () => {
                   <option value="Poetry">Poetry</option>
                   <option value="Self Help">Self Help</option>
                   <option value="True Crime">True Crime</option>
-                  <option value="test">test</option>
                 </Form.Control>
               </Col>
             </Form.Row>

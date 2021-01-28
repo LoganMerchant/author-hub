@@ -44,7 +44,7 @@ const Projects = () => {
     if (!title) {
       return false;
     }
-
+    // if successful then fetch projects then set projects for component state
     try {
       const { data } = await addProject({
         variables: {
@@ -54,7 +54,7 @@ const Projects = () => {
           authorName: authorName,
         },
       });
-      // if successful then fetch projects then set projects for component state
+      window.location.assign(`/projects/`);
     } catch (e) {
       console.error(e);
     }
@@ -94,7 +94,6 @@ const Projects = () => {
                     setGenreInput(e.target.value);
                   }}
                 >
-                  <option value="All">All</option>
                   <option value="Action/Adventure">Action/Adventure</option>
                   <option value="Fantasy">Fantasy</option>
                   <option value="Historical Fiction">Historical Fiction</option>
