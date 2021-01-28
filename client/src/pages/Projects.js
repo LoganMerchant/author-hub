@@ -30,6 +30,17 @@ const Projects = () => {
   // get user from token as they need to be signed in to use this page
   const { username: authorName, _id: currentUser } = Auth.getProfile().data;
 
+  // query for current user to access their projects and collaborations
+
+  const { loading, data } = useQuery(QUERY_GET_USER, {
+    variables: { _id: currentUser },
+  });
+
+  if (!loading) {
+    projects = data?.getUser.projects || [];
+    collaborations = data?.getUser.collaborations || [];
+  }
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     if (!title) {
@@ -50,16 +61,7 @@ const Projects = () => {
       console.error(e);
     }
   };
-  // query for current user to access their projects and collaborations
 
-  const { loading, data } = useQuery(QUERY_GET_USER, {
-    variables: { _id: currentUser },
-  });
-
-  if (!loading) {
-    projects = data?.getUser.projects || [];
-    collaborations = data?.getUser.collaborations || [];
-  }
   return (
     <>
       <Jumbotron fluid className="text-light bg-dark">
@@ -127,9 +129,6 @@ const Projects = () => {
       <Container>
         <h1>Projects</h1>
         <hr></hr>
-        {/* <UserProject projects={projects} />
-        projects will be value of useState
-        */}
         <CardColumns>
           {projects.map((myProjects) => {
             return (
