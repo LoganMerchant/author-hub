@@ -86,7 +86,7 @@ const typeDefs = gql`
       isPublic: Boolean
     ): Project
     deleteProject(_id: ID): Project
-    addApplicant(projectId: ID!): Project
+    addApplicant(projectId: ID!, userId: ID!): Project
     acceptCollaborator(projectId: ID!, userId: ID!): Project
     denyCollaborator(projectId: ID!, userId: ID!): Project
     addChapter(

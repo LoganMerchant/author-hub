@@ -126,16 +126,12 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in...");
     },
 
-    addApplicant: async (parent, { projectId }, context) => {
-      if (context.user) {
-        return await Project.findByIdAndUpdate(
-          { _id: projectId },
-          { $addToSet: { collabsToAddOrDenyList: context.user._id } },
-          { new: true, runValidators: true }
-        );
-      }
-
-      throw new AuthenticationError("You need to be logged in...");
+    addApplicant: async (parent, { projectId, userId }) => {
+      return await Project.findByIdAndUpdate(
+        { _id: projectId },
+        { $addToSet: { collabsToAddOrDenyList: userId } },
+        { new: true, runValidators: true }
+      );
     },
 
     // Accept a collaborator to project

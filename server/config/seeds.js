@@ -9,6 +9,7 @@ db.once("open", async () => {
       authorName: "TestTester", // I altered the model for chapter to include an author field.
       title: "test chapter",
       chapterText: "lorem ipsum dromem, yadahahahaha",
+      isPublic: true,
       comments: [
         {
           commentText: "This is a comment",

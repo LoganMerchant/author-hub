@@ -130,8 +130,8 @@ export const DELETE_PROJECT = gql`
 `;
 
 export const ADD_APPLICANT = gql`
-  mutation addApplicant($projectId: ID!) {
-    addApplicant(projectId: $projectId) {
+  mutation addApplicant($projectId: ID!, $userId: ID!) {
+    addApplicant(projectId: $projectId, userId: $userId) {
       _id
       title
       summary
