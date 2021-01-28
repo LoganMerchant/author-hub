@@ -127,6 +127,8 @@ export const QUERY_GET_CHAPTER = gql`
       comments {
         _id
         commentText
+        username
+        createdAt
       }
       commits {
         _id
