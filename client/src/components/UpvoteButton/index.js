@@ -21,7 +21,7 @@ const UpvoteButton = ({ projectId }) => {
 
     return (
         <div>
-            <button onClick={addUpvote()}>Like What You've Been Reading Press Here to Upvote</button>
+            <button onClick={addUpvote}>Like What You've Been Reading Press Here to Upvote</button>
         </div>
     );
 }

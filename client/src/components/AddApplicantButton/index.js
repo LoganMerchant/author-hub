@@ -21,7 +21,7 @@ const AddApplicantButton = ({ projectId }) => {
 
     return (
         <div>
-            <button className="float-center" onClick={applyCollaboration()}>Apply To Collaborate?</button>
+            <button className="float-center" onClick={applyCollaboration}>Apply To Collaborate?</button>
         </div>
     );
 }
