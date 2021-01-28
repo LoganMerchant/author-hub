@@ -40,6 +40,7 @@ const Projects = () => {
     projects = data?.getUser.projects || [];
     collaborations = data?.getUser.collaborations || [];
   }
+  console.log(projects);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
