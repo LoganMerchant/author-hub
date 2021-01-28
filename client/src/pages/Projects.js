@@ -64,12 +64,12 @@ const Projects = () => {
 
   return (
     <>
-      <Jumbotron fluid className="text-light bg-dark">
+      <Jumbotron fluid className="projectHero">
         <Container>
-          <h1>Create a Project</h1>
+          <h1 className="Header">Write Your Novel.</h1>
           <Form onSubmit={handleFormSubmit}>
             <Form.Row>
-              <Col xs={12} md={8}>
+              <Col xs={12} md={12}>
                 <Form.Control
                   name="title"
                   value={title}
@@ -117,12 +117,14 @@ const Projects = () => {
                   <option value="True Crime">True Crime</option>
                 </Form.Control>
               </Col>
-              <Col xs={12} md={4}>
-                <Button type="submit" variant="success" size="lg">
-                  Create Project
+              </Form.Row>
+              <Form.Row className="projectBtn" >
+              <Col xs={12} md={12}>
+                <Button className="projectButton" type="submit" align="center">
+                  Create
                 </Button>
               </Col>
-            </Form.Row>
+              </Form.Row>
           </Form>
         </Container>
       </Jumbotron>
