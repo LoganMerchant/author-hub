@@ -92,7 +92,17 @@ export const QUERY_GET_PROJECT_INFO = gql`
       chapters {
         _id
         title
+        chapterText
+        authorName
+        createdAt
         isPublic
+        commits {
+          _id
+          username
+          commitType
+          commitText
+          createdAt
+        }
       }
       collaborators {
         _id
