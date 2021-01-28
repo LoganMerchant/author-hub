@@ -34,7 +34,7 @@ function App() {
           <StoreProvider>
             <Navbar />
             <Switch>
-              <Route exact path="/:projectId" component={Home} />
+              <Route exact path="/" component={Home} />
               <Route exact path="/search" component={Search} />
               <Route exact path="/projects" component={Projects} />
               <Route

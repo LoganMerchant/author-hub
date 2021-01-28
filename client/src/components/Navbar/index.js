@@ -4,6 +4,7 @@ import { Navbar, Nav, Container, Modal, Tab } from "react-bootstrap";
 import SignUpForm from "../SignupForm";
 import LoginForm from "../LoginForm";
 import Auth from "../../utils/auth";
+import Projects from "../../pages/Projects";
 
 const AppNavbar = () => {
   // set modal display state
@@ -25,6 +26,9 @@ const AppNavbar = () => {
               {/* if user is logged in show logout */}
               {Auth.loggedIn() ? (
                 <>
+                  <Nav.Link as={Link} to="/projects">
+                    Projects/Collaborations
+                  </Nav.Link>
                   <Nav.Link onClick={Auth.logout}>Logout</Nav.Link>
                 </>
               ) : (
