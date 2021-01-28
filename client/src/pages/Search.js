@@ -43,9 +43,9 @@ const SearchBooks = () => {
 
   return (
     <>
-      <Jumbotron fluid className="text-light bg-dark">
+      <Jumbotron fluid className="searchHero">
         <Container>
-          <h1>Search for Books!</h1>
+          <h1 className="searchHeader">Search for Books!</h1>
           <Form onSubmit={handleFormSubmit}>
             <Form.Row>
               <Col xs={12} md={8}>
@@ -100,7 +100,7 @@ const SearchBooks = () => {
       </Jumbotron>
 
       <Container>
-        <h2>
+        <h2 className="searchResults">
           {searchedBooks.length
             ? `Viewing ${searchedBooks.length} results:`
             : "Search for a book to begin"}

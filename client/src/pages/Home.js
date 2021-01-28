@@ -16,10 +16,11 @@ const Home = () => {
 
   return (
     <>
-      <Jumbotron fluid className="text-light bg-dark center">
-        <h1 align="center">Top Projects</h1>
+      <Jumbotron fluid className="homeHero">
+        <h1 align="center" className="homeHeader">Share Your Stories.</h1>
       </Jumbotron>
       <Container>
+        <h2 className="h2Header">Discover the most popular writing projects on AuthorHub!</h2>
         <CardColumns>
           {publicProjects.map((topProjects) => {
             return (
