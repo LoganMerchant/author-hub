@@ -7,12 +7,12 @@ db.once("open", async () => {
   const chapters = await Chapter.insertMany([
     {
       authorName: "TestTester", // I altered the model for chapter to include an author field.
-      title: "test chapter",
-      chapterText: "lorem ipsum dromem, yadahahahaha",
+      title: "Test Chapter",
+      chapterText: "lorem ipsum dromem, yadahahahaha, asdfljl;jsadf, asdl;fkjqer, asd;fadsfa, asdl;fjasdleqdsfxzv sadl;fjadsfl;kajxzc,adf sad;fsadflk,sadf sadkfjasdl;fk, sadkfljsadfl; ,sadf lksa;dfjdsa,s dlkdsajqoer,xzcpoj, sadkf;saljfoqwerl, asldk;fjopqwerlm,fdsvlkjdsafoia, asdlfkzxl;c,fopwerk",
       isPublic: true,
       comments: [
         {
-          commentText: "This is a comment",
+          commentText: "This is a comment, hey everyone congrats on the projects and graduating",
           username: "theotheruser",
           reactions: [
             {
@@ -32,12 +32,12 @@ db.once("open", async () => {
     },
     {
       authorName: "theotheruser",
-      title: "test chapter2",
-      chapterText: "lorem ipsum dromem, yadahahahaha",
+      title: "Test Chapter 2",
+      chapterText: "lorem ipsum dromem, yadahahahaha you found me ;->. Legend of Zelda stuff is in here yeah.",
       isPublic: true,
       comments: [
         {
-          commentText: "This is a comment 2",
+          commentText: "This is a comment 2 - does anyone read these, if you are please give a thumbs up on the screen.",
           username: "TestTester",
           reactions: [
             {
@@ -57,8 +57,8 @@ db.once("open", async () => {
     },
     {
       authorName: "Testy", // I altered the model for chapter to include an author field.
-      title: "test chapter3",
-      chapterText: "lorem ipsum dromem, yadahahahaha",
+      title: "Test Chapter 3",
+      chapterText: "lorem ipsum dromem, yadahahahaha, - you know if I write random stuff here, someone is bound to read it, and if someone reads it that means they will potentially smile at the stupid stuff I write, if I get a smile, that means I've helped out making someones day better.",
       comments: [
         {
           commentText: "This is a comment3",
@@ -85,17 +85,17 @@ db.once("open", async () => {
 
   const projects = await Project.insertMany([
     {
-      title: "Test Title",
-      summary: "This is a test",
-      genre: "test",
+      title: "Test Title - The Reckoning",
+      summary: "This is a test, no really that is all this project is.",
+      genre: "Action/Adventure",
       authorName: "TestTester",
       isPublic: true,
       chapters: [chapters[0]],
     },
     {
-      title: "Test Title 2",
-      summary: "This is a test 2",
-      genre: "test",
+      title: "Test Title 2 - The Electric Boogaloo",
+      summary: "This is a test 2, yup just another test, you know that to be true.",
+      genre: "Fantasy",
       authorName: "theotheruser",
       isPublic: true,
       chapters: [chapters[1]],
@@ -121,9 +121,9 @@ db.once("open", async () => {
 
   newproject = await Project.insertMany([
     {
-      title: "Test Title3",
-      summary: "This is a test3",
-      genre: "test",
+      title: "Test Title 3 - The Story of my Life",
+      summary: "This is a test 3, more tests, more stuff to do.",
+      genre: "Biography",
       authorName: "Testy",
       isPublic: true,
       chapters: [chapters[2]],
