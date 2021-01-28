@@ -6,6 +6,7 @@ import Auth from '../../utils/auth';
 const UpvoteButton = ({ projectId }) => {
     const [upvoteProject] = useMutation(UPVOTE_PROJECT);
     const userId = Auth.getProfile()._id;
+
     const addUpvote = async event => {
         try {
             await upvoteProject({

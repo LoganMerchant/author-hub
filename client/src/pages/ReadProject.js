@@ -42,7 +42,6 @@ const ReadProject = () => {
                 <h3 className="text-center border-bottom">Summary</h3>
                 <p className="border-bottom">{project.summary}</p>
                 <ReadChapters chapters={chapters} />
-
                 <h3 className="text-center">This Project Currently has: {project.upvoteCount} Upvotes</h3>
                 {Auth.loggedIn() && <UpvoteButton projectId={projectId} />}
                 <ReadCollaborators collaborators={collaborators} />
