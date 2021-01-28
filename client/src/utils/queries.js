@@ -93,6 +93,7 @@ export const QUERY_GET_PROJECT_INFO = gql`
       chapters {
         _id
         title
+        isPublic
       }
       collaborators {
         _id
