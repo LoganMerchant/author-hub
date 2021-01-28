@@ -119,6 +119,28 @@ p {
   font-size: 20px;
 }
 
+/* project page styling */
+.projectHero {
+  background-image: url(./project.png)
+}
+
+.Header {
+  font-size: 50px;
+  font-weight: bold;
+  color: var(--dark);
+  text-align: center;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.projectBtn {
+  padding: 15px 0px 0px 0px;
+  text-align: center;
+}
+
+.projectButton {
+  font-size: 25px
+}
+
 /* signup and login styling */
 .formLabel {
   font-size: 22px;
@@ -134,14 +156,20 @@ p {
 .searchHeader {
   color: var(--dark);
   padding: 10px 0px 10px;
+  text-align: center;
 }
 
 .Form.Row {
   padding: 10px;
+  text-align: center;
 }
 
 .searchBtn {
   padding: 10px 0px;
+}
+
+.searchButton {
+  font-size: 23px;
 }
 
 .searchResults {
