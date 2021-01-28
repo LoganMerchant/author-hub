@@ -141,6 +141,8 @@ export const QUERY_GET_CHAPTER = gql`
       }
       commits {
         _id
+        username
+        createdAt
         commitText
         commitType
       }
