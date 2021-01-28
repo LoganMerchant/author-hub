@@ -45,7 +45,7 @@ const SearchBooks = () => {
     <>
       <Jumbotron fluid className="searchHero">
         <Container>
-          <h1>Search for Books!</h1>
+          <h1 class="searchHeader">Find your next read!</h1>
           <Form onSubmit={handleFormSubmit}>
             <Form.Row>
               <Col xs={12} md={8}>
@@ -88,11 +88,6 @@ const SearchBooks = () => {
                   <option value="True Crime">True Crime</option>
                   <option value="test">test</option>
                 </Form.Control>
-              </Col>
-              <Col xs={12} md={4}>
-                <Button type="submit" variant="success" size="lg">
-                  Submit Search
-                </Button>
               </Col>
             </Form.Row>
             <Form.Row className="searchBtn">
