@@ -1,13 +1,5 @@
-import React, { useState } from "react";
-import {
-  Jumbotron,
-  Container,
-  Col,
-  Form,
-  Button,
-  Card,
-  CardColumns,
-} from "react-bootstrap";
+import React from "react";
+import { Jumbotron, Container, Card, CardColumns } from "react-bootstrap";
 
 import { Link } from "react-router-dom";
 import { QUERY_GET_PROJECTS_BY_UPVOTE } from "../utils/queries";
@@ -19,7 +11,6 @@ const Home = () => {
   const { loading, data } = useQuery(QUERY_GET_PROJECTS_BY_UPVOTE);
 
   if (!loading) {
-    // console.log(data);
     publicProjects = data?.getProjectsByUpvote || [];
   }
 
@@ -41,6 +32,14 @@ const Home = () => {
                   </Card.Title>
                   <p className="small">Genre: {topProjects.genre}</p>
                   <Card.Text>{topProjects.summary}</Card.Text>
+                  <Card.Footer>
+                    <h5>Collaborators:</h5>
+                    <ul>
+                      {topProjects.collaborators.map((collaborators) => {
+                        return <li>{collaborators.username}</li>;
+                      })}
+                    </ul>
+                  </Card.Footer>
                 </Card.Body>
               </Card>
             );
