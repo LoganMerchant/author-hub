@@ -24,6 +24,7 @@ const resolvers = {
         isPublic: true,
       })
         .sort({ upvotes: -1 })
+        .limit(10)
         .populate("chapters")
         .populate("collaborators");
     },
