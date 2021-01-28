@@ -14,8 +14,6 @@ import { Link } from "react-router-dom";
 import { QUERY_GET_USER } from "../utils/queries";
 import { ADD_PROJECT } from "../utils/mutations";
 import { useQuery } from "@apollo/react-hooks";
-// import UserProject from "../components/UserProject";
-// import UserCollaborations from "../components/UserCollaborations";
 import Auth from "../utils/auth";
 
 const Projects = () => {
@@ -117,14 +115,14 @@ const Projects = () => {
                   <option value="True Crime">True Crime</option>
                 </Form.Control>
               </Col>
-              </Form.Row>
-              <Form.Row className="projectBtn" >
+            </Form.Row>
+            <Form.Row className="projectBtn">
               <Col xs={12} md={12}>
                 <Button className="projectButton" type="submit" align="center">
                   Create
                 </Button>
               </Col>
-              </Form.Row>
+            </Form.Row>
           </Form>
         </Container>
       </Jumbotron>
@@ -159,7 +157,7 @@ const Projects = () => {
                 <Card.Body>
                   <Card.Title>
                     <Link to={`/editproject/${myCollaborations._id}`}>
-                      {myCollaborations.title}
+                      {myCollaborations.title} by {myCollaborations.username}
                     </Link>
                   </Card.Title>
                   <p className="small">Genre: {myCollaborations.genre}</p>

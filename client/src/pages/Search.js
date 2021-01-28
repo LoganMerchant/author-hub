@@ -89,14 +89,14 @@ const SearchBooks = () => {
                   <option value="test">test</option>
                 </Form.Control>
               </Col>
-              </Form.Row>
-              <Form.Row className="searchBtn" align="center">
+            </Form.Row>
+            <Form.Row className="searchBtn" align="center">
               <Col xs={12} md={12}>
                 <Button type="submit" className="searchButton">
                   Submit
                 </Button>
               </Col>
-              </Form.Row>
+            </Form.Row>
           </Form>
         </Container>
       </Jumbotron>
@@ -113,7 +113,9 @@ const SearchBooks = () => {
               <Card key={book._id} border="dark">
                 <Card.Body>
                   <Card.Title>
-                    <Link to={`/readproject/${book._id}`}>{book.title}</Link>
+                    <Link to={`/readproject/${book._id}`}>
+                      {book.title} by {book.authorName}
+                    </Link>
                   </Card.Title>
                   <p className="small">Author: {book.authorName}</p>
                   <Card.Text>{book.summary}</Card.Text>
