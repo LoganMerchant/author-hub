@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { Redirect, useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 import spinner from "../assets/spinner.gif";
 import { useStoreContext } from "../utils/GlobalState";
@@ -15,12 +16,12 @@ import IsPublicToggleButton from "../components/IsPublicToggleButton";
 import TableOfContents from "../components/TableOfContents";
 import { UPDATE_CURRENT_PROJECT, UPDATE_CHAPTERS } from "../utils/actions";
 import { QUERY_GET_PROJECT_INFO } from "../utils/queries";
-import { EDIT_PROJECT_INFO } from "../utils/mutations";
+import { EDIT_PROJECT_INFO, ADD_CHAPTER } from "../utils/mutations";
 
 const EditProject = () => {
   // Use the global state to get currentProject
   const [state, dispatch] = useStoreContext();
-  const { currentProject, chapters } = state;
+  const { currentProject } = state;
 
   // Pull projectId from url
   const { projectId } = useParams();
@@ -30,12 +31,37 @@ const EditProject = () => {
     variables: { _id: projectId },
   });
   const [editProjectInfo] = useMutation(EDIT_PROJECT_INFO);
+  const [addChapter] = useMutation(ADD_CHAPTER);
 
   // Variables for local state
   const [updatedTitle, setUpdatedTitle] = useState("");
   const [updatedGenre, setUpdatedGenre] = useState("");
   const [updatedSummary, setUpdatedSummary] = useState("");
   const [updatedIsPublic, setUpdatedIsPublic] = useState(false);
+
+  // Variables & functions for modal (taken from docs)
+  const [show, setShow] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalChapterText, setModalChapterText] = useState("");
+
+  const handleShow = () => {
+    setShow(true);
+  };
+
+  const handleClose = () => {
+    setShow(false);
+  };
+
+  const handleModalChange = (evt) => {
+    const name = evt.target.id;
+    const value = evt.target.value;
+
+    if (name === "modalTitle") {
+      setModalTitle(value);
+    } else {
+      setModalChapterText(value);
+    }
+  };
 
   // Determines if the server has returned project info
   useEffect(() => {
@@ -75,6 +101,21 @@ const EditProject = () => {
     }
   };
 
+  const handleAddChapter = async () => {
+    await addChapter({
+      variables: {
+        projectId,
+        title: modalTitle,
+        chapterText: modalChapterText,
+        authorName: currentProject.authorName,
+      },
+    });
+
+    setShow(false);
+
+    window.location.reload();
+  };
+
   // Submits changes to the server via mutation
   const submitChanges = async () => {
     const { data } = await editProjectInfo({
@@ -92,16 +133,64 @@ const EditProject = () => {
       type: UPDATE_CURRENT_PROJECT,
       currentProject: newProject,
     });
-
-    window.location.assign(`/`);
   };
 
   return (
     <Container fluid>
       <Row>
+        <Link to={`/projects`} style={{ color: "white" }}>
+          <Button>Back to Your Projects</Button>
+        </Link>
+      </Row>
+      <Row style={{ justifyContent: "center" }}>
+        <h1 style={{ borderBottom: "solid" }}>
+          Editing Project: {currentProject.title}
+        </h1>
+      </Row>
+      <Row style={{ justifyContent: "center" }}>
+        <p>By: {currentProject.authorName}</p>
+      </Row>
+      <Row>
         {/* Table of Contents */}
         <Col sm={12} md={2}>
           <TableOfContents />
+          <Button variant="warning" onClick={handleShow}>
+            Add Chapter
+          </Button>
+
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Add Chapter to {currentProject.title}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Group controlId="modalTitle">
+                  <Form.Label>Title:</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={1}
+                    onChange={handleModalChange}
+                  ></Form.Control>
+                </Form.Group>
+                <Form.Group controlId="modalChapterText">
+                  <Form.Label>Content:</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={20}
+                    onChange={handleModalChange}
+                  ></Form.Control>
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="danger" onClick={handleClose}>
+                Close
+              </Button>
+              <Button variant="info" onClick={handleAddChapter}>
+                Add Chapter!
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </Col>
 
         {/* Edit Project */}

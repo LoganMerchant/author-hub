@@ -4,17 +4,16 @@ import Button from "react-bootstrap/Button";
 import { useMutation } from "@apollo/react-hooks";
 
 import { ADD_COMMIT } from "../../utils/mutations";
-import { UPDATE_CURRENT_CHAPTER } from "../../utils/actions";
 import { useStoreContext } from "../../utils/GlobalState";
 
 const CommitForm = ({ updatedTitle, updatedText, updatedIsPublic }) => {
   // Gets currentChapter from global store
-  const [state, dispatch] = useStoreContext();
+  const [state] = useStoreContext();
   const { currentChapter } = state;
 
   // Defines local state
   const [commitText, setCommitText] = useState("");
-  const [commitType, setCommitType] = useState("");
+  const [commitType, setCommitType] = useState("Option 1");
 
   // Defines variable for calling the mutation
   const [addCommit] = useMutation(ADD_COMMIT);
@@ -34,11 +33,9 @@ const CommitForm = ({ updatedTitle, updatedText, updatedIsPublic }) => {
   };
 
   // Function to run the mutation
-  const submitCommit = async (evt) => {
-    evt.preventDefault();
-
+  const submitCommit = async () => {
     // Run the mutation and get the updated chapter back
-    const response = await addCommit({
+    await addCommit({
       variables: {
         chapterId: currentChapter._id,
         title: updatedTitle,
@@ -49,13 +46,8 @@ const CommitForm = ({ updatedTitle, updatedText, updatedIsPublic }) => {
       },
     });
 
-    // Update the global store with the updated chapter
-    if (response) {
-      dispatch({
-        type: UPDATE_CURRENT_CHAPTER,
-        currentChapter: response,
-      });
-    }
+    document.querySelector("#formCommitText").value = "";
+    document.querySelector("#formCommitType").value = "Option 1";
   };
 
   // JSX
@@ -68,7 +60,12 @@ const CommitForm = ({ updatedTitle, updatedText, updatedIsPublic }) => {
 
       <Form.Group controlId="formCommitType">
         <Form.Label>Commit Type</Form.Label>
-        <Form.Control as="select" name="commit-type" onChange={handleChange}>
+        <Form.Control
+          as="select"
+          name="commit-type"
+          defaultValue="Option 1"
+          onChange={handleChange}
+        >
           <option>Option 1</option>
           <option>Option 2</option>
           <option>Option 3</option>
