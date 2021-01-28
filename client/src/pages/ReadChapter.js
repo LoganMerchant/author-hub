@@ -15,7 +15,7 @@ const ReadChapter = () => {
     let chapter;
     //Queries
     const { loading, data } = useQuery(QUERY_GET_CHAPTER, {
-        variables: { id: chapterId }
+        variables: { _id: chapterId }
     });
 
     if (!loading) {
