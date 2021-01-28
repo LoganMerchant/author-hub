@@ -34,6 +34,7 @@ db.once("open", async () => {
       authorName: "theotheruser",
       title: "test chapter2",
       chapterText: "lorem ipsum dromem, yadahahahaha",
+      isPublic: true,
       comments: [
         {
           commentText: "This is a comment 2",
@@ -126,12 +127,7 @@ db.once("open", async () => {
       authorName: "Testy",
       isPublic: true,
       chapters: [chapters[2]],
-      collabsToAddOrDenyList: [users[0]._id, users[1]._id],
-      upvotes: [
-        {
-          userId: users[0]._id,
-        },
-      ],
+      collabsToAddOrDenyList: [users[0]._id, users[1]._id]
     },
   ]);
   newusers = await User.insertMany([
