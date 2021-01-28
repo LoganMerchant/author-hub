@@ -11,6 +11,22 @@
   --dark: #4E1D04;
 }
 
+/* navbar styling */
+.navbar {
+  background-color: var(--light);
+  background-image: url(./logo.png);
+  background-repeat: no-repeat;
+  height: 80px;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--primary);
+}
+
+.ml-auto {
+  padding: 0px 0px 0px 20px;
+  color: var(--primary);
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -20,6 +36,24 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+/* homepage styling */
+.homeHeader {
+  background-image: url(./home.png);
+}
+
+.homeH1 {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: var(--dark);
+  font-size: 100px;
+  padding: 20px;
+  text-align: center;
+}
+
+.homeBody {
+  color: var(--dark);
+  font-size: 25px;
 }
 
 h1,
@@ -62,36 +96,71 @@ p {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.container {
-  height: 10rem;
+.Container {
+  background-color: var(--primary);
 }
 
-button {
+.formContainer {
+  background-color: var(--primary);
+}
+
+.btn {
   font-size: 1rem;
   text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
   padding: 0.25rem 1rem;
-  border-radius: 1rem;
+  border-radius: .25rem;
   border: none;
   outline: none;
   margin: 0 1px;
-  background-color: var(--light);
+  background-color: var(--tertiary);
   color: var(--dark);
+  font-size: 20px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* signup and login styling */
+.formLabel {
+  font-size: 22px;
+  color: var(--primary);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.App-link {
-  color: #61dafb;
+/* Search styling */
+.searchHero {
+  background-image: url(./search.png);
 }
+
+.searchHeader {
+  color: var(--dark);
+  padding: 10px 0px 10px;
+}
+
+.Form.Row {
+  padding: 10px;
+}
+
+.searchBtn {
+  padding: 10px 0px;
+}
+
+.searchResults {
+  font-size: 40px;
+  color: var(--dark);
+  text-align: center;
+}
+
+.searchInput {
+  color: var(--primary);
+  font-size: 15px;
+  padding: 10px;
+}
+
+.genreInput {
+  color: var(--secondary);
+}
+
+/* login and signup styling */
+
 
 @keyframes App-logo-spin {
   from {
@@ -102,17 +171,3 @@ button {
   }
 }
 
-
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
