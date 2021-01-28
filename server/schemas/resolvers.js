@@ -185,7 +185,11 @@ const resolvers = {
       context
     ) => {
       if (context.user) {
-        const newChapter = await Chapter.create(title, chapterText, authorName);
+        const newChapter = await Chapter.create({
+          title,
+          chapterText,
+          authorName,
+        });
 
         await Project.findByIdAndUpdate(
           { _id: projectId },
