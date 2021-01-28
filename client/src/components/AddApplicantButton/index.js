@@ -14,6 +14,7 @@ const AddApplicantButton = ({ projectId }) => {
             await addApplicant({
                 variables: { projectId: projectId, userId: userId }
             });
+            window.alert("Your username has been added to this projects collaborators applicant list, please wait for the current author or collaborators to accept your collaboration request.");
         } catch (e) {
             console.error(e);
         }
