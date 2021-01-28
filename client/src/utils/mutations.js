@@ -130,8 +130,8 @@ export const DELETE_PROJECT = gql`
 `;
 
 export const ADD_APPLICANT = gql`
-  mutation addApplicant($projectId: ID!) {
-    addApplicant(projectId: $projectId) {
+  mutation addApplicant($projectId: ID!, $userId: ID!) {
+    addApplicant(projectId: $projectId, userId: $userId) {
       _id
       title
       summary
@@ -247,8 +247,8 @@ export const ADD_CHAPTER = gql`
 `;
 
 export const ADD_COMMENT = gql`
-  mutation addComment($chapterId: ID!, $commentText: String!) {
-    addComment(chapterId: $chapterId, commentText: $commentText) {
+  mutation addComment($chapterId: ID!, $commentText: String!, $username: String!) {
+    addComment(chapterId: $chapterId, commentText: $commentText, username: $username) {
       _id
       title
       chapterText
@@ -313,8 +313,8 @@ export const ADD_COMMIT = gql`
 `;
 
 export const UPVOTE_PROJECT = gql`
-  mutation upvoteProject($projectId: ID!) {
-    upvoteProject(projectId: $projectId) {
+  mutation upvoteProject($projectId: ID!, $userId: ID!) {
+    upvoteProject(projectId: $projectId, userId: $userId) {
       _id
       title
       summary

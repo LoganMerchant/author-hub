@@ -2,17 +2,12 @@ import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { ADD_COMMENT } from '../../utils/mutations';
 import Auth from '../../utils/auth';
-import { useStoreContext } from "../../utils/GlobalState";
-import { useParams } from "react-router-dom";
 
-const CommentForm = () => {
+const CommentForm = ({ chapterId }) => {
     //state and variables gained through alternate means other than quieries
-    const { id } = useParams;
-    const chapterId = id;
     const [commentText, setText] = useState('');
     const [characterCount, setCharacterCount] = useState(0);
     const username = Auth.getProfile().data.username;
-
     //Mutations
     const [addComment, { error }] = useMutation(ADD_COMMENT);
 
@@ -39,6 +34,7 @@ const CommentForm = () => {
             // clear form value
             setText('');
             setCharacterCount(0);
+            window.location.assign(`/readchapter/${chapterId}`);
         } catch (e) {
             console.error(e);
         }

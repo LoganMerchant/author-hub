@@ -87,7 +87,7 @@ const typeDefs = gql`
       isPublic: Boolean
     ): Project
     deleteProject(_id: ID): Project
-    addApplicant(projectId: ID!): Project
+    addApplicant(projectId: ID!, userId: ID!): Project
     acceptCollaborator(projectId: ID!, userId: ID!): Project
     denyCollaborator(projectId: ID!, userId: ID!): Project
     addChapter(
@@ -96,7 +96,7 @@ const typeDefs = gql`
       chapterText: String!
       authorName: String!
     ): Chapter
-    addComment(chapterId: ID!, commentText: String!): Chapter
+    addComment(chapterId: ID!, commentText: String!, username: String!): Chapter
     addCommit(
       chapterId: ID!
       title: String!
@@ -105,7 +105,7 @@ const typeDefs = gql`
       commitText: String!
       commitType: String!
     ): Chapter
-    upvoteProject(projectId: ID!): Project
+    upvoteProject(projectId: ID!, userId: ID!): Project
   }
 `;
 
