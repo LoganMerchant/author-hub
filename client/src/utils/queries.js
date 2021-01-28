@@ -9,6 +9,7 @@ export const QUERY_GET_USER = gql`
       projects {
         _id
         title
+        genre
       }
       collaborations {
         _id
@@ -27,6 +28,7 @@ export const QUERY_GET_USERS = gql`
       projects {
         _id
         title
+        genre
       }
       collaborations {
         _id
