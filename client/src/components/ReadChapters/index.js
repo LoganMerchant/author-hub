@@ -6,7 +6,7 @@ const ReadChapter = ({ chapters }) => {
         <div>
             {chapters.length > 0 &&
                 <div>
-                    <h3 className="text-center">Public Chapters For Your Enjoyment</h3>
+                    <h3 className="header">Public Chapters For Your Enjoyment</h3>
                     <ul>
                         {chapters.map(chapter => (
                             <li>

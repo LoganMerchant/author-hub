@@ -62,16 +62,7 @@ p {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-button {
-  font-size: 1rem;
-  text-decoration: none;
-  padding: 0.25rem 1rem;
-  border-radius: 1rem;
-  border: none;
-  outline: none;
-  margin: 0 1px;
-  background-color: var(--light);
-}
+
 
 .App-header {
   background-color: #282c34;

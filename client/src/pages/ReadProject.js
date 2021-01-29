@@ -37,12 +37,12 @@ const ReadProject = () => {
     if (!loading) {
         return (
             <div>
-                <h1 className="text-center">{project.title}</h1>
-                <h2 className="text-center border-bottom">By: {project.authorName}</h2>
-                <h3 className="text-center border-bottom">Summary</h3>
-                <p className="border-bottom">{project.summary}</p>
+                <h1 className="Header">{project.title}</h1>
+                <h2 className="readHeader">By: {project.authorName}</h2>
+                <h3 className="summary">Summary</h3>
+                <p className="readSummary">{project.summary}</p>
                 <ReadChapters chapters={chapters} />
-                <h3 className="text-center">This Project Currently has: {project.upvoteCount} Upvotes</h3>
+                <h3 className="chapterHeader">This Project Currently has: {project.upvoteCount} Upvotes</h3>
                 {Auth.loggedIn() && <UpvoteButton projectId={projectId} />}
                 <ReadCollaborators collaborators={collaborators} />
                 {Auth.loggedIn() && <AddApplicantButton projectId={projectId} />}

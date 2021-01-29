@@ -129,14 +129,14 @@ const Projects = () => {
         </Container>
       </Jumbotron>
       <Container>
-        <h1>Projects</h1>
+        <h1 className="Header">Projects</h1>
         <hr></hr>
-        <CardColumns>
+        <CardColumns className="title">
           {projects.map((myProjects) => {
             return (
-              <Card key={myProjects._id} border="dark">
-                <Card.Body>
-                  <Card.Title>
+              <Card key={myProjects._id} className="projectCard">
+                <Card.Body className="cardTitle">
+                  <Card.Title >
                     <Link to={`/editproject/${myProjects._id}`}>
                       {myProjects.title}
                     </Link>

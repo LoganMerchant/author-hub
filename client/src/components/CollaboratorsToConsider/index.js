@@ -48,7 +48,7 @@ const CollaboratorsToConsider = ({ projectId }) => {
       {/* If there are any collaborators waiting to apply... */}
       {currentProject.collabsToAddOrDenyList !== undefined ? (
         <ListGroup>
-          <ListGroup.Item as="h4">Collaborators to Consider:</ListGroup.Item>
+          <ListGroup.Item className="collaborators" as="h4">Collaborators to Consider:</ListGroup.Item>
           {currentProject.collabsToAddOrDenyList.map((collaborator) => (
             <ListGroup.Item key={collaborator._id}>
               <p>{collaborator.username}</p>

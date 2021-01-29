@@ -36,8 +36,8 @@ const TableOfContents = () => {
   // if (loading) {
   //   return <div>Loading...</div>;
   // }
-
   return (
+
     <ListGroup>
       {/* Header of ToC */}
       <ListGroup.Item>

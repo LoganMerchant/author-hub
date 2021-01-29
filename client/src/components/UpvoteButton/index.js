@@ -20,8 +20,8 @@ const UpvoteButton = ({ projectId }) => {
     }
 
     return (
-        <div>
-            <button onClick={addUpvote}>Like What You've Been Reading Press Here to Upvote</button>
+        <div className="upvoteButtonDiv">
+            <button className="upvoteButton" onClick={addUpvote}>Like What You've Been Reading Press Here to Upvote</button>
         </div>
     );
 }
