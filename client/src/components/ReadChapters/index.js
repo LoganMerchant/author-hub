@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-const ReadChapter = ({ chapters }) => {
+import { useStoreContext } from "../../utils/GlobalState";
+const ReadChapter = () => {
+    const [state] = useStoreContext();
+    const { chapters } = state;
 
     return (
         <div>
