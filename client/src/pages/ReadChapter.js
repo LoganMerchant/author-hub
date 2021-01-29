@@ -13,7 +13,7 @@ import Auth from '../utils/auth';
 const ReadChapter = () => {
     //Variables gained through alternate means
     const [state, dispatch] = useStoreContext();
-    const { currentChapter, currentProject } = state;
+    const { currentChapter } = state;
     const { chapterId } = useParams();
     //Queries
     const { loading, data: chapterInfo } = useQuery(QUERY_GET_CHAPTER, {
@@ -51,12 +51,12 @@ const ReadChapter = () => {
 
                 {Auth.loggedIn() && (
                     <div>
-                        <CommentForm chapterId={chapterId} />
+                        <CommentForm />
                     </div>
                 )
                 }
                 <div id="comments-area">
-                    {currentChapter.comments && <CommentList comments={currentChapter.comments} />}
+                    {currentChapter.comments && <CommentList />}
                 </div>
             </div>
         );
