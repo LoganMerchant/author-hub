@@ -17,7 +17,7 @@ const TableOfContents = () => {
             {chapters &&
                 chapters.filter(chapter => chapter.isPublic).map((chapter, index) => (
                     <div key={chapter._id}>
-                        <Link to={`/editchapter/${chapter._id}`}>
+                        <Link to={`/readchapter/${chapter._id}`}>
                             {/* If the chapter is public */}
                             <ListGroup.Item action>
                                 {/* Highlights the currentChapter */}

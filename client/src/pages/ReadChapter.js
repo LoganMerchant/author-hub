@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from '@apollo/react-hooks';
 import { QUERY_GET_CHAPTER } from "../utils/queries";
-//import PublicTableOfContents from '../components/PublicTableOfContents';
+import PublicTableOfContents from '../components/PublicTableOfContents';
 import { useStoreContext } from "../utils/GlobalState";
 import { UPDATE_CURRENT_CHAPTER } from "../utils/actions";
 import CommentList from '../components/CommentList';
@@ -40,10 +40,13 @@ const ReadChapter = () => {
     if (!loading) {
         return (
             <div>
-                <div className="row">
 
-                    <div className='col-9'>
-                        <h1 className='text-center'>{currentChapter.title}</h1>
+                <h1 className='text-center'>{currentChapter.title}</h1>
+                <div className="row">
+                    <div className="col-2">
+                        <PublicTableOfContents />
+                    </div>
+                    <div className="col-10">
                         <h2>Chapter Contents:</h2>
                         <p className='text-left'>{currentChapter.chapterText}</p>
                     </div>
