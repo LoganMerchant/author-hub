@@ -13,9 +13,9 @@ const Collaborators = () => {
       {/* If there are any collaborators on the project... */}
       {currentProject.collaborators !== undefined ? (
         <ListGroup>
-          <ListGroup.Item as="h4">Collaborators:</ListGroup.Item>
+          <ListGroup.Item as="h4" className="collaborators">Collaborators:</ListGroup.Item>
           {currentProject.collaborators.map((collaborator) => (
-            <ListGroup.Item key={collaborator._id}>
+            <ListGroup.Item className="collaborators" key={collaborator._id}>
               <p>{collaborator.username}</p>
             </ListGroup.Item>
           ))}

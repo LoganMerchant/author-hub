@@ -142,13 +142,12 @@ p {
 }
 
 .projectCard {
-  background-color: var(--light);
-  border: 1px;
-  border-color: var(--dark);
-  opacity: 0.75;
+  background-color: white;
   text-align: center;
-  border: 1px solid var(--secondary);
+  border: 4px solid var(--secondary);
   font-size: 20px;
+  border-radius: 5px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .title {
@@ -200,6 +199,33 @@ p {
 
 .genreInput {
   color: var(--secondary);
+}
+
+/* Edit Projects Page */
+.editContainer {
+  padding: 20px;
+}
+
+.editFormLabel {
+  font-size: 25px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: var(--dark);
+}
+
+.table {
+  
+  opacity: 0.5px;
+  border: solid 3px var(--tertiary);
+  color: var(--dark);
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  text-align: center;
+}
+
+.collaborators {
+  background-color: var(--secondary);
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: var(--light);
+  border: solid 2px var(--dark);
 }
 
 /* footer styling */

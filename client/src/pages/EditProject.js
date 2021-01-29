@@ -97,7 +97,7 @@ const EditProject = () => {
   };
 
   return (
-    <Container fluid>
+    <Container fluid className="editContainer">
       <Row>
         {/* Table of Contents */}
         <Col sm={12} md={2}>
@@ -122,7 +122,7 @@ const EditProject = () => {
               <Form.Row>
                 <Col sm={10} md={10}>
                   <Form.Group controlId="projectTitle">
-                    <Form.Label>Title:</Form.Label>
+                    <Form.Label className="editFormLabel">Title:</Form.Label>
                     <Form.Control
                       as="textarea"
                       rows={1}
@@ -134,7 +134,7 @@ const EditProject = () => {
 
                 <Col sm={2}>
                   <Form.Group controlId="projectGenre">
-                    <Form.Label>Genre:</Form.Label>
+                    <Form.Label className="editFormLabel">Genre:</Form.Label>
                     <Form.Control
                       as="select"
                       defaultValue={currentProject.genre}
@@ -152,7 +152,7 @@ const EditProject = () => {
               </Form.Row>
 
               <Form.Group controlId="projectSummary">
-                <Form.Label>Summary:</Form.Label>
+                <Form.Label className="editFormLabel">Summary:</Form.Label>
                 <Form.Control
                   as="textarea"
                   rows={10}

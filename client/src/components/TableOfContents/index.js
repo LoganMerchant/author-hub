@@ -19,8 +19,8 @@ const TableOfContents = () => {
   return (
       <ListGroup>
           {/* Header of ToC */}
-            <ListGroup.Item>
-              <h2>Table of Contents</h2>
+            <ListGroup.Item className="table">
+              <h2 >Table of Contents</h2>
             </ListGroup.Item>
         {chapters.map((chapter) =>
           // If the chapter is set to be public....
