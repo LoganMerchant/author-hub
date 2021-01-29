@@ -150,6 +150,12 @@ const resolvers = {
           .populate("collaborators")
           .populate("collabsToAddOrDenyList");
 
+        await User.findByIdAndUpdate(
+          { _id: userId },
+          { $addToSet: { collaborations: projectId } },
+          { runValidators: true }
+        );
+
         return project;
       }
 
