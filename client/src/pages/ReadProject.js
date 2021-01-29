@@ -14,7 +14,6 @@ const ReadProject = () => {
     const [state, dispatch] = useStoreContext();
     const { currentProject, chapters } = state;
     const { projectId } = useParams();
-    const [success, setSuccess] = useState(false);
     const [pagePopulationData, setPopulationData] = useState({
         project: {},
         collaborators: [],
@@ -75,6 +74,3 @@ const ReadProject = () => {
 }
 
 export default ReadProject;
-
-//                  {Auth.loggedIn() && <UpvoteButton projectId={projectId} />}
-//                {Auth.loggedIn() && <AddApplicantButton projectId={projectId} />}

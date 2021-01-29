@@ -3,25 +3,34 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from '@apollo/react-hooks';
 import { QUERY_GET_CHAPTER } from "../utils/queries";
-//import TableOfContents from '../components/TableOfContents';
+//import PublicTableOfContents from '../components/PublicTableOfContents';
+import { useStoreContext } from "../utils/GlobalState";
+import { UPDATE_CURRENT_CHAPTER } from "../utils/actions";
 import CommentList from '../components/CommentList';
 import CommentForm from '../components/CommentForm';
 import Auth from '../utils/auth';
 
 const ReadChapter = () => {
     //Variables gained through alternate means
+    const [state, dispatch] = useStoreContext();
+    const { currentChapter, currentProject } = state;
     const { chapterId } = useParams();
-    console.log(chapterId);
-    let chapter;
     //Queries
-    const { loading, data } = useQuery(QUERY_GET_CHAPTER, {
+    const { loading, data: chapterInfo } = useQuery(QUERY_GET_CHAPTER, {
         variables: { _id: chapterId }
     });
 
-    if (!loading) {
-        chapter = data?.getChapter || {};
-    }
-    console.log(chapter);
+    useEffect(() => {
+        if (chapterInfo) {
+            const chapter = chapterInfo?.getChapter;
+
+            dispatch({
+                type: UPDATE_CURRENT_CHAPTER,
+                currentChapter: chapter,
+            });
+        }
+    }, [chapterInfo, currentChapter, dispatch]);
+
 
 
     //Actual returned HTML
@@ -34,9 +43,9 @@ const ReadChapter = () => {
                 <div className="row">
 
                     <div className='col-9'>
-                        <h1 className='text-center'>{chapter.title}</h1>
+                        <h1 className='text-center'>{currentChapter.title}</h1>
                         <h2>Chapter Contents:</h2>
-                        <p className='text-left'>{chapter.chapterText}</p>
+                        <p className='text-left'>{currentChapter.chapterText}</p>
                     </div>
                 </div>
 
@@ -47,7 +56,7 @@ const ReadChapter = () => {
                 )
                 }
                 <div id="comments-area">
-                    {chapter.comments && <CommentList comments={chapter.comments} />}
+                    {currentChapter.comments && <CommentList comments={currentChapter.comments} />}
                 </div>
             </div>
         );
