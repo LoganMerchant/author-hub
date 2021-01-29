@@ -12,9 +12,9 @@ export function idbPromise(storeName, method, object) {
         let db, tx, store;
         request.onupgradeneeded = function (e) {
             const db = request.result;
-            db.createObjectStore('products', { keyPath: '_id' });
-            db.createObjectStore('categories', { keyPath: '_id' });
-            db.createObjectStore('cart', { keyPath: '_id' });
+            db.createObjectStore('current-project', { keyPath: '_id' });
+            db.createObjectStore('project-chapters', { keyPath: '_id' });
+            db.createObjectStore('current-chapter', { keyPath: '_id' });
         };
         request.onerror = function (e) {
             console.log('There was an error')

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import SelectSearch from "react-select-search";
 import {
   Jumbotron,
   Container,
@@ -10,68 +9,32 @@ import {
   CardColumns,
 } from "react-bootstrap";
 
-// import Auth from "../utils/auth";
-import { searchBooks } from "../utils/queries";
-// import { useMutation } from "@apollo/react-hooks";
+import { Link } from "react-router-dom";
+import { QUERY_GET_PROJECTS_BY_SEARCH } from "../utils/queries";
+import { useQuery } from "@apollo/react-hooks";
 
 const SearchBooks = () => {
   // create state for holding returned Book data
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
-  const [searchInput, setSearchInput] = useState("");
-  const [searchGenre, setGenreInput] = useState("");
-
-  const options = [
-    { name: "All", value: "All" },
-    { name: "Action/Adventure", value: "Action/Adventure" },
-    { name: "Fantasy", value: "Fantasy" },
-    { name: "Historical Fiction", value: "Historical Fiction" },
-    { name: "Literary Fiction", value: "Literary Fiction" },
-    { name: "Romance", value: "Romance" },
-    { name: "Science Fiction", value: "Science Fiction" },
-    { name: "Short Story", value: "Short Story" },
-    { name: "Suspense/Thriller", value: "Suspense/Thriller" },
-    { name: "Women's Fiction", value: "Women's Fiction" },
-    { name: "Biography", value: "Biography" },
-    { name: "Autobiography", value: "Autobiography" },
-    { name: "Cookbook", value: "Cookbook" },
-    { name: "Essay", value: "Essay" },
-    { name: "History", value: "History" },
-    { name: "Memoir", value: "Memoir" },
-    { name: "Poetry", value: "Poetry" },
-    { name: "Self Help", value: "Self Help" },
-    { name: "True Crime", value: "True Crime" },
-  ];
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const [genre, setGenreInput] = useState("");
+  const { data } = useQuery(QUERY_GET_PROJECTS_BY_SEARCH, {
+    variables: { searchTerm: searchTerm, genre: genre },
+  });
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
-    if (!searchInput) {
+    if (!searchTerm) {
       return false;
     }
 
     try {
-      const response = await searchBooks(searchInput, searchGenre);
-
-      if (!response.ok) {
-        throw new Error("something went wrong!");
-      }
-
-      const { items } = await response.json();
-
-      const bookData = items.map((book) => ({
-        bookId: book.id,
-        authorName: book.authorName,
-        genre: book.genre,
-        title: book.title,
-        isPublic: book.isPublic,
-        collaborators: book.collaborators || "",
-        summary: book.summary,
-      }));
+      const bookData = data.getProjectsBySearch;
 
       setSearchedBooks(bookData);
-      setSearchInput("");
+
+      setSearchTerm("");
       setGenreInput("");
     } catch (err) {
       console.error(err);
@@ -80,31 +43,58 @@ const SearchBooks = () => {
 
   return (
     <>
-      <Jumbotron fluid className="text-light bg-dark">
+      <Jumbotron fluid className="searchHero">
         <Container>
-          <h1>Search for Books!</h1>
+          <h1 className="Header">Find your next read!</h1>
           <Form onSubmit={handleFormSubmit}>
             <Form.Row>
-              <Col xs={12} md={8}>
+              <Col xs={12} md={12}>
                 <Form.Control
-                  name="searchInput"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
+                  name="searchTerm"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   type="text"
                   size="md"
                   placeholder="Search for a project."
                 />
-                <SelectSearch
-                  options={options}
-                  value="All"
+
+                <Form.Control
+                  as="select"
+                  value={genre}
                   name="genreInput"
-                  placeholder="Choose your genre"
-                  onChange={(e) => setGenreInput(e.target.value)}
-                />
+                  placeholder="Choose genre to search"
+                  onChange={(e) => {
+                    setGenreInput(e.target.value);
+                  }}
+                >
+                  <option value="Choose genre to search">
+                    Choose genre to search
+                  </option>
+                  <option value="Action/Adventure">Action/Adventure</option>
+                  <option value="Fantasy">Fantasy</option>
+                  <option value="Historical Fiction">Historical Fiction</option>
+                  <option value="Literary Fiction">Literary Fiction</option>
+                  <option value="Romance">Romance</option>
+                  <option value="Science Fiction">Science Fiction</option>
+                  <option value="Short Story">Short Story</option>
+                  <option value="Suspense/Thriller">Suspense/Thriller</option>
+                  <option value="Women's Fiction">Women's Fiction</option>
+                  <option value="Biography">Biography</option>
+                  <option value="Autobiography">Autobiography</option>
+                  <option value="Cookbook">Cookbook</option>
+                  <option value="Essay">Essay</option>
+                  <option value="History">History</option>
+                  <option value="Memoir">Memoir</option>
+                  <option value="Poetry">Poetry</option>
+                  <option value="Self Help">Self Help</option>
+                  <option value="True Crime">True Crime</option>
+                </Form.Control>
               </Col>
-              <Col xs={12} md={4}>
-                <Button type="submit" variant="success" size="lg">
-                  Submit Search
+            </Form.Row>
+            <Form.Row className="searchBtn" align="center">
+              <Col xs={12} md={12}>
+                <Button type="submit" className="searchButton">
+                  Submit
                 </Button>
               </Col>
             </Form.Row>
@@ -113,7 +103,7 @@ const SearchBooks = () => {
       </Jumbotron>
 
       <Container>
-        <h2>
+        <h2 className="searchResults">
           {searchedBooks.length
             ? `Viewing ${searchedBooks.length} results:`
             : "Search for a book to begin"}
@@ -121,14 +111,16 @@ const SearchBooks = () => {
         <CardColumns>
           {searchedBooks.map((book) => {
             return (
-              <Card key={book.bookId} border="dark">
+              <Card key={book._id} border="dark">
                 <Card.Body>
-                  <Card.Title>{book.title}</Card.Title>
+                  <Card.Title>
+                    <Link to={`/readproject/${book._id}`}>
+                      {book.title} by {book.authorName}
+                    </Link>
+                  </Card.Title>
                   <p className="small">Author: {book.authorName}</p>
                   <Card.Text>{book.summary}</Card.Text>
-                  <Card.Footer>{book.collaborators}</Card.Footer>
                 </Card.Body>
-                {/* Need to check for login and access if not public for it to be clickable*/}
               </Card>
             );
           })}

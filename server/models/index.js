@@ -1,3 +1,5 @@
-//const User = require('./User'); potentially one of the models we will make.
+const User = require("./User");
+const Project = require("./Project");
+const Chapter = require("./Chapter");
 
-module.exports = {};
+module.exports = { User, Project, Chapter };
