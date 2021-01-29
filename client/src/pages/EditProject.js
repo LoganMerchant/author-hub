@@ -34,6 +34,7 @@ const EditProject = () => {
   const [addChapter] = useMutation(ADD_CHAPTER);
 
   // Variables for local state
+  const [success, setSuccess] = useState(false);
   const [updatedData, setUpdatedData] = useState({
     title: "",
     genre: "",
@@ -149,6 +150,12 @@ const EditProject = () => {
       type: UPDATE_CURRENT_PROJECT,
       currentProject: newProject,
     });
+
+    setSuccess(true);
+
+    setTimeout(function () {
+      setSuccess(false);
+    }, 5000);
   };
 
   return (
@@ -284,9 +291,13 @@ const EditProject = () => {
               </Form.Group>
 
               {/* Submit button */}
-              <Button variant="info" onClick={submitChanges}>
-                Submit Changes
-              </Button>
+              {!success ? (
+                <Button variant="info" onClick={submitChanges}>
+                  Submit Changes
+                </Button>
+              ) : (
+                <Button variant="success">Submitted!</Button>
+              )}
             </Form>
           </Col>
         )}

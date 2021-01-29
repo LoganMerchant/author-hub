@@ -13,7 +13,8 @@ const CommitForm = ({ updatedData }) => {
 
   // Defines local state
   const [commitText, setCommitText] = useState("");
-  const [commitType, setCommitType] = useState("Option 1");
+  const [commitType, setCommitType] = useState("Edit");
+  const [success, setSuccess] = useState(false);
 
   // Defines variable for calling the mutation
   const [addCommit] = useMutation(ADD_COMMIT);
@@ -47,7 +48,13 @@ const CommitForm = ({ updatedData }) => {
     });
 
     document.querySelector("#formCommitText").value = "";
-    document.querySelector("#formCommitType").value = "Option 1";
+    document.querySelector("#formCommitType").value = "Edit";
+
+    setSuccess(true);
+
+    setTimeout(function () {
+      setSuccess(false);
+    }, 5000);
   };
 
   // JSX
@@ -66,14 +73,16 @@ const CommitForm = ({ updatedData }) => {
           defaultValue="Option 1"
           onChange={handleChange}
         >
-          <option>Option 1</option>
-          <option>Option 2</option>
-          <option>Option 3</option>
-          <option>Option 4</option>
+          <option>Edit</option>
+          <option>Suggestion</option>
         </Form.Control>
       </Form.Group>
 
-      <Button onClick={submitCommit}>Commit Changes!</Button>
+      {!success ? (
+        <Button onClick={submitCommit}>Submit Commit</Button>
+      ) : (
+        <Button variant="success">Submitted!</Button>
+      )}
     </Form>
   );
 };
