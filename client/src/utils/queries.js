@@ -14,6 +14,7 @@ export const QUERY_GET_USER = gql`
       collaborations {
         _id
         title
+        genre
       }
     }
   }
@@ -33,6 +34,7 @@ export const QUERY_GET_USERS = gql`
       collaborations {
         _id
         title
+        genre
       }
     }
   }
@@ -93,6 +95,17 @@ export const QUERY_GET_PROJECT_INFO = gql`
       chapters {
         _id
         title
+        chapterText
+        authorName
+        createdAt
+        isPublic
+        commits {
+          _id
+          username
+          commitType
+          commitText
+          createdAt
+        }
       }
       collaborators {
         _id
@@ -126,9 +139,13 @@ export const QUERY_GET_CHAPTER = gql`
       comments {
         _id
         commentText
+        username
+        createdAt
       }
       commits {
         _id
+        username
+        createdAt
         commitText
         commitType
       }
