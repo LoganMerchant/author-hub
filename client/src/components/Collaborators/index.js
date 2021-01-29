@@ -15,7 +15,7 @@ const Collaborators = () => {
         <ListGroup>
           <ListGroup.Item as="h4" className="collaborators">Collaborators:</ListGroup.Item>
           {currentProject.collaborators.map((collaborator) => (
-            <ListGroup.Item className="collaborators" key={collaborator._id}>
+            <ListGroup.Item  key={collaborator._id}>
               <p>{collaborator.username}</p>
             </ListGroup.Item>
           ))}
