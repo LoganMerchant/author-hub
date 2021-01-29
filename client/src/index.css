@@ -141,6 +141,20 @@ p {
   font-size: 25px
 }
 
+.projectCard {
+  background-color: var(--light);
+  border: 1px;
+  border-color: var(--dark);
+  opacity: 0.75;
+  text-align: center;
+  border: 1px solid var(--secondary);
+  font-size: 20px;
+}
+
+.title {
+  color: var(--dark);
+}
+
 /* signup and login styling */
 .formLabel {
   font-size: 22px;
