@@ -28,7 +28,6 @@ const ReadProject = () => {
     useEffect(() => {
         if (projectInfo) {
             const project = projectInfo?.getProjectInfo;
-
             dispatch({
                 type: UPDATE_CURRENT_PROJECT,
                 currentProject: project,
@@ -46,7 +45,6 @@ const ReadProject = () => {
             });
         }
     }, [projectInfo, dispatch]);
-
     //The Actual returned HTML
     if (loading) {
         return (
@@ -62,11 +60,11 @@ const ReadProject = () => {
                 <h2 className="readHeader">By: {currentProject.authorName}</h2>
                 <h3 className="summary">Summary</h3>
                 <p className="readSummary">{currentProject.summary}</p>
-                {chapters && <ReadChapters chapters={chapters} />}
+                {chapters && <ReadChapters />}
                 <h3 className="chapterHeader">This Project Currently has: {currentProject.upvoteCount} Upvotes</h3>
-                {Auth.loggedIn() && <UpvoteButton projectId={projectId} />}
-                {currentProject.collaborators && <ReadCollaborators collaborators={currentProject.collaborators} />}
-                {Auth.loggedIn() && <AddApplicantButton projectId={projectId} />}
+                {Auth.loggedIn() && <UpvoteButton />}
+                {currentProject.collaborators && <ReadCollaborators />}
+                {Auth.loggedIn() && <AddApplicantButton />}
             </div>
         );
     }
