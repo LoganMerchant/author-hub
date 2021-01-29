@@ -25,13 +25,15 @@ const EditChapter = () => {
 
   // Variables for the query
   const { loading, data: chapterInfo } = useQuery(QUERY_GET_CHAPTER, {
-    variables: { id: chapterId },
+    variables: { _id: chapterId },
   });
 
   // Setup of local state for keeping track of the chapter's data
-  const [updatedTitle, setUpdatedTitle] = useState("");
-  const [updatedText, setUpdatedText] = useState("");
-  const [updatedIsPublic, setUpdatedIsPublic] = useState(false);
+  const [updatedData, setUpdatedData] = useState({
+    title: "",
+    chapterText: "",
+    isPublic: false,
+  });
 
   // Determines if the server has returned chapter info
   useEffect(() => {
@@ -43,9 +45,11 @@ const EditChapter = () => {
         currentChapter: chapter,
       });
 
-      setUpdatedTitle(chapter.title);
-      setUpdatedText(chapter.chapterText);
-      setUpdatedIsPublic(chapter.isPublic);
+      setUpdatedData({
+        title: chapter.title,
+        chapterText: chapter.chapterText,
+        isPublic: chapter.isPublic,
+      });
     }
   }, [chapterInfo, currentChapter, dispatch]);
 
@@ -55,11 +59,20 @@ const EditChapter = () => {
     const value = evt.target.value;
 
     if (name === "title") {
-      setUpdatedTitle(value);
+      setUpdatedData({
+        ...updatedData,
+        title: value,
+      });
     } else if (name === "chapterText") {
-      setUpdatedText(value);
+      setUpdatedData({
+        ...updatedData,
+        chapterText: value,
+      });
     } else {
-      setUpdatedIsPublic(!updatedIsPublic);
+      setUpdatedData({
+        ...updatedData,
+        isPublic: !updatedData.isPublic,
+      });
     }
   }
 
@@ -104,8 +117,8 @@ const EditChapter = () => {
         <Col sm={12} md={8}>
           {/* Toggles isPublic */}
           <IsPublicToggleButton
-            updatedIsPublic={updatedIsPublic}
-            setUpdatedIsPublic={setUpdatedIsPublic}
+            updatedData={updatedData}
+            setUpdatedData={setUpdatedData}
           />
 
           {/* Edits chapter's title */}
@@ -113,6 +126,7 @@ const EditChapter = () => {
             <Form.Label column="lg">Title:</Form.Label>
             <Form.Control
               as="textarea"
+              key={currentChapter.title}
               defaultValue={currentChapter.title}
               onChange={handleChange}
             />
@@ -124,6 +138,7 @@ const EditChapter = () => {
             <Form.Control
               as="textarea"
               rows={25}
+              key={currentChapter.chapterText}
               defaultValue={currentChapter.chapterText}
               onChange={handleChange}
             />
@@ -133,11 +148,7 @@ const EditChapter = () => {
         {/* Commit Form, which is passed updatedChapter as a prop */}
         <Col sm={12} md={2}>
           <div id="commit-container">
-            <CommitForm
-              updatedTitle={updatedTitle}
-              updatedText={updatedText}
-              updatedIsPublic={updatedIsPublic}
-            />
+            <CommitForm updatedData={updatedData} />
             <CommitList commits={currentChapter.commits} />
           </div>
         </Col>

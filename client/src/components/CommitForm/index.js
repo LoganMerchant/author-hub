@@ -6,7 +6,7 @@ import { useMutation } from "@apollo/react-hooks";
 import { ADD_COMMIT } from "../../utils/mutations";
 import { useStoreContext } from "../../utils/GlobalState";
 
-const CommitForm = ({ updatedTitle, updatedText, updatedIsPublic }) => {
+const CommitForm = ({ updatedData }) => {
   // Gets currentChapter from global store
   const [state] = useStoreContext();
   const { currentChapter } = state;
@@ -34,13 +34,13 @@ const CommitForm = ({ updatedTitle, updatedText, updatedIsPublic }) => {
 
   // Function to run the mutation
   const submitCommit = async () => {
-    // Run the mutation and get the updated chapter back
+    // Run the mutation
     await addCommit({
       variables: {
         chapterId: currentChapter._id,
-        title: updatedTitle,
-        chapterText: updatedText,
-        isPublic: updatedIsPublic,
+        title: updatedData.title,
+        chapterText: updatedData.chapterText,
+        isPublic: updatedData.isPublic,
         commitText,
         commitType,
       },
