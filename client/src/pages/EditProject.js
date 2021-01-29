@@ -34,10 +34,12 @@ const EditProject = () => {
   const [addChapter] = useMutation(ADD_CHAPTER);
 
   // Variables for local state
-  const [updatedTitle, setUpdatedTitle] = useState("");
-  const [updatedGenre, setUpdatedGenre] = useState("");
-  const [updatedSummary, setUpdatedSummary] = useState("");
-  const [updatedIsPublic, setUpdatedIsPublic] = useState(false);
+  const [updatedData, setUpdatedData] = useState({
+    title: "",
+    genre: "",
+    summary: "",
+    isPublic: false,
+  });
 
   // Variables & functions for modal (taken from docs)
   const [show, setShow] = useState(false);
@@ -78,10 +80,12 @@ const EditProject = () => {
         chapters: project.chapters,
       });
 
-      setUpdatedIsPublic(project.isPublic);
-      setUpdatedTitle(project.title);
-      setUpdatedGenre(project.genre);
-      setUpdatedSummary(project.summary);
+      setUpdatedData({
+        title: project.title,
+        genre: project.genre,
+        summary: project.summary,
+        isPublic: project.isPublic,
+      });
     }
   }, [projectInfo, dispatch]);
 
@@ -91,13 +95,25 @@ const EditProject = () => {
     const value = evt.target.value;
 
     if (name === "projectIsPublic") {
-      setUpdatedIsPublic(!updatedIsPublic);
+      setUpdatedData({
+        ...updatedData,
+        isPublic: !updatedData.isPublic,
+      });
     } else if (name === "projectTitle") {
-      setUpdatedTitle(value);
+      setUpdatedData({
+        ...updatedData,
+        title: value,
+      });
     } else if (name === "projectGenre") {
-      setUpdatedGenre(value);
+      setUpdatedData({
+        ...updatedData,
+        genre: value,
+      });
     } else {
-      setUpdatedSummary(value);
+      setUpdatedData({
+        ...updatedData,
+        summary: value,
+      });
     }
   };
 
@@ -121,10 +137,10 @@ const EditProject = () => {
     const { data } = await editProjectInfo({
       variables: {
         projectId,
-        title: updatedTitle,
-        summary: updatedSummary,
-        genre: updatedGenre,
-        isPublic: updatedIsPublic,
+        title: updatedData.title,
+        summary: updatedData.summary,
+        genre: updatedData.genre,
+        isPublic: updatedData.isPublic,
       },
     });
     const newProject = data?.editProjectInfo;
@@ -203,8 +219,8 @@ const EditProject = () => {
             <Form>
               {/* IsPublic toggle */}
               <IsPublicToggleButton
-                updatedIsPublic={updatedIsPublic}
-                setUpdatedIsPublic={setUpdatedIsPublic}
+                updatedData={updatedData}
+                setUpdatedData={setUpdatedData}
               />
 
               {/* Project title, genre, and summary changes */}
@@ -226,15 +242,32 @@ const EditProject = () => {
                     <Form.Label>Genre:</Form.Label>
                     <Form.Control
                       as="select"
+                      key={currentProject.genre}
                       defaultValue={currentProject.genre}
                       onChange={handleChange}
                     >
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                      <option>test</option>
+                      <option value="Action/Adventure">Action/Adventure</option>
+                      <option value="Fantasy">Fantasy</option>
+                      <option value="Historical Fiction">
+                        Historical Fiction
+                      </option>
+                      <option value="Literary Fiction">Literary Fiction</option>
+                      <option value="Romance">Romance</option>
+                      <option value="Science Fiction">Science Fiction</option>
+                      <option value="Short Story">Short Story</option>
+                      <option value="Suspense/Thriller">
+                        Suspense/Thriller
+                      </option>
+                      <option value="Women's Fiction">Women's Fiction</option>
+                      <option value="Biography">Biography</option>
+                      <option value="Autobiography">Autobiography</option>
+                      <option value="Cookbook">Cookbook</option>
+                      <option value="Essay">Essay</option>
+                      <option value="History">History</option>
+                      <option value="Memoir">Memoir</option>
+                      <option value="Poetry">Poetry</option>
+                      <option value="Self Help">Self Help</option>
+                      <option value="True Crime">True Crime</option>
                     </Form.Control>
                   </Form.Group>
                 </Col>
