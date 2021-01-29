@@ -14,6 +14,7 @@ export const QUERY_GET_USER = gql`
       collaborations {
         _id
         title
+        genre
       }
     }
   }
@@ -33,6 +34,7 @@ export const QUERY_GET_USERS = gql`
       collaborations {
         _id
         title
+        genre
       }
     }
   }
