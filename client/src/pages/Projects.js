@@ -22,20 +22,15 @@ import Auth from "../utils/auth";
 
 const Projects = () => {
   const [state, dispatch] = useStoreContext();
-  const { projects, collaborations } = state;
   const [title, setTitle] = useState("");
   const [genre, setGenreInput] = useState("");
   const [summary, setSummary] = useState("");
   const [addProject] = useMutation(ADD_PROJECT);
-  //defining these variables globally so they can be accessed after loading
-  // let projects = [];
-  // let collaborations = [];
 
   // get user from token as they need to be signed in to use this page
   const { username: authorName, _id: currentUser } = Auth.getProfile().data;
 
   // query for current user to access their projects and collaborations
-
   const { loading, data } = useQuery(QUERY_GET_USER, {
     variables: { _id: currentUser },
   });
@@ -53,7 +48,10 @@ const Projects = () => {
         collaborations: currentCollaborations,
       });
     }
-  }, [data, dispatch]);
+  }, [data, loading, dispatch]);
+
+  const projects = state?.projects;
+  const collaborations = state?.collaborations;
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -70,7 +68,6 @@ const Projects = () => {
           authorName: authorName,
         },
       });
-      window.location.assign(`/projects/`);
     } catch (e) {
       console.error(e);
     }
