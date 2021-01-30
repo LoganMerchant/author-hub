@@ -1,51 +1,71 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useQuery } from "@apollo/react-hooks";
 import ListGroup from "react-bootstrap/ListGroup";
 
 import { useStoreContext } from "../../utils/GlobalState";
-import { UPDATE_CURRENT_CHAPTER } from "../../utils/actions";
+import { QUERY_GET_CHAPTERS } from "../../utils/queries";
+import { UPDATE_CHAPTERS } from "../../utils/actions";
 
 const TableOfContents = () => {
   const [state, dispatch] = useStoreContext();
   const { currentChapter, chapters } = state;
 
-  // Will update the global state's `currentChapter` when a chapter is clicked.
-  const handleOnClick = (chapter) => {
-    dispatch({
-      type: UPDATE_CURRENT_CHAPTER,
-      currentChapter: chapter,
-    });
-  };
+  // const { loading, data } = useQuery(QUERY_GET_CHAPTERS, {
+  //   variables: { _id: currentProject._id },
+  // });
 
+  // useEffect(() => {
+  //   let mounted = true;
+
+  //   if (data) {
+  //     const project = data?.getChapters;
+  //     const queryChapters = project.chapters;
+
+  //     dispatch({
+  //       type: UPDATE_CHAPTERS,
+  //       chapters: queryChapters,
+  //     });
+  //   }
+
+  //   return () => {
+  //     mounted = false;
+  //   };
+  // }, [data, currentChapter, dispatch]);
+
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
   return (
-      <ListGroup>
-          {/* Header of ToC */}
-            <ListGroup.Item className="table">
-              <h2 >Table of Contents</h2>
-            </ListGroup.Item>
-        {chapters.map((chapter) =>
-          // If the chapter is set to be public....
-          chapter.isPublic ? (
-                <ListGroup.Item
-                  action
-                  key={chapter._id}
-                  onClick={() => handleOnClick(chapter)}
-                >
-                  {/* Highlights the currentChapter */}
-                  {currentChapter._id === chapter._id ? (
-                    <h4 style={{ color: "#EF5D58" }}>{chapter.title}</h4>
-                  ) : (
-                    <h4>{chapter.title}</h4>
-                  )}
-                </ListGroup.Item>
-          ) : (
-            // If the chapter is set to be private...
-                <ListGroup.Item disabled key={chapter._id}>
-                  <h4>{chapter.title}</h4>
-                  <p>(Unpublished)</p>
-                </ListGroup.Item>
-          )
-        )}
-      </ListGroup>
+
+    <ListGroup>
+      {/* Header of ToC */}
+      <ListGroup.Item>
+        <h3>Table of Contents</h3>
+      </ListGroup.Item>
+
+      {chapters &&
+        chapters.map((chapter, index) => (
+          <div key={chapter._id}>
+            <Link to={`/editchapter/${chapter._id}`}>
+              {/* If the chapter is public */}
+              <ListGroup.Item action>
+                {/* Highlights the currentChapter */}
+                {currentChapter._id === chapter._id ? (
+                  <h4 style={{ color: "#EF5D58" }}>
+                    {index + 1}. {chapter.title}
+                  </h4>
+                ) : (
+                  <h4>
+                    {index + 1}. {chapter.title}
+                  </h4>
+                )}
+                {!chapter.isPublic && <p>Unpublished</p>}
+              </ListGroup.Item>
+            </Link>
+          </div>
+        ))}
+    </ListGroup>
   );
 };
 

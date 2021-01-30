@@ -15,7 +15,7 @@ const ReadChapter = () => {
     let chapter;
     //Queries
     const { loading, data } = useQuery(QUERY_GET_CHAPTER, {
-        variables: { id: chapterId }
+        variables: { _id: chapterId }
     });
 
     if (!loading) {
@@ -47,7 +47,7 @@ const ReadChapter = () => {
                 )
                 }
                 <div id="comments-area">
-                    {chapter.comments.length > 0 && <CommentList comments={chapter.comments} />}
+                    {chapter.comments && <CommentList comments={chapter.comments} />}
                 </div>
             </div>
         );

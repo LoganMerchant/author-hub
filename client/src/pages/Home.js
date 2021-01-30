@@ -17,10 +17,14 @@ const Home = () => {
   return (
     <>
       <Jumbotron fluid className="homeHero">
-        <h1 align="center" className="homeHeader">Share Your Stories.</h1>
+        <h1 align="center" className="homeHeader">
+          Share Your Stories.
+        </h1>
       </Jumbotron>
       <Container>
-        <h2 className="h2Header">Discover the most popular writing projects on AuthorHub!</h2>
+        <h2 className="h2Header">
+          Discover the most popular writing projects on AuthorHub!
+        </h2>
         <CardColumns>
           {publicProjects.map((topProjects) => {
             return (
@@ -40,7 +44,7 @@ const Home = () => {
                         return <li>{collaborators.username}</li>;
                       })}
                     </ul>
-                  </Card.Footer>
+                  </Card.Footer> 
                 </Card.Body>
               </Card>
             );

@@ -62,12 +62,14 @@ const SearchBooks = () => {
                   as="select"
                   value={genre}
                   name="genreInput"
-                  placeholder="Choose your genre"
+                  placeholder="Choose genre to search"
                   onChange={(e) => {
                     setGenreInput(e.target.value);
                   }}
                 >
-                  <option value="All">All</option>
+                  <option value="Choose genre to search">
+                    Choose genre to search
+                  </option>
                   <option value="Action/Adventure">Action/Adventure</option>
                   <option value="Fantasy">Fantasy</option>
                   <option value="Historical Fiction">Historical Fiction</option>
@@ -86,17 +88,16 @@ const SearchBooks = () => {
                   <option value="Poetry">Poetry</option>
                   <option value="Self Help">Self Help</option>
                   <option value="True Crime">True Crime</option>
-                  <option value="test">test</option>
                 </Form.Control>
               </Col>
-              </Form.Row>
-              <Form.Row className="searchBtn" align="center">
+            </Form.Row>
+            <Form.Row className="searchBtn" align="center">
               <Col xs={12} md={12}>
                 <Button type="submit" className="searchButton">
                   Submit
                 </Button>
               </Col>
-              </Form.Row>
+            </Form.Row>
           </Form>
         </Container>
       </Jumbotron>
@@ -113,7 +114,9 @@ const SearchBooks = () => {
               <Card key={book._id} border="dark">
                 <Card.Body>
                   <Card.Title>
-                    <Link to={`/readproject/${book._id}`}>{book.title}</Link>
+                    <Link to={`/readproject/${book._id}`}>
+                      {book.title} by {book.authorName}
+                    </Link>
                   </Card.Title>
                   <p className="small">Author: {book.authorName}</p>
                   <Card.Text>{book.summary}</Card.Text>

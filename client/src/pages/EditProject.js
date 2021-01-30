@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { Redirect, useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 import spinner from "../assets/spinner.gif";
 import { useStoreContext } from "../utils/GlobalState";
@@ -15,12 +16,12 @@ import IsPublicToggleButton from "../components/IsPublicToggleButton";
 import TableOfContents from "../components/TableOfContents";
 import { UPDATE_CURRENT_PROJECT, UPDATE_CHAPTERS } from "../utils/actions";
 import { QUERY_GET_PROJECT_INFO } from "../utils/queries";
-import { EDIT_PROJECT_INFO } from "../utils/mutations";
+import { EDIT_PROJECT_INFO, ADD_CHAPTER } from "../utils/mutations";
 
 const EditProject = () => {
   // Use the global state to get currentProject
   const [state, dispatch] = useStoreContext();
-  const { currentProject, chapters } = state;
+  const { currentProject } = state;
 
   // Pull projectId from url
   const { projectId } = useParams();
@@ -30,12 +31,40 @@ const EditProject = () => {
     variables: { _id: projectId },
   });
   const [editProjectInfo] = useMutation(EDIT_PROJECT_INFO);
+  const [addChapter] = useMutation(ADD_CHAPTER);
 
   // Variables for local state
-  const [updatedTitle, setUpdatedTitle] = useState("");
-  const [updatedGenre, setUpdatedGenre] = useState("");
-  const [updatedSummary, setUpdatedSummary] = useState("");
-  const [updatedIsPublic, setUpdatedIsPublic] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [updatedData, setUpdatedData] = useState({
+    title: "",
+    genre: "",
+    summary: "",
+    isPublic: false,
+  });
+
+  // Variables & functions for modal (taken from docs)
+  const [show, setShow] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalChapterText, setModalChapterText] = useState("");
+
+  const handleShow = () => {
+    setShow(true);
+  };
+
+  const handleClose = () => {
+    setShow(false);
+  };
+
+  const handleModalChange = (evt) => {
+    const name = evt.target.id;
+    const value = evt.target.value;
+
+    if (name === "modalTitle") {
+      setModalTitle(value);
+    } else {
+      setModalChapterText(value);
+    }
+  };
 
   // Determines if the server has returned project info
   useEffect(() => {
@@ -52,10 +81,12 @@ const EditProject = () => {
         chapters: project.chapters,
       });
 
-      setUpdatedIsPublic(project.isPublic);
-      setUpdatedTitle(project.title);
-      setUpdatedGenre(project.genre);
-      setUpdatedSummary(project.summary);
+      setUpdatedData({
+        title: project.title,
+        genre: project.genre,
+        summary: project.summary,
+        isPublic: project.isPublic,
+      });
     }
   }, [projectInfo, dispatch]);
 
@@ -65,14 +96,41 @@ const EditProject = () => {
     const value = evt.target.value;
 
     if (name === "projectIsPublic") {
-      setUpdatedIsPublic(!updatedIsPublic);
+      setUpdatedData({
+        ...updatedData,
+        isPublic: !updatedData.isPublic,
+      });
     } else if (name === "projectTitle") {
-      setUpdatedTitle(value);
+      setUpdatedData({
+        ...updatedData,
+        title: value,
+      });
     } else if (name === "projectGenre") {
-      setUpdatedGenre(value);
+      setUpdatedData({
+        ...updatedData,
+        genre: value,
+      });
     } else {
-      setUpdatedSummary(value);
+      setUpdatedData({
+        ...updatedData,
+        summary: value,
+      });
     }
+  };
+
+  const handleAddChapter = async () => {
+    await addChapter({
+      variables: {
+        projectId,
+        title: modalTitle,
+        chapterText: modalChapterText,
+        authorName: currentProject.authorName,
+      },
+    });
+
+    setShow(false);
+
+    window.location.reload();
   };
 
   // Submits changes to the server via mutation
@@ -80,10 +138,10 @@ const EditProject = () => {
     const { data } = await editProjectInfo({
       variables: {
         projectId,
-        title: updatedTitle,
-        summary: updatedSummary,
-        genre: updatedGenre,
-        isPublic: updatedIsPublic,
+        title: updatedData.title,
+        summary: updatedData.summary,
+        genre: updatedData.genre,
+        isPublic: updatedData.isPublic,
       },
     });
     const newProject = data?.editProjectInfo;
@@ -93,15 +151,69 @@ const EditProject = () => {
       currentProject: newProject,
     });
 
-    window.location.assign(`/`);
+    setSuccess(true);
+
+    setTimeout(function () {
+      setSuccess(false);
+    }, 5000);
   };
 
   return (
     <Container fluid className="editContainer">
       <Row>
+        <Link to={`/projects`} style={{ color: "white" }}>
+          <Button>Back to Your Projects</Button>
+        </Link>
+      </Row>
+      <Row style={{ justifyContent: "center" }}>
+        <h1 style={{ borderBottom: "solid" }}>
+          Editing Project: {currentProject.title}
+        </h1>
+      </Row>
+      <Row style={{ justifyContent: "center" }}>
+        <p>By: {currentProject.authorName}</p>
+      </Row>
+      <Row>
         {/* Table of Contents */}
         <Col sm={12} md={2}>
           <TableOfContents />
+          <Button variant="warning" onClick={handleShow}>
+            Add Chapter
+          </Button>
+
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Add Chapter to {currentProject.title}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Group controlId="modalTitle">
+                  <Form.Label>Title:</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={1}
+                    onChange={handleModalChange}
+                  ></Form.Control>
+                </Form.Group>
+                <Form.Group controlId="modalChapterText">
+                  <Form.Label>Content:</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={20}
+                    onChange={handleModalChange}
+                  ></Form.Control>
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="danger" onClick={handleClose}>
+                Close
+              </Button>
+              <Button variant="info" onClick={handleAddChapter}>
+                Add Chapter!
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </Col>
 
         {/* Edit Project */}
@@ -114,8 +226,8 @@ const EditProject = () => {
             <Form>
               {/* IsPublic toggle */}
               <IsPublicToggleButton
-                updatedIsPublic={updatedIsPublic}
-                setUpdatedIsPublic={setUpdatedIsPublic}
+                updatedData={updatedData}
+                setUpdatedData={setUpdatedData}
               />
 
               {/* Project title, genre, and summary changes */}
@@ -137,15 +249,32 @@ const EditProject = () => {
                     <Form.Label className="editFormLabel">Genre:</Form.Label>
                     <Form.Control
                       as="select"
+                      key={currentProject.genre}
                       defaultValue={currentProject.genre}
                       onChange={handleChange}
                     >
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                      <option>test</option>
+                      <option value="Action/Adventure">Action/Adventure</option>
+                      <option value="Fantasy">Fantasy</option>
+                      <option value="Historical Fiction">
+                        Historical Fiction
+                      </option>
+                      <option value="Literary Fiction">Literary Fiction</option>
+                      <option value="Romance">Romance</option>
+                      <option value="Science Fiction">Science Fiction</option>
+                      <option value="Short Story">Short Story</option>
+                      <option value="Suspense/Thriller">
+                        Suspense/Thriller
+                      </option>
+                      <option value="Women's Fiction">Women's Fiction</option>
+                      <option value="Biography">Biography</option>
+                      <option value="Autobiography">Autobiography</option>
+                      <option value="Cookbook">Cookbook</option>
+                      <option value="Essay">Essay</option>
+                      <option value="History">History</option>
+                      <option value="Memoir">Memoir</option>
+                      <option value="Poetry">Poetry</option>
+                      <option value="Self Help">Self Help</option>
+                      <option value="True Crime">True Crime</option>
                     </Form.Control>
                   </Form.Group>
                 </Col>
@@ -162,9 +291,13 @@ const EditProject = () => {
               </Form.Group>
 
               {/* Submit button */}
-              <Button variant="info" onClick={submitChanges}>
-                Submit Changes
-              </Button>
+              {!success ? (
+                <Button variant="info" onClick={submitChanges}>
+                  Submit Changes
+                </Button>
+              ) : (
+                <Button variant="success">Submitted!</Button>
+              )}
             </Form>
           </Col>
         )}

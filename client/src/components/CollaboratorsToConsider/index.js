@@ -35,7 +35,7 @@ const CollaboratorsToConsider = ({ projectId }) => {
     const { data } = await denyCollaborator({
       variables: { projectId, userId: _id },
     });
-    const newProject = data?.acceptCollaborator;
+    const newProject = data?.denyCollaborator;
 
     dispatch({
       type: UPDATE_CURRENT_PROJECT,

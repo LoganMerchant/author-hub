@@ -24,6 +24,7 @@ const resolvers = {
         isPublic: true,
       })
         .sort({ upvotes: -1 })
+        .limit(10)
         .populate("chapters")
         .populate("collaborators");
     },
@@ -149,6 +150,12 @@ const resolvers = {
           .populate("collaborators")
           .populate("collabsToAddOrDenyList");
 
+        await User.findByIdAndUpdate(
+          { _id: userId },
+          { $addToSet: { collaborations: projectId } },
+          { runValidators: true }
+        );
+
         return project;
       }
 
@@ -180,7 +187,11 @@ const resolvers = {
       context
     ) => {
       if (context.user) {
-        const newChapter = await Chapter.create(title, chapterText, authorName);
+        const newChapter = await Chapter.create({
+          title,
+          chapterText,
+          authorName,
+        });
 
         await Project.findByIdAndUpdate(
           { _id: projectId },

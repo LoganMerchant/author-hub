@@ -4,17 +4,17 @@ import Button from "react-bootstrap/Button";
 import { useMutation } from "@apollo/react-hooks";
 
 import { ADD_COMMIT } from "../../utils/mutations";
-import { UPDATE_CURRENT_CHAPTER } from "../../utils/actions";
 import { useStoreContext } from "../../utils/GlobalState";
 
-const CommitForm = ({ updatedTitle, updatedText, updatedIsPublic }) => {
+const CommitForm = ({ updatedData }) => {
   // Gets currentChapter from global store
-  const [state, dispatch] = useStoreContext();
+  const [state] = useStoreContext();
   const { currentChapter } = state;
 
   // Defines local state
   const [commitText, setCommitText] = useState("");
-  const [commitType, setCommitType] = useState("");
+  const [commitType, setCommitType] = useState("Edit");
+  const [success, setSuccess] = useState(false);
 
   // Defines variable for calling the mutation
   const [addCommit] = useMutation(ADD_COMMIT);
@@ -34,28 +34,27 @@ const CommitForm = ({ updatedTitle, updatedText, updatedIsPublic }) => {
   };
 
   // Function to run the mutation
-  const submitCommit = async (evt) => {
-    evt.preventDefault();
-
-    // Run the mutation and get the updated chapter back
-    const response = await addCommit({
+  const submitCommit = async () => {
+    // Run the mutation
+    await addCommit({
       variables: {
         chapterId: currentChapter._id,
-        title: updatedTitle,
-        chapterText: updatedText,
-        isPublic: updatedIsPublic,
+        title: updatedData.title,
+        chapterText: updatedData.chapterText,
+        isPublic: updatedData.isPublic,
         commitText,
         commitType,
       },
     });
 
-    // Update the global store with the updated chapter
-    if (response) {
-      dispatch({
-        type: UPDATE_CURRENT_CHAPTER,
-        currentChapter: response,
-      });
-    }
+    document.querySelector("#formCommitText").value = "";
+    document.querySelector("#formCommitType").value = "Edit";
+
+    setSuccess(true);
+
+    setTimeout(function () {
+      setSuccess(false);
+    }, 5000);
   };
 
   // JSX
@@ -68,15 +67,22 @@ const CommitForm = ({ updatedTitle, updatedText, updatedIsPublic }) => {
 
       <Form.Group controlId="formCommitType">
         <Form.Label>Commit Type</Form.Label>
-        <Form.Control as="select" name="commit-type" onChange={handleChange}>
-          <option>Option 1</option>
-          <option>Option 2</option>
-          <option>Option 3</option>
-          <option>Option 4</option>
+        <Form.Control
+          as="select"
+          name="commit-type"
+          defaultValue="Option 1"
+          onChange={handleChange}
+        >
+          <option>Edit</option>
+          <option>Suggestion</option>
         </Form.Control>
       </Form.Group>
 
-      <Button onClick={submitCommit}>Commit Changes!</Button>
+      {!success ? (
+        <Button onClick={submitCommit}>Submit Commit</Button>
+      ) : (
+        <Button variant="success">Submitted!</Button>
+      )}
     </Form>
   );
 };

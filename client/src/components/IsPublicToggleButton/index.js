@@ -1,19 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import Form from "react-bootstrap/Form";
 
-const IsPublicToggleButton = ({ updatedIsPublic, setUpdatedIsPublic }) => {
-  // Function to flip the boolean held in `updatedIsPublic`
+const IsPublicToggleButton = ({ updatedData, setUpdatedData }) => {
+  // Function to flip the boolean held in `updatedData`
   function toggle() {
-    setUpdatedIsPublic(!updatedIsPublic);
+    setUpdatedData({
+      ...updatedData,
+      isPublic: !updatedData.isPublic,
+    });
   }
 
   return (
     <Form.Group controlId="projectIsPublic">
       {/* If it's public, make sure it's green and checked */}
-      {updatedIsPublic === true ? (
+      {updatedData && updatedData.isPublic === true ? (
         <Form.Check
           type="switch"
-          defaultChecked={updatedIsPublic}
+          key={updatedData.isPublic}
+          defaultChecked={updatedData.isPublic}
           label="Published"
           isValid
           onClick={toggle}

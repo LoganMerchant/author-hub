@@ -19,6 +19,8 @@ const CommentList = ({ comments }) => {
                             </p>
                         </div>
                     ))}
+                <p className="text-center border-top border-bottom">Communities are built on conversation, and communication, so comment away!</p>
+                <p className="text-center">Congrats you've reached the end of the comments section!</p>
             </div>
         </div>
     );

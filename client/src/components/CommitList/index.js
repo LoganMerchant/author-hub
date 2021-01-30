@@ -7,7 +7,7 @@ const CommitList = ({ commits }) => {
         // If there ARE commits
         <div className="card mb-3">
           <div className="card-header">
-            <span className="text-light">Commits</span>
+            <span className="text-dark">Commits</span>
           </div>
           <div className="card-body">
             {commits &&

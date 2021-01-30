@@ -305,6 +305,8 @@ export const ADD_COMMIT = gql`
       }
       commits {
         _id
+        username
+        createdAt
         commitText
         commitType
       }
