@@ -26,6 +26,7 @@ const LoginForm = () => {
       const { data } = await login({
         variables: { ...formState },
       });
+      console.log(data);
       Auth.login(data.login.token);
     } catch (e) {
       console.error(e);
@@ -44,7 +45,9 @@ const LoginForm = () => {
           Something went wrong with your login credentials!
         </Alert>
         <Form.Group>
-          <Form.Label className="formLabel" htmlFor="email">Email</Form.Label>
+          <Form.Label className="formLabel" htmlFor="email">
+            Email
+          </Form.Label>
           <Form.Control
             type="text"
             placeholder="Your email"
@@ -59,7 +62,9 @@ const LoginForm = () => {
         </Form.Group>
 
         <Form.Group>
-          <Form.Label className="formLabel" htmlFor="password">Password</Form.Label>
+          <Form.Label className="formLabel" htmlFor="password">
+            Password
+          </Form.Label>
           <Form.Control
             type="password"
             placeholder="Your password"
