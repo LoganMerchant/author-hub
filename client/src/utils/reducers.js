@@ -1,10 +1,12 @@
 import { useReducer } from "react";
+import Projects from "../pages/Projects";
 import {
   UPDATE_CURRENT_PROJECT,
   UPDATE_CURRENT_CHAPTER,
   UPDATE_CHAPTERS,
   UPDATE_CURRENT_PROJECTS,
   UPDATE_CURRENT_COLLABORATIONS,
+  ADD_SINGLE_PROJECT,
 } from "./actions";
 
 export const reducer = (state, action) => {
@@ -33,6 +35,11 @@ export const reducer = (state, action) => {
       return {
         ...state,
         projects: [...action.projects],
+      };
+    case ADD_SINGLE_PROJECT:
+      return {
+        ...state,
+        projects: [...state.projects, action.project],
       };
     default:
       return state;

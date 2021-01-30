@@ -13,6 +13,7 @@ import { useStoreContext } from "../utils/GlobalState";
 import {
   UPDATE_CURRENT_PROJECTS,
   UPDATE_CURRENT_COLLABORATIONS,
+  ADD_SINGLE_PROJECT,
 } from "../utils/actions";
 import { Link } from "react-router-dom";
 import { QUERY_GET_USER } from "../utils/queries";
@@ -59,19 +60,23 @@ const Projects = () => {
       return false;
     }
     // if successful then fetch projects then set projects for component state
-    try {
-      const { data } = await addProject({
-        variables: {
-          title: title,
-          genre: genre,
-          summary: summary,
-          authorName: authorName,
-        },
-      });
-    } catch (e) {
-      console.error(e);
-    }
+
+    const { data } = await addProject({
+      variables: {
+        title: title,
+        genre: genre,
+        summary: summary,
+        authorName: authorName,
+      },
+    });
+
+    const newProject = data?.addProject;
+    dispatch({
+      type: ADD_SINGLE_PROJECT,
+      project: newProject,
+    });
   };
+
   if (loading) {
     return <div>Loading...</div>;
   }
