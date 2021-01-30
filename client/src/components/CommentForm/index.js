@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useStoreContext } from "../../utils/GlobalState";
 import { useMutation } from '@apollo/react-hooks';
 import { ADD_COMMENT } from '../../utils/mutations';
 import Auth from '../../utils/auth';
 
 const CommentForm = ({ chapterId }) => {
     //state and variables gained through alternate means other than quieries
+    const [state] = useStoreContext();
+    const { currentChapter } = state;
     const [commentText, setText] = useState('');
     const [characterCount, setCharacterCount] = useState(0);
     const username = Auth.getProfile().data.username;
@@ -28,13 +31,13 @@ const CommentForm = ({ chapterId }) => {
         try {
             // add comment to database
             await addComment({
-                variables: { chapterId: chapterId, commentText: commentText, username: username }
+                variables: { chapterId: currentChapter._id, commentText: commentText, username: username }
             });
 
             // clear form value
             setText('');
             setCharacterCount(0);
-            window.location.assign(`/readchapter/${chapterId}`);
+            window.location.assign(`/readchapter/${currentChapter._id}`);
         } catch (e) {
             console.error(e);
         }

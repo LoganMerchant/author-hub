@@ -8,7 +8,6 @@ import {
   Card,
   CardColumns,
 } from "react-bootstrap";
-
 import { Link } from "react-router-dom";
 import { QUERY_GET_PROJECTS_BY_SEARCH } from "../utils/queries";
 import { useQuery } from "@apollo/react-hooks";
