@@ -131,7 +131,7 @@ const EditChapter = () => {
       <Row>
         {/* Table of Contents */}
         <Col sm={12} md={2}>
-          <TableOfContents />
+          <TableOfContents projectId={currentProject._id} />
         </Col>
 
         {/* Chapter Edit Form */}

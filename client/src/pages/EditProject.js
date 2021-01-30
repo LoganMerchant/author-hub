@@ -203,7 +203,7 @@ const EditProject = () => {
       <Row>
         {/* Table of Contents */}
         <Col sm={12} md={2}>
-          <TableOfContents />
+          <TableOfContents projectId={projectId}/>
           <Button variant="warning" onClick={handleShow}>
             Add Chapter
           </Button>
