@@ -20,6 +20,7 @@ import { QUERY_GET_USER } from "../utils/queries";
 import { ADD_PROJECT } from "../utils/mutations";
 import { useQuery } from "@apollo/react-hooks";
 import Auth from "../utils/auth";
+import { idbPromise } from "../utils/helpers";
 
 const Projects = () => {
   const [state, dispatch] = useStoreContext();
@@ -44,9 +45,28 @@ const Projects = () => {
         type: UPDATE_CURRENT_PROJECTS,
         projects: currentProjects,
       });
+      currentProjects.forEach((project) => {
+        idbPromise("projects", "put", project);
+      });
       dispatch({
         type: UPDATE_CURRENT_COLLABORATIONS,
         collaborations: currentCollaborations,
+      });
+      currentCollaborations.forEach((collaboration) => {
+        idbPromise("collaborations", "put", collaboration);
+      });
+    } else if (!loading) {
+      idbPromise("projects", "get").then((projects) => {
+        dispatch({
+          type: UPDATE_CURRENT_PROJECTS,
+          projects: projects,
+        });
+      });
+      idbPromise("collaborations", "get").then((collaborations) => {
+        dispatch({
+          type: UPDATE_CURRENT_COLLABORATIONS,
+          collaborations: collaborations,
+        });
       });
     }
   }, [data, loading, dispatch]);
