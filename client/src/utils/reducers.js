@@ -1,5 +1,4 @@
 import { useReducer } from "react";
-import Projects from "../pages/Projects";
 import {
   UPDATE_CURRENT_PROJECT,
   UPDATE_CURRENT_CHAPTER,
