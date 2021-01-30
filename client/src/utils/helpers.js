@@ -43,6 +43,15 @@ export function idbPromise(storeName, method, object) {
             resolve(all.result);
           };
           break;
+        case "find":
+          const foundItem = store.get(object._id);
+          foundItem.onsuccess = function () {
+            resolve(foundItem.result);
+          };
+          break;
+        case "clear":
+          store.clear();
+          break;
         case "delete":
           store.delete(object._id);
           break;

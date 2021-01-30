@@ -14,6 +14,7 @@ import TableOfContents from "../components/TableOfContents";
 import CommitForm from "../components/CommitForm";
 import CommitList from "../components/CommitList";
 import IsPublicToggleButton from "../components/IsPublicToggleButton";
+import { idbPromise } from "../utils/helpers";
 
 const EditChapter = () => {
   // Get currentChapter from global store
@@ -35,8 +36,8 @@ const EditChapter = () => {
     isPublic: false,
   });
 
-  // Determines if the server has returned chapter info
   useEffect(() => {
+    // If the server returns data
     if (chapterInfo) {
       const chapter = chapterInfo?.getChapter;
 
@@ -49,6 +50,24 @@ const EditChapter = () => {
         title: chapter.title,
         chapterText: chapter.chapterText,
         isPublic: chapter.isPublic,
+      });
+
+      idbPromise("current-chapter", "clear");
+      idbPromise("current-chapter", "put", chapter);
+    }
+    // If the user is offline
+    else {
+      const id = window.location.toString().split("/").pop();
+
+      idbPromise("project-chapters", "find", { _id: id }).then((chapter) => {
+        dispatch({
+          type: UPDATE_CURRENT_CHAPTER,
+          currentChapter: chapter,
+        });
+
+        idbPromise("current-chapter", "clear");
+
+        idbPromise("current-chapter", "put", chapter);
       });
     }
   }, [chapterInfo, currentChapter, dispatch]);
@@ -81,6 +100,8 @@ const EditChapter = () => {
       type: UPDATE_CURRENT_CHAPTER,
       currentChapter: {},
     });
+
+    idbPromise("current-chapter", "clear");
   }
 
   if (loading) {
