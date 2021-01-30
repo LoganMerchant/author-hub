@@ -8,12 +8,14 @@ import {
   Card,
   CardColumns,
 } from "react-bootstrap";
-
+import { useParams } from "react-router-dom";
+import { useStoreContext } from "../utils/GlobalState";
 import { Link } from "react-router-dom";
 import { QUERY_GET_PROJECTS_BY_SEARCH } from "../utils/queries";
 import { useQuery } from "@apollo/react-hooks";
 
 const SearchBooks = () => {
+  const [state, dispatch] = useStoreContext();
   // create state for holding returned Book data
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data

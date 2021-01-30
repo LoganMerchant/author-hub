@@ -3,6 +3,8 @@ import {
   UPDATE_CURRENT_PROJECT,
   UPDATE_CURRENT_CHAPTER,
   UPDATE_CHAPTERS,
+  UPDATE_CURRENT_PROJECTS,
+  UPDATE_CURRENT_COLLABORATIONS,
 } from "./actions";
 
 export const reducer = (state, action) => {
@@ -21,6 +23,16 @@ export const reducer = (state, action) => {
       return {
         ...state,
         chapters: [...action.chapters],
+      };
+    case UPDATE_CURRENT_COLLABORATIONS:
+      return {
+        ...state,
+        collaborations: [...action.collaborations],
+      };
+    case UPDATE_CURRENT_PROJECTS:
+      return {
+        ...state,
+        projects: [...action.projects],
       };
     default:
       return state;
