@@ -72,7 +72,7 @@ const resolvers = {
 
     // Creates a new account and set the user's data to the JWT
     addUser: async (parent, args) => {
-      const user = User.create(args);
+      const user = await User.create(args);
       const token = signToken(user);
 
       return { token, user };
