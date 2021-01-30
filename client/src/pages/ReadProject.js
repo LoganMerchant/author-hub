@@ -36,12 +36,12 @@ const ReadProject = () => {
     }
     if (!loading) {
         return (
-            <div>
-                <h1 className="Header">{project.title}</h1>
+            <div className="readProjectContainer">
+                <h1 className="projectHeader">{project.title}</h1>
                 <h2 className="readHeader">By: {project.authorName}</h2>
                 <h3 className="summary">Summary</h3>
                 <p className="readSummary">{project.summary}</p>
-                <ReadChapters chapters={chapters} />
+                <ReadChapters  chapters={chapters} />
                 <h3 className="chapterHeader">This Project Currently has: {project.upvoteCount} Upvotes</h3>
                 {Auth.loggedIn() && <UpvoteButton projectId={projectId} />}
                 <ReadCollaborators collaborators={collaborators} />

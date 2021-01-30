@@ -135,13 +135,13 @@ const Projects = () => {
           {projects.map((myProjects) => {
             return (
               <Card key={myProjects._id} className="projectCard">
-                <Card.Body className="cardTitle">
-                  <Card.Title >
+                <Card.Body className="homeTitle">
+                  <Card.Title className="homeTitle">
                     <Link to={`/editproject/${myProjects._id}`}>
                       {myProjects.title}
                     </Link>
                   </Card.Title>
-                  <p className="small">Genre: {myProjects.genre}</p>
+                  <p className="homeGenre">Genre: {myProjects.genre}</p>
                   <Card.Text>{myProjects.summary}</Card.Text>
                 </Card.Body>
               </Card>
@@ -150,19 +150,19 @@ const Projects = () => {
         </CardColumns>
 
         <br></br>
-        <h1>Collaborations</h1>
+        <h1 className="Header">Collaborations</h1>
         <hr></hr>
         <CardColumns>
           {collaborations.map((myCollaborations) => {
             return (
-              <Card key={myCollaborations._id} border="dark">
-                <Card.Body>
-                  <Card.Title>
+              <Card key={myCollaborations._id}>
+                <Card.Body className="homeTitle">
+                  <Card.Title className="homeTitle">
                     <Link to={`/editproject/${myCollaborations._id}`}>
                       {myCollaborations.title}
                     </Link>
                   </Card.Title>
-                  <p className="small">Genre: {myCollaborations.genre}</p>
+                  <p className="homeGenre">Genre: {myCollaborations.genre}</p>
                   <Card.Text>{myCollaborations.summary}</Card.Text>
                 </Card.Body>
               </Card>

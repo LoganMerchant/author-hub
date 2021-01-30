@@ -17,7 +17,7 @@ const ReadChapter = ({ chapters }) => {
                 </div>
             }
             {chapters.length === 0 &&
-                <div><h3>This project currently doesn't have any public chapters...</h3></div>}
+                <div><h3 className="readChapters" >This project currently doesn't have any public chapters...</h3></div>}
         </div>
     );
 }

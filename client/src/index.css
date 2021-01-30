@@ -22,10 +22,7 @@
   color: var(--primary);
 }
 
-.ml-auto {
-  padding: 0px 0px 0px 20px;
-  color: var(--primary);
-}
+
 
 .App-logo {
   height: 40vmin;
@@ -57,39 +54,37 @@
   text-align: center;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: Arial, Helvetica, sans-serif;
-  margin: 5px 0;
-  line-height: 1.25;
+.homeCard {
+  border: 5px solid var(--tertiary);
+  border-radius: 10px;
+  
 }
 
-h1 {
-  font-size: 2.25rem;
+.homeTitle {
+  font-size: 30px;
+  color: var(--dark);
+  text-align: center;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-h2 {
-  font-size: 2rem;
+.homeGenre {
+  font-size: 23px;
+  text-align: center;
+  color: var(--dark);
 }
 
-h3 {
-  font-size: 1.75rem;
+.homeSummary {
+  font-size: 18px;
+  color: var(--dark);
+  padding: 0px 20px;
 }
 
-h4 {
-  font-size: 1.5rem;
-}
-
-h5 {
-  font-size: 1.25rem;
-}
-
-h6 {
-  font-size: 1rem;
+.cardFooter {
+  background-color: var(--tertiary);
+  opacity: .75;
+  color: var(--dark);
+  border-radius: 8px;
+  border: 1px solid var(--tertiary);
 }
 
 p {
@@ -231,39 +226,70 @@ p {
 
 /* read project styling */
 
+.readProjectContainer {
+  padding: 15px 25px 15px;
+}
+
+.projectHeader {
+  background-image: url(./projectHeader.png);
+  vertical-align: middle;
+  font-size: 50px;
+  font-weight: bold;
+  color: var(--dark);
+  height: 300px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
 .readHeader {
+  
   text-align: center;
   padding: 10px;
   font-size: 25px;
   color: var(--primary);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .summary {
-  text-align: left;
-  color: var(--dark);
+  text-align: center;
+  color: var(--secondary);
   text-decoration: underline;
   padding: 15px 15px 0px 15px;
+  margin: auto;
 }
 
 .readSummary {
-  text-align: left;
+  
+  text-align: center;
   color: var(--dark);
-  padding: 0px 15px 0px 15px;
+  font-size: 23px;
+  padding: 5px 0px 5px 0px;
 }
 
-.chapters {
-  padding: 0px 15px 0px 15px;
+.readChapters {
+  padding: 0px 15px 0px 150px;
   color: var(--dark);
-
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+  display: flex;
+  text-align: center;
 }
 
 .chapterHeader {
-  font-size: 30px;
+  font-size: 20px;
   font-weight: bold;
   color: var(--dark);
   text-align: center;
   padding: 20px;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.chapters {
+  font-size: 20px;
+  text-align: center;
 }
 
 /* upvote button sytling */
@@ -280,12 +306,15 @@ p {
   padding: 10px;
 }
 
-
-/* footer styling */
-footer {
+Footer {
   background-color: var(--primary);
   color: var(--light);
-  font-size: 30px;
+}
+
+/* footer styling */
+.footerText {
+  font-size: 20px;
+  text-align: center;
   font-family: Arial, Helvetica, sans-serif
 }
 
