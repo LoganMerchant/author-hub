@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useLazyQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 import ListGroup from "react-bootstrap/ListGroup";
 
 import { useStoreContext } from "../../utils/GlobalState";
@@ -11,26 +11,21 @@ const TableOfContents = ({ projectId }) => {
   const [state, dispatch] = useStoreContext();
   const { currentChapter, chapters } = state;
 
-  const [getProjectInfo, { loading, data }] = useLazyQuery(
-    QUERY_GET_PROJECT_INFO,
-    {
-      variables: { _id: projectId },
-    }
-  );
-
-  const [chaptersLength, setChaptersLength] = useState(0);
+  const { loading, data } = useQuery(QUERY_GET_PROJECT_INFO, {
+    variables: { _id: projectId },
+    fetchPolicy: "cache-and-network",
+  });
 
   useEffect(() => {
-    if (chaptersLength !== chapters.length) {
-      getProjectInfo();
+    if (data) {
+      const projectChapters = data?.getProjectInfo.chapters;
 
-      if (data) {
-        const projectChapters = data?.getProjectInfo.chapters;
-
-        setChaptersLength(projectChapters.length);
-      }
+      dispatch({
+        type: UPDATE_CHAPTERS,
+        chapters: projectChapters,
+      });
     }
-  }, [data, chapters, chaptersLength]);
+  }, [data, dispatch]);
 
   if (loading) {
     return <div>Loading...</div>;
