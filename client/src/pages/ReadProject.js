@@ -6,10 +6,10 @@ import { QUERY_GET_PROJECT_INFO } from "../utils/queries";
 import { UPDATE_CURRENT_PROJECT, UPDATE_CHAPTERS } from "../utils/actions";
 import { UPVOTE_PROJECT, ADD_APPLICANT } from "../utils/mutations";
 import { useStoreContext } from "../utils/GlobalState";
-import ReadCollaborators from '../components/ReadCollaborators';
-import ReadChapters from "../components/ReadChapters";
-import UpvoteButton from "../components/UpvoteButton";
-import AddApplicantButton from "../components/AddApplicantButton";
+// import ReadCollaborators from '../components/ReadCollaborators';
+// import ReadChapters from "../components/ReadChapters";
+// import UpvoteButton from "../components/UpvoteButton";
+// import AddApplicantButton from "../components/AddApplicantButton";
 import { idbPromise } from "../utils/helpers";
 import { Link } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
@@ -64,6 +64,14 @@ const ReadProject = () => {
             await upvoteProject({
                 variables: { projectId: currentProject._id, userId: userId }
             });
+            dispatch({
+                type: UPDATE_CURRENT_PROJECT,
+                currentProject: currentProject,
+            });
+            dispatch({
+                type: UPDATE_CHAPTERS,
+                chapters: currentProject.chapters
+            });
         } catch (e) {
             console.error(e);
         }
@@ -73,6 +81,14 @@ const ReadProject = () => {
         try {
             await addApplicant({
                 variables: { projectId: currentProject._id, userId: userId }
+            });
+            dispatch({
+                type: UPDATE_CURRENT_PROJECT,
+                currentProject: currentProject,
+            });
+            dispatch({
+                type: UPDATE_CHAPTERS,
+                chapters: currentProject.chapters
             });
             setSuccess(true);
         } catch (e) {
@@ -101,8 +117,8 @@ const ReadProject = () => {
                                 <h3 className="header">Public Chapters For Your Enjoyment</h3>
                                 <ul>
                                     {chapters.map(chapter => (
-                                        <li key={chapter._id}>
-                                            <Link to={`/readchapter/${chapter._id}`}>{chapter.title}</Link>
+                                        <li>
+                                            <Link key={chapter._id} to={`/readchapter/${chapter._id}`}>{chapter.title}</Link>
                                         </li>
                                     ))}
                                 </ul>
