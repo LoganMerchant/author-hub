@@ -4,40 +4,33 @@ import { useQuery } from "@apollo/react-hooks";
 import ListGroup from "react-bootstrap/ListGroup";
 
 import { useStoreContext } from "../../utils/GlobalState";
-import { QUERY_GET_CHAPTERS } from "../../utils/queries";
+import { QUERY_GET_PROJECT_INFO } from "../../utils/queries";
 import { UPDATE_CHAPTERS } from "../../utils/actions";
 
-const TableOfContents = () => {
+const TableOfContents = ({ projectId }) => {
   const [state, dispatch] = useStoreContext();
   const { currentChapter, chapters } = state;
 
-  // const { loading, data } = useQuery(QUERY_GET_CHAPTERS, {
-  //   variables: { _id: currentProject._id },
-  // });
+  const { loading, data } = useQuery(QUERY_GET_PROJECT_INFO, {
+    variables: { _id: projectId },
+  });
 
-  // useEffect(() => {
-  //   let mounted = true;
+  useEffect(() => {
+    if (data) {
+      const projectChapters = data?.getProjectInfo.chapters;
 
-  //   if (data) {
-  //     const project = data?.getChapters;
-  //     const queryChapters = project.chapters;
+      dispatch({
+        type: UPDATE_CHAPTERS,
+        chapters: projectChapters,
+      });
+    }
+  }, [data, dispatch]);
 
-  //     dispatch({
-  //       type: UPDATE_CHAPTERS,
-  //       chapters: queryChapters,
-  //     });
-  //   }
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  //   return () => {
-  //     mounted = false;
-  //   };
-  // }, [data, currentChapter, dispatch]);
-
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
   return (
-
     <ListGroup>
       {/* Header of ToC */}
       <ListGroup.Item>
