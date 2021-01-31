@@ -19,6 +19,8 @@ const ReadProject = () => {
     const [addApplicant] = useMutation(ADD_APPLICANT);
     const { currentProject, chapters } = state;
     const [success, setSuccess] = useState(false);
+    const [upvotes, setupvotes] = useState(0);
+    const [upvoteSuccess, setUpvoteSuccess] = useState(false);
     const userId = Auth.getProfile().data._id;
     const { projectId } = useParams();
 
@@ -42,6 +44,7 @@ const ReadProject = () => {
             project.chapters.forEach((chapter) => {
                 idbPromise("projectChapters", "put", chapter);
             });
+            setupvotes(project.upvoteCount);
         }
         else if (!loading) {
             idbPromise("currentProject", "get").then((currentProject) => {
@@ -49,6 +52,7 @@ const ReadProject = () => {
                     type: UPDATE_CURRENT_PROJECT,
                     currentProject: currentProject,
                 })
+                setupvotes(currentProject.upvoteCount);
             });
             idbPromise("projectChapters", "get").then((projectChapters) => {
                 dispatch({
@@ -72,6 +76,10 @@ const ReadProject = () => {
                 type: UPDATE_CHAPTERS,
                 chapters: currentProject.chapters
             });
+            if (!upvoteSuccess) {
+                setupvotes(upvotes + 1);
+            }
+            setUpvoteSuccess(true);
         } catch (e) {
             console.error(e);
         }
@@ -128,10 +136,16 @@ const ReadProject = () => {
                             <div><h3>This project currently doesn't have any public chapters...</h3></div>}
                     </div>
                 }
-                <h3 className="chapterHeader">This Project Currently has: {currentProject.upvoteCount} Upvotes</h3>
+                <h3 className="chapterHeader">This Project Currently has: {upvotes} Upvotes</h3>
                 {Auth.loggedIn() &&
                     <div className="upvoteButtonDiv">
-                        <button className="upvoteButton" onClick={addUpvote}>Like What You've Been Reading Press Here to Upvote</button>
+                        {!upvoteSuccess ? (
+                            <Button variant="info" className="upvoteButton" onClick={addUpvote}>
+                                Like this project. Click Here to upvote it.
+                            </Button>
+                        ) : (
+                                <Button variant="success" className="upvoteButton">You just liked this project.</Button>
+                            )}
                     </div>
                 }
                 {currentProject.collaborators &&
