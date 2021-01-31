@@ -114,11 +114,12 @@ const ReadProject = () => {
           <div>
             {chapters.length > 0 && (
               <div>
-                <h3 className="header">Public Chapters For Your Enjoyment</h3>
-                <ul>
+                <h3 className="chapterHeader">Public Chapters For Your Enjoyment</h3>
+                <ul className="chapterBullet">
                   {chapters.map((chapter) => (
-                    <li>
+                    <li >
                       <Link
+                        className="chapterLink"
                         key={chapter._id}
                         to={`/readchapter/${chapter._id}`}
                       >
@@ -149,7 +150,7 @@ const ReadProject = () => {
                 className="upvoteButton"
                 onClick={addUpvote}
               >
-                Like this project. Click Here to upvote it.
+                Like this project? Click Here to upvote it.
               </Button>
             ) : (
               <Button variant="success" className="upvoteButton">
@@ -181,7 +182,7 @@ const ReadProject = () => {
                 className="upvoteButton"
                 onClick={applyCollaboration}
               >
-                Want to be a collaborator. Click Here.
+                Want to be a collaborator? Click Here.
               </Button>
             ) : (
               <Button variant="success" className="upvoteButton">

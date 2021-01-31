@@ -193,12 +193,12 @@ const EditProject = () => {
         </Link>
       </Row>
       <Row style={{ justifyContent: "center" }}>
-        <h1 style={{ borderBottom: "solid" }}>
+        <h1 className="Header" style={{ borderBottom: "solid" }}>
           Editing Project: {currentProject.title}
         </h1>
       </Row>
       <Row style={{ justifyContent: "center" }}>
-        <p>By: {currentProject.authorName}</p>
+        <p className="title">By: {currentProject.authorName}</p>
       </Row>
       <Row>
         {/* Table of Contents */}

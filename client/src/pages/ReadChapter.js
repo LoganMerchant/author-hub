@@ -60,13 +60,13 @@ const ReadChapter = () => {
   if (!loading) {
     return (
       <div>
-        <h1 className="text-center">{currentChapter.title}</h1>
+        <h1 className="Header">{currentChapter.title}</h1>
         <div className="row">
           <div className="col-2">
             <PublicTableOfContents />
           </div>
           <div className="col-10">
-            <h2>Chapter Contents:</h2>
+            <h2 className="title">Chapter Contents:</h2>
             <p className="text-left">{currentChapter.chapterText}</p>
           </div>
         </div>

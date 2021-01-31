@@ -28,15 +28,15 @@ const Home = () => {
         <CardColumns>
           {publicProjects.map((topProjects) => {
             return (
-              <Card key={topProjects._id} border="dark">
+              <Card key={topProjects._id} className="homeCard">
                 <Card.Body>
-                  <Card.Title>
-                    <Link to={`/readproject/${topProjects._id}`}>
+                  <Card.Title className="homeTitle">
+                    <Link className="homeTitle" to={`/readproject/${topProjects._id}`}>
                       {topProjects.title} by {topProjects.authorName}
                     </Link>
                   </Card.Title>
-                  <p className="small">Genre: {topProjects.genre}</p>
-                  <Card.Text>{topProjects.summary}</Card.Text>
+                  <p className="homeGenre">Genre: {topProjects.genre}</p>
+                  <Card.Text className="homeSummary">{topProjects.summary}</Card.Text>
                   {/* <Card.Footer>
                     <h5>Collaborators:</h5>
                     <ul>
