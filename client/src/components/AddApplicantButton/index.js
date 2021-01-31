@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { ADD_APPLICANT } from "../../utils/mutations";
 import Auth from '../../utils/auth';
 import { useStoreContext } from "../../utils/GlobalState";
+import Button from "react-bootstrap/Button";
 
 const AddApplicantButton = () => {
+    const [success, setSuccess] = useState(false);
     const userId = Auth.getProfile().data._id;
     const [state] = useStoreContext();
     const { currentProject } = state;
@@ -16,8 +18,7 @@ const AddApplicantButton = () => {
             await addApplicant({
                 variables: { projectId: currentProject._id, userId: userId }
             });
-            window.alert("Your username has been added to this projects collaborators applicant list, please wait for the current author or collaborators to accept your collaboration request.");
-            window.location.assign(`/readproject/${currentProject._id}`);
+            setSuccess(true);
         } catch (e) {
             console.error(e);
         }
@@ -25,7 +26,13 @@ const AddApplicantButton = () => {
 
     return (
         <div className="upvoteButtonDiv">
-            <button className="upvoteButton" onClick={applyCollaboration}>Apply To Collaborate?</button>
+            {!success ? (
+                <Button variant="info" className="upvoteButton" onClick={applyCollaboration}>
+                    Want to be a collaborator. Click Here.
+                </Button>
+            ) : (
+                    <Button variant="success" className="upvoteButton">Application Submitted! Please wait for the author to accept or deny your request.</Button>
+                )}
         </div>
     );
 }
