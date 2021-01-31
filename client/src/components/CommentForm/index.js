@@ -6,7 +6,7 @@ import Auth from '../../utils/auth';
 
 const CommentForm = ({ chapterId }) => {
     //state and variables gained through alternate means other than quieries
-    const [state] = useStoreContext();
+    const [state, dispatch] = useStoreContext();
     const { currentChapter } = state;
     const [commentText, setText] = useState('');
     const [characterCount, setCharacterCount] = useState(0);
@@ -33,7 +33,15 @@ const CommentForm = ({ chapterId }) => {
             await addComment({
                 variables: { chapterId: currentChapter._id, commentText: commentText, username: username }
             });
-
+            const newComment = {
+                chapterId: currentChapter._id,
+                commentText: commentText,
+                username: username
+            }
+            dispatch({
+                type: ADD_COMMENT,
+                comments: newComment,
+            });
             // clear form value
             setText('');
             setCharacterCount(0);
