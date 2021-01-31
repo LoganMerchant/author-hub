@@ -9,6 +9,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 import spinner from "../assets/spinner.gif";
+import AuthService from "../utils/auth";
 import { useStoreContext } from "../utils/GlobalState";
 import Collaborators from "../components/Collaborators";
 import CollaboratorsToConsider from "../components/CollaboratorsToConsider";
@@ -31,6 +32,9 @@ const EditProject = () => {
   // Use the global state to get currentProject
   const [state, dispatch] = useStoreContext();
   const { currentProject } = state;
+
+  // Gets the data of the logged in user
+  const { data: userProfile } = AuthService.getProfile();
 
   // Pull projectId from url
   const { projectId } = useParams();
@@ -221,7 +225,10 @@ const EditProject = () => {
           <Button>Back to Your Projects</Button>
         </Link>
 
-        <Button onClick={handleDelete}>Delete This Project</Button>
+        {/* If the project owner is logged in, render a delete button */}
+        {currentProject.authorName === userProfile.username && (
+          <Button onClick={handleDelete}>Delete This Project</Button>
+        )}
       </Row>
       <Row style={{ justifyContent: "center" }}>
         <h1 className="Header" style={{ borderBottom: "solid" }}>
@@ -239,6 +246,7 @@ const EditProject = () => {
             Add Chapter
           </Button>
 
+          {/* Add Chapter Modal JSX */}
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>Add Chapter to {currentProject.title}</Modal.Title>
@@ -277,7 +285,7 @@ const EditProject = () => {
         {/* Edit Project */}
         {loading ? (
           // If the projectInfo is loading
-          <img src={spinner} alt="loading" />
+          <div>Loading...</div>
         ) : (
           // If the projectInfo is available
           <Col sm={12} md={8}>
@@ -364,7 +372,7 @@ const EditProject = () => {
         <Col sm={12} md={2}>
           {loading ? (
             // If the projectInfo is loading
-            <img src={spinner} alt="loading" />
+            <div>Loading...</div>
           ) : (
             <div>
               <Collaborators />
