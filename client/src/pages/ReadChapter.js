@@ -9,6 +9,7 @@ import { UPDATE_CURRENT_CHAPTER } from "../utils/actions";
 import CommentList from '../components/CommentList';
 import CommentForm from '../components/CommentForm';
 import Auth from '../utils/auth';
+import { idbPromise } from "../utils/helpers";
 
 const ReadChapter = () => {
     //Variables gained through alternate means
@@ -28,6 +29,15 @@ const ReadChapter = () => {
                 type: UPDATE_CURRENT_CHAPTER,
                 currentChapter: chapter,
             });
+            idbPromise("currentChapter", "put", chapter);
+        }
+        else if (!loading) {
+            idbPromise("currentChapter", "get").then((chapter) => {
+                dispatch({
+                    type: UPDATE_CURRENT_CHAPTER,
+                    currentChapter: chapter,
+                })
+            })
         }
     }, [chapterInfo, currentChapter, dispatch]);
 
