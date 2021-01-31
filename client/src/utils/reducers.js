@@ -50,7 +50,7 @@ export const reducer = (state, action) => {
     case ADD_COMMENT:
       return {
         ...state,
-        comments: [...state.comments, action.comments],
+        comments: [...state.comments, action.comment],
       }
       return
     default:

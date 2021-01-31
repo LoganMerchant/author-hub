@@ -14,7 +14,7 @@ import { idbPromise } from "../utils/helpers";
 const ReadChapter = () => {
     //Variables gained through alternate means
     const [state, dispatch] = useStoreContext();
-    const { currentChapter, comments } = state;
+    const { currentChapter } = state;
     const { chapterId } = useParams();
     //Queries
     const { loading, data: chapterInfo } = useQuery(QUERY_GET_CHAPTER, {
@@ -24,7 +24,8 @@ const ReadChapter = () => {
     useEffect(() => {
         if (chapterInfo) {
             const chapter = chapterInfo?.getChapter;
-
+            const comments = chapterInfo?.getChapter.comments || [];
+            console.log(comments);
             dispatch({
                 type: UPDATE_CURRENT_CHAPTER,
                 currentChapter: chapter,
@@ -34,15 +35,23 @@ const ReadChapter = () => {
                 type: UPDATE_COMMENTS,
                 comments: chapter.comments,
             });
-            idbPromise("comments", "put", chapter.comments);
+            comments.forEach((comment) => {
+                idbPromise("comments", "put", comment);
+            });
         }
         else if (!loading) {
             idbPromise("currentChapter", "get").then((chapter) => {
                 dispatch({
                     type: UPDATE_CURRENT_CHAPTER,
                     currentChapter: chapter,
-                })
-            })
+                });
+            });
+            idbPromise("comments", "get").then((comment) => {
+                dispatch({
+                    type: UPDATE_COMMENTS,
+                    comments: comment
+                });
+            });
         }
     }, [chapterInfo, currentChapter, dispatch]);
 
