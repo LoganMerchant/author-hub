@@ -13,7 +13,7 @@ const ReadChapter = () => {
                     <ul>
                         {chapters.map(chapter => (
                             <li>
-                                <Link to={`/readchapter/${chapter._id}`}>{chapter.title}</Link>
+                                <Link key={chapter._id} to={`/readchapter/${chapter._id}`}>{chapter.title}</Link>
                             </li>
                         ))}
                     </ul>

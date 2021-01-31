@@ -10,7 +10,7 @@ const ReadCollaborators = () => {
                     <h3 className="text-center">Project Collaborators</h3>
                     <ul>
                         {currentProject.collaborators.map(collaborator => (
-                            <li>
+                            <li key={collaborator._id}>
                                 {collaborator.username}
                             </li>
                         ))}
