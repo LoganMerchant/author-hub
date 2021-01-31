@@ -153,7 +153,7 @@ const EditProject = () => {
 
     setShow(false);
 
-    idbPromise("project-chapters", "put", newChapter);
+    idbPromise("projectChapters", "put", newChapter);
 
     window.location.reload();
   };
@@ -182,7 +182,7 @@ const EditProject = () => {
       setSuccess(false);
     }, 5000);
 
-    idbPromise("current-project", "put", newProject);
+    idbPromise("currentProject", "put", newProject);
   };
 
   return (
