@@ -3,8 +3,8 @@ import React from "react";
 const CommitList = ({ commits }) => {
   return (
     <div>
-      {!!commits ? (
-        // If there ARE commits
+      {/* If there ARE commits */}
+      {!!commits && commits.length ? (
         <div className="card mb-3">
           <div className="card-header">
             <span className="text-dark">Commits</span>
@@ -43,10 +43,7 @@ const CommitList = ({ commits }) => {
               ))}
           </div>
         </div>
-      ) : (
-        // If there are no commits
-        <p>No Commits Yet!</p>
-      )}
+      ) : null}
     </div>
   );
 };
