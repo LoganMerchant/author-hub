@@ -15,6 +15,7 @@ const CommitForm = ({ updatedData }) => {
   const [commitText, setCommitText] = useState("");
   const [commitType, setCommitType] = useState("Edit");
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
   // Defines variable for calling the mutation
   const [addCommit] = useMutation(ADD_COMMIT);
@@ -35,26 +36,34 @@ const CommitForm = ({ updatedData }) => {
 
   // Function to run the mutation
   const submitCommit = async () => {
-    // Run the mutation
-    await addCommit({
-      variables: {
-        chapterId: currentChapter._id,
-        title: updatedData.title,
-        chapterText: updatedData.chapterText,
-        isPublic: updatedData.isPublic,
-        commitText,
-        commitType,
-      },
-    });
+    // Run the mutation only if there is some text for the commit
+    if (commitText) {
+      await addCommit({
+        variables: {
+          chapterId: currentChapter._id,
+          title: updatedData.title,
+          chapterText: updatedData.chapterText,
+          isPublic: updatedData.isPublic,
+          commitText,
+          commitType,
+        },
+      });
 
-    document.querySelector("#formCommitText").value = "";
-    document.querySelector("#formCommitType").value = "Edit";
+      document.querySelector("#formCommitText").value = "";
+      document.querySelector("#formCommitType").value = "Edit";
 
-    setSuccess(true);
+      setSuccess(true);
 
-    setTimeout(function () {
-      setSuccess(false);
-    }, 5000);
+      setTimeout(function () {
+        setSuccess(false);
+      }, 5000);
+    } else {
+      setError(true);
+
+      setTimeout(function () {
+        setError(false);
+      }, 5000);
+    }
   };
 
   // JSX
@@ -63,6 +72,11 @@ const CommitForm = ({ updatedData }) => {
       <Form.Group controlId="formCommitText">
         <Form.Label>Commit Description</Form.Label>
         <Form.Control type="text" onChange={handleChange} />
+        {!!error && (
+          <p style={{ color: "var(--tertiary)" }}>
+            Please describe this commit!
+          </p>
+        )}
       </Form.Group>
 
       <Form.Group controlId="formCommitType">

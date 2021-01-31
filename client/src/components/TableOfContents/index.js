@@ -13,6 +13,7 @@ const TableOfContents = ({ projectId }) => {
 
   const { loading, data } = useQuery(QUERY_GET_PROJECT_INFO, {
     variables: { _id: projectId },
+    fetchPolicy: "cache-and-network",
   });
 
   useEffect(() => {
