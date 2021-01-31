@@ -1,13 +1,36 @@
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useQuery } from "@apollo/react-hooks";
 import ListGroup from "react-bootstrap/ListGroup";
-import { useStoreContext } from "../../utils/GlobalState";
 
-const TableOfContents = () => {
-    const [state] = useStoreContext();
+import { useStoreContext } from "../../utils/GlobalState";
+import { QUERY_GET_PROJECT_INFO } from "../../utils/queries";
+import { UPDATE_CHAPTERS } from "../../utils/actions";
+
+const TableOfContents = ({ projectId }) => {
+    const [state, dispatch] = useStoreContext();
     const { currentChapter, chapters } = state;
 
-    return (
+    const { loading, data } = useQuery(QUERY_GET_PROJECT_INFO, {
+        variables: { _id: projectId },
+    });
 
+    useEffect(() => {
+        if (data) {
+            const projectChapters = data?.getProjectInfo.chapters;
+
+            dispatch({
+                type: UPDATE_CHAPTERS,
+                chapters: projectChapters,
+            });
+        }
+    }, [data, dispatch]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    return (
         <ListGroup>
             {/* Header of ToC */}
             <ListGroup.Item>
@@ -15,7 +38,7 @@ const TableOfContents = () => {
             </ListGroup.Item>
 
             {chapters &&
-                chapters.filter(chapter => chapter.isPublic).map((chapter, index) => (
+                chapters.map((chapter, index) => (
                     <div key={chapter._id}>
                         <Link to={`/readchapter/${chapter._id}`}>
                             {/* If the chapter is public */}

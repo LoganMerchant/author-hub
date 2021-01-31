@@ -37,7 +37,6 @@ const CommentForm = ({ chapterId }) => {
             // clear form value
             setText('');
             setCharacterCount(0);
-            window.location.assign(`/readchapter/${currentChapter._id}`);
         } catch (e) {
             console.error(e);
         }
