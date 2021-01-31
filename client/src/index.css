@@ -285,8 +285,6 @@ p {
   text-decoration: underline;
   font-family: Arial, Helvetica, sans-serif;
   color: var(--dark);
-  border: solid 1.5px var(--primary);
-  border-radius: 2px;
 }
 
 .readChapters {
@@ -315,7 +313,6 @@ p {
 .col-2 {
   color: var(--primary);
   text-align: center;
-  border: 1px solid var(--primary);
 }
 
 /* commentform styling */
