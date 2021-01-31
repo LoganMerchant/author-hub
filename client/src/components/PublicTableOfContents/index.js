@@ -31,10 +31,10 @@ const TableOfContents = ({ projectId }) => {
     }
 
     return (
-        <ListGroup>
+        <ListGroup className="tableContents">
             {/* Header of ToC */}
             <ListGroup.Item>
-                <h3>Table of Contents</h3>
+                <h3 className="table">Table of Contents</h3>
             </ListGroup.Item>
 
             {chapters &&
