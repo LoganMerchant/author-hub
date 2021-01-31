@@ -9,16 +9,12 @@ import ReadCollaborators from '../components/ReadCollaborators';
 import ReadChapters from "../components/ReadChapters";
 import UpvoteButton from "../components/UpvoteButton";
 import AddApplicantButton from "../components/AddApplicantButton";
+import { idbPromise } from "../utils/helpers";
 
 const ReadProject = () => {
     const [state, dispatch] = useStoreContext();
     const { currentProject, chapters } = state;
     const { projectId } = useParams();
-    const [pagePopulationData, setPopulationData] = useState({
-        project: {},
-        collaborators: [],
-        chapters: []
-    });
 
     //Queries
     const { loading, data: projectInfo } = useQuery(QUERY_GET_PROJECT_INFO, {
@@ -32,16 +28,27 @@ const ReadProject = () => {
                 type: UPDATE_CURRENT_PROJECT,
                 currentProject: project,
             });
-
+            idbPromise("currentProject", "put", project);
             dispatch({
                 type: UPDATE_CHAPTERS,
                 chapters: project.chapters,
             });
-
-            setPopulationData({
-                project: project,
-                collaborators: project.collaborators,
-                chapters: project.chapters
+            project.chapters.forEach((chapter) => {
+                idbPromise("projectChapters", "put", chapter);
+            });
+        }
+        else if (!loading) {
+            idbPromise("currentProject", "get").then((currentProject) => {
+                dispatch({
+                    type: UPDATE_CURRENT_PROJECT,
+                    currentProject: currentProject,
+                })
+            });
+            idbPromise("projectChapters", "get").then((projectChapters) => {
+                dispatch({
+                    type: UPDATE_CHAPTERS,
+                    chapters: projectChapters,
+                })
             });
         }
     }, [projectInfo, dispatch]);
