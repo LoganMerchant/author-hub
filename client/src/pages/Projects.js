@@ -35,6 +35,7 @@ const Projects = () => {
   // query for current user to access their projects and collaborations
   const { loading, data } = useQuery(QUERY_GET_USER, {
     variables: { _id: currentUser },
+    fetchPolicy: "cache-and-network",
   });
 
   useEffect(() => {
@@ -95,6 +96,9 @@ const Projects = () => {
       type: ADD_SINGLE_PROJECT,
       project: newProject,
     });
+    setTitle("");
+    setGenreInput("");
+    setSummary("");
   };
 
   if (loading) {
@@ -184,12 +188,17 @@ const Projects = () => {
                 <Card key={myProjects._id} className="projectCard">
                   <Card.Body className="cardTitle">
                     <Card.Title className="homeTitle">
-                      <Link className="homeTitle" to={`/editproject/${myProjects._id}`}>
+                      <Link
+                        className="homeTitle"
+                        to={`/editproject/${myProjects._id}`}
+                      >
                         {myProjects.title}
                       </Link>
                     </Card.Title>
                     <p className="homeGenre">Genre: {myProjects.genre}</p>
-                    <Card.Text className="homeSummary">{myProjects.summary}</Card.Text>
+                    <Card.Text className="homeSummary">
+                      {myProjects.summary}
+                    </Card.Text>
                   </Card.Body>
                 </Card>
               );
@@ -199,18 +208,24 @@ const Projects = () => {
           <br></br>
           <h1 className="Header">Collaborations</h1>
           <hr></hr>
-          <CardColumns>
+          <CardColumns className="title">
             {collaborations.map((myCollaborations) => {
               return (
-                <Card key={myCollaborations._id} border="dark">
-                  <Card.Body>
-                    <Card.Title>
-                      <Link to={`/editproject/${myCollaborations._id}`}>
-                        {myCollaborations.title} by {myCollaborations.username}
+                <Card key={myCollaborations._id} className="projectCard">
+                  <Card.Body className="cardTitle">
+                    <Card.Title className="homeTitle">
+                      <Link
+                        className="homeTitle"
+                        to={`/editproject/${myCollaborations._id}`}
+                      >
+                        {myCollaborations.title} by{" "}
+                        {myCollaborations.authorName}
                       </Link>
                     </Card.Title>
-                    <p className="small">Genre: {myCollaborations.genre}</p>
-                    <Card.Text>{myCollaborations.summary}</Card.Text>
+                    <p className="homeGenre">Genre: {myCollaborations.genre}</p>
+                    <Card.Text className="homeSummary">
+                      {myCollaborations.summary}
+                    </Card.Text>
                   </Card.Body>
                 </Card>
               );
