@@ -6,6 +6,7 @@ import {
   UPDATE_CURRENT_PROJECTS,
   UPDATE_CURRENT_COLLABORATIONS,
   ADD_SINGLE_PROJECT,
+  ADD_SINGLE_CHAPTER
 } from "./actions";
 
 export const reducer = (state, action) => {
@@ -39,6 +40,11 @@ export const reducer = (state, action) => {
       return {
         ...state,
         projects: [...state.projects, action.project],
+      };
+    case ADD_SINGLE_CHAPTER:
+      return {
+        ...state,
+        chapters: [...state.chapters, action.chapter],
       };
     default:
       return state;
