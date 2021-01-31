@@ -313,7 +313,6 @@ p {
 .col-2 {
   color: var(--primary);
   text-align: center;
-  border: 1px solid var(--primary);
 }
 
 /* commentform styling */
