@@ -7,9 +7,9 @@ const CommentList = () => {
     const { comments } = state;
 
     return (
-        <div className="card mb-3">
+        <div className="commentCard">
             <div className="card-header">
-                <span className="text-dark text-center">Comments Section</span>
+                <span className="commentSection">Comments Section</span>
             </div>
             <div className="card-body">
                 {comments &&
@@ -21,7 +21,7 @@ const CommentList = () => {
                             </p>
                         </div>
                     ))}
-                <p className="text-center border-top border-bottom">Communities are built on conversation, and communication, so comment away!</p>
+                <p className="communityLine">Communities are built on conversation, and communication, so comment away!</p>
                 <p className="text-center">Congrats you've reached the end of the comments section!</p>
             </div>
         </div>
