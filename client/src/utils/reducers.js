@@ -7,7 +7,7 @@ import {
   UPDATE_COMMENTS,
   UPDATE_CURRENT_COLLABORATIONS,
   ADD_SINGLE_PROJECT,
-  ADD_COMMENT
+  ADD_GS_COMMENT,
 } from "./actions";
 
 export const reducer = (state, action) => {
@@ -47,12 +47,12 @@ export const reducer = (state, action) => {
         ...state,
         projects: [...state.projects, action.project],
       };
-    case ADD_COMMENT:
+    case ADD_GS_COMMENT:
       return {
         ...state,
         comments: [...state.comments, action.comment],
-      }
-      return
+      };
+      return;
     default:
       return state;
   }
