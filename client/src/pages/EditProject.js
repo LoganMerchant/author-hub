@@ -17,6 +17,7 @@ import TableOfContents from "../components/TableOfContents";
 import { UPDATE_CURRENT_PROJECT, UPDATE_CHAPTERS } from "../utils/actions";
 import { QUERY_GET_PROJECT_INFO } from "../utils/queries";
 import { EDIT_PROJECT_INFO, ADD_CHAPTER } from "../utils/mutations";
+import { idbPromise } from "../utils/helpers";
 
 const EditProject = () => {
   // Use the global state to get currentProject
@@ -66,8 +67,8 @@ const EditProject = () => {
     }
   };
 
-  // Determines if the server has returned project info
   useEffect(() => {
+    // If the server has returned project info
     if (projectInfo) {
       const project = projectInfo?.getProjectInfo;
 
@@ -86,6 +87,28 @@ const EditProject = () => {
         genre: project.genre,
         summary: project.summary,
         isPublic: project.isPublic,
+      });
+
+      idbPromise("current-project", "put", project);
+
+      project.chapters.forEach((chapter) =>
+        idbPromise("project-chapters", "put", chapter)
+      );
+    }
+    // If the user is offline
+    else if (!loading) {
+      idbPromise("current-project", "get").then((project) => {
+        dispatch({
+          type: UPDATE_CURRENT_PROJECT,
+          currentProject: project,
+        });
+      });
+
+      idbPromise("project-chapters", "get").then((chapters) => {
+        dispatch({
+          type: UPDATE_CHAPTERS,
+          chapters,
+        });
       });
     }
   }, [projectInfo, dispatch]);
@@ -119,7 +142,7 @@ const EditProject = () => {
   };
 
   const handleAddChapter = async () => {
-    await addChapter({
+    const newChapter = await addChapter({
       variables: {
         projectId,
         title: modalTitle,
@@ -129,6 +152,8 @@ const EditProject = () => {
     });
 
     setShow(false);
+
+    idbPromise("project-chapters", "put", newChapter);
 
     window.location.reload();
   };
@@ -156,6 +181,8 @@ const EditProject = () => {
     setTimeout(function () {
       setSuccess(false);
     }, 5000);
+
+    idbPromise("current-project", "put", newProject);
   };
 
   return (
@@ -176,7 +203,7 @@ const EditProject = () => {
       <Row>
         {/* Table of Contents */}
         <Col sm={12} md={2}>
-          <TableOfContents />
+          <TableOfContents projectId={projectId}/>
           <Button variant="warning" onClick={handleShow}>
             Add Chapter
           </Button>
