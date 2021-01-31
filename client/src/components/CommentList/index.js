@@ -4,7 +4,7 @@ import { useStoreContext } from "../../utils/GlobalState";
 
 const CommentList = () => {
     const [state] = useStoreContext();
-    const { currentChapter } = state;
+    const { comments } = state;
 
     return (
         <div className="card mb-3">
@@ -12,8 +12,8 @@ const CommentList = () => {
                 <span className="text-dark text-center">Comments Section</span>
             </div>
             <div className="card-body">
-                {currentChapter.comments &&
-                    currentChapter.comments.map(comment => (
+                {comments &&
+                    comments.map(comment => (
                         <div>
                             <p className="pill mb-3" key={comment._id}>
                                 {comment.commentText} {'// '}

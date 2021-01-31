@@ -17,6 +17,7 @@ import TableOfContents from "../components/TableOfContents";
 import { UPDATE_CURRENT_PROJECT, UPDATE_CHAPTERS } from "../utils/actions";
 import { QUERY_GET_PROJECT_INFO } from "../utils/queries";
 import { EDIT_PROJECT_INFO, ADD_CHAPTER } from "../utils/mutations";
+import { idbPromise } from "../utils/helpers";
 
 const EditProject = () => {
   // Use the global state to get currentProject
@@ -66,8 +67,8 @@ const EditProject = () => {
     }
   };
 
-  // Determines if the server has returned project info
   useEffect(() => {
+    // If the server has returned project info
     if (projectInfo) {
       const project = projectInfo?.getProjectInfo;
 
@@ -86,6 +87,28 @@ const EditProject = () => {
         genre: project.genre,
         summary: project.summary,
         isPublic: project.isPublic,
+      });
+
+      idbPromise("currentProject", "put", project);
+
+      project.chapters.forEach((chapter) =>
+        idbPromise("projectChapters", "put", chapter)
+      );
+    }
+    // If the user is offline
+    else if (!loading) {
+      idbPromise("currentProject", "get").then((project) => {
+        dispatch({
+          type: UPDATE_CURRENT_PROJECT,
+          currentProject: project,
+        });
+      });
+
+      idbPromise("projectChapters", "get").then((chapters) => {
+        dispatch({
+          type: UPDATE_CHAPTERS,
+          chapters,
+        });
       });
     }
   }, [projectInfo, dispatch]);
@@ -119,7 +142,7 @@ const EditProject = () => {
   };
 
   const handleAddChapter = async () => {
-    await addChapter({
+    const newChapter = await addChapter({
       variables: {
         projectId,
         title: modalTitle,
@@ -129,6 +152,8 @@ const EditProject = () => {
     });
 
     setShow(false);
+
+    idbPromise("project-chapters", "put", newChapter);
 
     window.location.reload();
   };
@@ -156,6 +181,8 @@ const EditProject = () => {
     setTimeout(function () {
       setSuccess(false);
     }, 5000);
+
+    idbPromise("current-project", "put", newProject);
   };
 
   return (
@@ -176,7 +203,7 @@ const EditProject = () => {
       <Row>
         {/* Table of Contents */}
         <Col sm={12} md={2}>
-          <TableOfContents />
+          <TableOfContents projectId={projectId} />
           <Button variant="warning" onClick={handleShow}>
             Add Chapter
           </Button>
@@ -221,86 +248,86 @@ const EditProject = () => {
           // If the projectInfo is loading
           <img src={spinner} alt="loading" />
         ) : (
-          // If the projectInfo is available
-          <Col sm={12} md={8}>
-            <Form>
-              {/* IsPublic toggle */}
-              <IsPublicToggleButton
-                updatedData={updatedData}
-                setUpdatedData={setUpdatedData}
-              />
-
-              {/* Project title, genre, and summary changes */}
-              <Form.Row>
-                <Col sm={10} md={10}>
-                  <Form.Group controlId="projectTitle">
-                    <Form.Label className="editFormLabel">Title:</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      rows={1}
-                      defaultValue={currentProject.title}
-                      onChange={handleChange}
-                    />
-                  </Form.Group>
-                </Col>
-
-                <Col sm={2}>
-                  <Form.Group controlId="projectGenre">
-                    <Form.Label className="editFormLabel">Genre:</Form.Label>
-                    <Form.Control
-                      as="select"
-                      key={currentProject.genre}
-                      defaultValue={currentProject.genre}
-                      onChange={handleChange}
-                    >
-                      <option value="Action/Adventure">Action/Adventure</option>
-                      <option value="Fantasy">Fantasy</option>
-                      <option value="Historical Fiction">
-                        Historical Fiction
-                      </option>
-                      <option value="Literary Fiction">Literary Fiction</option>
-                      <option value="Romance">Romance</option>
-                      <option value="Science Fiction">Science Fiction</option>
-                      <option value="Short Story">Short Story</option>
-                      <option value="Suspense/Thriller">
-                        Suspense/Thriller
-                      </option>
-                      <option value="Women's Fiction">Women's Fiction</option>
-                      <option value="Biography">Biography</option>
-                      <option value="Autobiography">Autobiography</option>
-                      <option value="Cookbook">Cookbook</option>
-                      <option value="Essay">Essay</option>
-                      <option value="History">History</option>
-                      <option value="Memoir">Memoir</option>
-                      <option value="Poetry">Poetry</option>
-                      <option value="Self Help">Self Help</option>
-                      <option value="True Crime">True Crime</option>
-                    </Form.Control>
-                  </Form.Group>
-                </Col>
-              </Form.Row>
-
-              <Form.Group controlId="projectSummary">
-                <Form.Label className="editFormLabel">Summary:</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={10}
-                  onChange={handleChange}
-                  defaultValue={currentProject.summary}
+            // If the projectInfo is available
+            <Col sm={12} md={8}>
+              <Form>
+                {/* IsPublic toggle */}
+                <IsPublicToggleButton
+                  updatedData={updatedData}
+                  setUpdatedData={setUpdatedData}
                 />
-              </Form.Group>
 
-              {/* Submit button */}
-              {!success ? (
-                <Button variant="info" onClick={submitChanges}>
-                  Submit Changes
-                </Button>
-              ) : (
-                <Button variant="success">Submitted!</Button>
-              )}
-            </Form>
-          </Col>
-        )}
+                {/* Project title, genre, and summary changes */}
+                <Form.Row>
+                  <Col sm={10} md={10}>
+                    <Form.Group controlId="projectTitle">
+                      <Form.Label className="editFormLabel">Title:</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        rows={1}
+                        defaultValue={currentProject.title}
+                        onChange={handleChange}
+                      />
+                    </Form.Group>
+                  </Col>
+
+                  <Col sm={2}>
+                    <Form.Group controlId="projectGenre">
+                      <Form.Label className="editFormLabel">Genre:</Form.Label>
+                      <Form.Control
+                        as="select"
+                        key={currentProject.genre}
+                        defaultValue={currentProject.genre}
+                        onChange={handleChange}
+                      >
+                        <option value="Action/Adventure">Action/Adventure</option>
+                        <option value="Fantasy">Fantasy</option>
+                        <option value="Historical Fiction">
+                          Historical Fiction
+                      </option>
+                        <option value="Literary Fiction">Literary Fiction</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Science Fiction">Science Fiction</option>
+                        <option value="Short Story">Short Story</option>
+                        <option value="Suspense/Thriller">
+                          Suspense/Thriller
+                      </option>
+                        <option value="Women's Fiction">Women's Fiction</option>
+                        <option value="Biography">Biography</option>
+                        <option value="Autobiography">Autobiography</option>
+                        <option value="Cookbook">Cookbook</option>
+                        <option value="Essay">Essay</option>
+                        <option value="History">History</option>
+                        <option value="Memoir">Memoir</option>
+                        <option value="Poetry">Poetry</option>
+                        <option value="Self Help">Self Help</option>
+                        <option value="True Crime">True Crime</option>
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                </Form.Row>
+
+                <Form.Group controlId="projectSummary">
+                  <Form.Label className="editFormLabel">Summary:</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={10}
+                    onChange={handleChange}
+                    defaultValue={currentProject.summary}
+                  />
+                </Form.Group>
+
+                {/* Submit button */}
+                {!success ? (
+                  <Button variant="info" onClick={submitChanges}>
+                    Submit Changes
+                  </Button>
+                ) : (
+                    <Button variant="success">Submitted!</Button>
+                  )}
+              </Form>
+            </Col>
+          )}
 
         {/* Display any relevant collaborator info */}
         <Col sm={12} md={2}>
@@ -308,11 +335,11 @@ const EditProject = () => {
             // If the projectInfo is loading
             <img src={spinner} alt="loading" />
           ) : (
-            <div>
-              <Collaborators />
-              <CollaboratorsToConsider projectId={projectId} />
-            </div>
-          )}
+              <div>
+                <Collaborators />
+                <CollaboratorsToConsider projectId={projectId} />
+              </div>
+            )}
         </Col>
       </Row>
     </Container>
