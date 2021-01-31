@@ -4,16 +4,16 @@ import { useStoreContext } from "../../utils/GlobalState";
 
 const CommentList = () => {
     const [state] = useStoreContext();
-    const { currentChapter } = state;
+    const { comments } = state;
 
     return (
-        <div className="card mb-3">
+        <div className="commentCard">
             <div className="card-header">
-                <span className="text-dark text-center">Comments Section</span>
+                <span className="commentSection">Comments Section</span>
             </div>
             <div className="card-body">
-                {currentChapter.comments &&
-                    currentChapter.comments.map(comment => (
+                {comments &&
+                    comments.map(comment => (
                         <div>
                             <p className="pill mb-3" key={comment._id}>
                                 {comment.commentText} {'// '}
@@ -21,7 +21,7 @@ const CommentList = () => {
                             </p>
                         </div>
                     ))}
-                <p className="text-center border-top border-bottom">Communities are built on conversation, and communication, so comment away!</p>
+                <p className="communityLine">Communities are built on conversation, and communication, so comment away!</p>
                 <p className="text-center">Congrats you've reached the end of the comments section!</p>
             </div>
         </div>

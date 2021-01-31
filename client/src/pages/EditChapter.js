@@ -52,22 +52,22 @@ const EditChapter = () => {
         isPublic: chapter.isPublic,
       });
 
-      idbPromise("current-chapter", "clear");
-      idbPromise("current-chapter", "put", chapter);
+      idbPromise("currentChapter", "clear");
+      idbPromise("currentChapter", "put", chapter);
     }
     // If the user is offline
     else {
       const id = window.location.toString().split("/").pop();
 
-      idbPromise("project-chapters", "find", { _id: id }).then((chapter) => {
+      idbPromise("projectChapters", "find", { _id: id }).then((chapter) => {
         dispatch({
           type: UPDATE_CURRENT_CHAPTER,
           currentChapter: chapter,
         });
 
-        idbPromise("current-chapter", "clear");
+        idbPromise("currentChapter", "clear");
 
-        idbPromise("current-chapter", "put", chapter);
+        idbPromise("currentChapter", "put", chapter);
       });
     }
   }, [chapterInfo, currentChapter, dispatch]);
@@ -101,7 +101,7 @@ const EditChapter = () => {
       currentChapter: {},
     });
 
-    idbPromise("current-chapter", "clear");
+    idbPromise("currentChapter", "clear");
   }
 
   if (loading) {

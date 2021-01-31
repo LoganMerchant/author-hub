@@ -183,13 +183,13 @@ const Projects = () => {
               return (
                 <Card key={myProjects._id} className="projectCard">
                   <Card.Body className="cardTitle">
-                    <Card.Title>
-                      <Link to={`/editproject/${myProjects._id}`}>
+                    <Card.Title className="homeTitle">
+                      <Link className="homeTitle" to={`/editproject/${myProjects._id}`}>
                         {myProjects.title}
                       </Link>
                     </Card.Title>
-                    <p className="small">Genre: {myProjects.genre}</p>
-                    <Card.Text>{myProjects.summary}</Card.Text>
+                    <p className="homeGenre">Genre: {myProjects.genre}</p>
+                    <Card.Text className="homeSummary">{myProjects.summary}</Card.Text>
                   </Card.Body>
                 </Card>
               );
@@ -197,7 +197,7 @@ const Projects = () => {
           </CardColumns>
 
           <br></br>
-          <h1>Collaborations</h1>
+          <h1 className="Header">Collaborations</h1>
           <hr></hr>
           <CardColumns>
             {collaborations.map((myCollaborations) => {

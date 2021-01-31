@@ -11,11 +11,12 @@ export function idbPromise(storeName, method, object) {
       const db = request.result;
       // create object store for each type of data and set "primary" key index to be the `_id` of the data
       // may need to change the keyPath depending on the object
-      db.createObjectStore("current-project", { keyPath: "_id" });
-      db.createObjectStore("project-chapters", { keyPath: "_id" });
-      db.createObjectStore("current-chapter", { keyPath: "_id" });
+      db.createObjectStore("currentProject", { keyPath: "_id" });
+      db.createObjectStore("projectChapters", { keyPath: "_id" });
+      db.createObjectStore("currentChapter", { keyPath: "_id" });
       db.createObjectStore("projects", { keyPath: "_id" });
       db.createObjectStore("collaborations", { keyPath: "_id" });
+      db.createObjectStore("comments", { keyPath: "_id" });
     };
     request.onerror = function (e) {
       console.log("There was an error");

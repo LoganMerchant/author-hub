@@ -4,9 +4,11 @@ import {
   UPDATE_CURRENT_CHAPTER,
   UPDATE_CHAPTERS,
   UPDATE_CURRENT_PROJECTS,
+  UPDATE_COMMENTS,
   UPDATE_CURRENT_COLLABORATIONS,
   ADD_SINGLE_PROJECT,
-  ADD_SINGLE_CHAPTER
+  ADD_SINGLE_CHAPTER,
+  ADD_GS_COMMENT,
 } from "./actions";
 
 export const reducer = (state, action) => {
@@ -25,6 +27,11 @@ export const reducer = (state, action) => {
       return {
         ...state,
         chapters: [...action.chapters],
+      };
+    case UPDATE_COMMENTS:
+      return {
+        ...state,
+        comments: [...action.comments],
       };
     case UPDATE_CURRENT_COLLABORATIONS:
       return {
@@ -46,6 +53,12 @@ export const reducer = (state, action) => {
         ...state,
         chapters: [...state.chapters, action.chapter],
       };
+    case ADD_GS_COMMENT:
+      return {
+        ...state,
+        comments: [...state.comments, action.comment],
+      };
+      return;
     default:
       return state;
   }
