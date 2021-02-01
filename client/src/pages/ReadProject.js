@@ -112,13 +112,13 @@ const ReadProject = () => {
         <p className="readSummary">{currentProject.summary}</p>
         {chapters && (
           <div>
-            {chapters.length > 0 && (
+            {chapters.filter((chapter) => chapter.isPublic).length > 0 && (
               <div>
                 <h3 className="chapterHeader">
                   Public Chapters For Your Enjoyment
                 </h3>
                 <ul className="chapterBullet">
-                  {chapters.map((chapter) => (
+                  {chapters.filter((chapter) => chapter.isPublic).map((chapter) => (
                     <li>
                       <Link
                         className="chapterLink"
@@ -132,7 +132,7 @@ const ReadProject = () => {
                 </ul>
               </div>
             )}
-            {chapters.length === 0 && (
+            {chapters.filter((chapter) => chapter.isPublic).length === 0 && (
               <div>
                 <h3>
                   This project currently doesn't have any public chapters...
@@ -155,10 +155,10 @@ const ReadProject = () => {
                 Like this project? Click Here to upvote it.
               </Button>
             ) : (
-              <Button variant="success" className="upvoteButton">
-                You just liked this project.
-              </Button>
-            )}
+                <Button variant="success" className="upvoteButton">
+                  You just liked this project.
+                </Button>
+              )}
           </div>
         )}
         {currentProject.collaborators &&
@@ -187,11 +187,11 @@ const ReadProject = () => {
                 Want to be a collaborator? Click Here.
               </Button>
             ) : (
-              <Button variant="success" className="upvoteButton">
-                Application Submitted! Please wait for the author to accept or
-                deny your request.
-              </Button>
-            )}
+                <Button variant="success" className="upvoteButton">
+                  Application Submitted! Please wait for the author to accept or
+                  deny your request.
+                </Button>
+              )}
           </div>
         )}
       </div>
