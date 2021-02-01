@@ -18,7 +18,7 @@ const ReadProject = () => {
   let [upvotes, setupvotes] = useState(0);
   const [upvoteSuccess, setUpvoteSuccess] = useState(false);
   let userId;
-  if (Auth.loggedIn()){
+  if (Auth.loggedIn()) {
     userId = Auth.getProfile().data._id;
   }
   const { projectId } = useParams();
@@ -26,6 +26,7 @@ const ReadProject = () => {
   //Queries
   const { loading, data: projectInfo } = useQuery(QUERY_GET_PROJECT_INFO, {
     variables: { _id: projectId },
+    fetchPolicy: "cache-and-network",
   });
 
   useEffect(() => {
@@ -113,10 +114,12 @@ const ReadProject = () => {
           <div>
             {chapters.length > 0 && (
               <div>
-                <h3 className="chapterHeader">Public Chapters For Your Enjoyment</h3>
+                <h3 className="chapterHeader">
+                  Public Chapters For Your Enjoyment
+                </h3>
                 <ul className="chapterBullet">
                   {chapters.map((chapter) => (
-                    <li >
+                    <li>
                       <Link
                         className="chapterLink"
                         key={chapter._id}
@@ -152,10 +155,10 @@ const ReadProject = () => {
                 Like this project? Click Here to upvote it.
               </Button>
             ) : (
-                <Button variant="success" className="upvoteButton">
-                  You just liked this project.
-                </Button>
-              )}
+              <Button variant="success" className="upvoteButton">
+                You just liked this project.
+              </Button>
+            )}
           </div>
         )}
         {currentProject.collaborators &&
@@ -184,11 +187,11 @@ const ReadProject = () => {
                 Want to be a collaborator? Click Here.
               </Button>
             ) : (
-                <Button variant="success" className="upvoteButton">
-                  Application Submitted! Please wait for the author to accept or
-                  deny your request.
-                </Button>
-              )}
+              <Button variant="success" className="upvoteButton">
+                Application Submitted! Please wait for the author to accept or
+                deny your request.
+              </Button>
+            )}
           </div>
         )}
       </div>
