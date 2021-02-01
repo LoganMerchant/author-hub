@@ -49,9 +49,6 @@ const CommitForm = ({ updatedData }) => {
         },
       });
 
-      document.querySelector("#formCommitText").value = "";
-      document.querySelector("#formCommitType").value = "Edit";
-
       setSuccess(true);
 
       setTimeout(function () {
@@ -64,6 +61,9 @@ const CommitForm = ({ updatedData }) => {
         setError(false);
       }, 5000);
     }
+
+    document.querySelector("#formCommitText").value = "";
+    document.querySelector("#formCommitType").value = "Edit";
   };
 
   // JSX
