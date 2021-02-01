@@ -38,7 +38,7 @@ const TableOfContents = ({ projectId }) => {
             </ListGroup.Item>
 
             {chapters &&
-                chapters.map((chapter, index) => (
+                chapters.filter((chapter) => chapter.isPublic).map((chapter, index) => (
                     <div key={chapter._id}>
                         <Link to={`/readchapter/${chapter._id}`}>
                             {/* If the chapter is public */}
