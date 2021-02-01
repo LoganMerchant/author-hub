@@ -31,20 +31,17 @@ const Home = () => {
               <Card key={topProjects._id} className="homeCard">
                 <Card.Body>
                   <Card.Title className="homeTitle">
-                    <Link className="homeTitle" to={`/readproject/${topProjects._id}`}>
+                    <Link
+                      className="homeTitle"
+                      to={`/readproject/${topProjects._id}`}
+                    >
                       {topProjects.title} by {topProjects.authorName}
                     </Link>
                   </Card.Title>
                   <p className="homeGenre">Genre: {topProjects.genre}</p>
-                  <Card.Text className="homeSummary">{topProjects.summary}</Card.Text>
-                  {/* <Card.Footer>
-                    <h5>Collaborators:</h5>
-                    <ul>
-                      {topProjects.collaborators.map((collaborators) => {
-                        return <li>{collaborators.username}</li>;
-                      })}
-                    </ul>
-                  </Card.Footer> */}
+                  <Card.Text className="homeSummary">
+                    {topProjects.summary}
+                  </Card.Text>
                 </Card.Body>
               </Card>
             );
