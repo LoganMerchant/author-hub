@@ -85,5 +85,3 @@ const ReadChapter = () => {
 };
 
 export default ReadChapter;
-
-//<div className="col-3"><TableOfContents /></div> implementing this later
