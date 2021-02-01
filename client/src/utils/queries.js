@@ -15,6 +15,7 @@ export const QUERY_GET_USER = gql`
         _id
         title
         genre
+        authorName
       }
     }
   }
