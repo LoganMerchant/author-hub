@@ -18,6 +18,7 @@ const ReadChapter = () => {
   //Queries
   const { loading, data: chapterInfo } = useQuery(QUERY_GET_CHAPTER, {
     variables: { _id: chapterId },
+    fetchPolicy: "cache-and-network",
   });
 
   useEffect(() => {
