@@ -44,6 +44,7 @@ const EditProject = () => {
   // Variables for using queries and mutations
   const { loading, data: projectInfo } = useQuery(QUERY_GET_PROJECT_INFO, {
     variables: { _id: projectId },
+    fetchPolicy: 'cache-and-network'
   });
   const [editProjectInfo] = useMutation(EDIT_PROJECT_INFO);
   const [addChapter] = useMutation(ADD_CHAPTER);
