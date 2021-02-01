@@ -9,7 +9,7 @@ const Home = () => {
   let publicProjects = [];
 
   const { loading, data } = useQuery(QUERY_GET_PROJECTS_BY_UPVOTE, {
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "network-only",
   });
 
   if (!loading) {
