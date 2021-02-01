@@ -17,7 +17,10 @@ const ReadProject = () => {
   const [success, setSuccess] = useState(false);
   let [upvotes, setupvotes] = useState(0);
   const [upvoteSuccess, setUpvoteSuccess] = useState(false);
-  const userId = Auth.getProfile().data._id;
+  let userId;
+  if (Auth.loggedIn()){
+    userId = Auth.getProfile().data._id;
+  }
   const { projectId } = useParams();
 
   //Queries
