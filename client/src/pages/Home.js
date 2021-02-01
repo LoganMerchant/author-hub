@@ -8,7 +8,9 @@ import { useQuery } from "@apollo/react-hooks";
 const Home = () => {
   let publicProjects = [];
 
-  const { loading, data } = useQuery(QUERY_GET_PROJECTS_BY_UPVOTE);
+  const { loading, data } = useQuery(QUERY_GET_PROJECTS_BY_UPVOTE, {
+    fetchPolicy: "cache-and-network",
+  });
 
   if (!loading) {
     publicProjects = data?.getProjectsByUpvote || [];
