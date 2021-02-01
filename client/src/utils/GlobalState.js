@@ -11,9 +11,8 @@ const StoreProvider = ({ value = [], ...props }) => {
     chapters: [],
     projects: [],
     collaborations: [],
-    comments: []
+    comments: [],
   });
-  // console.log(state); //when everything is working this should probably be deleted.
   return <Provider value={[state, dispatch]} {...props} />;
 };
 const useStoreContext = () => {

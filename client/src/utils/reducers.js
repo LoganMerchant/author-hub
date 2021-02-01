@@ -58,7 +58,6 @@ export const reducer = (state, action) => {
         ...state,
         comments: [...state.comments, action.comment],
       };
-      return;
     default:
       return state;
   }
