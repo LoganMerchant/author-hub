@@ -1,8 +1,12 @@
-# author-hub
+# Author Hub
 
-## Motivation
+## Introduction
 
-AuthorHub is like a GitHub for Authors.
+AuthorHub is best described as the GitHub for authors.
+
+## Demo
+
+![Demo](./client/src/assets/demo.gif)
 
 ## Description
 
@@ -11,23 +15,18 @@ AuthorHub is a site for authors to share ideas and get feedback, as well as a pl
 ## Table of Contents
 
 1. [Code Style](#code-style)
-2. [Tech and Framework Used](#tech-and-framework-used)
+2. [Built With](#built-with)
 3. [Dependencies](#dependencies)
-4. [Screenshots](#screenshots)
-5. [Installation](#features)
-6. [Features](#features)
-7. [How to Use](#how-to-use)
-8. [Roadmap](#roadmap)
-9. [Deployed Application](#Deployed-Application)
-10. [Authors and Acknowledgement](#Authors-and-Acknowledgement)
+4. [Features](#features)
+5. [Roadmap](#roadmap)
+6. [Deployed Application](#Deployed-Application)
+7. [Authors and Acknowledgement](#Authors-and-Acknowledgement)
 
 ## Code Style
 
 Implement readability, consistency, avoid repeating. Follow ideals centered in React implementation, such as separation of concerns, using Components to use in other places, and simple is better than complicated.
 
-## Tech and Framework Used
-
-**Built with**
+## Built With
 
 - React.js
 - Apollo-server-express
@@ -62,32 +61,13 @@ Implement readability, consistency, avoid repeating. Follow ideals centered in R
 - web-vitals
 - workbox
 
-## Screenshots
-
-![](./client/src/assets/Screenshot_edit_chapter.png)
-![](./client/src/assets/Screenshot_edit.png)
-![](./client/src/assets/Screenshot_home.png)
-![](./client/src/assets/Screenshot_project.png)
-![](./client/src/assets/Screenshot_readproject.png)
-![](./client/src/assets/Screenshot_search.png)
-
-## Installation
-
-Start by installing node to use npm calls. Make sure to type 'npm install' in the root directory once the code is cloned. This will install all the dependencies you need to run the application.
-
 ## Features
-
-Here are some of our favorite features of the application:
 
 - Readers can view and read any projects in the database without an account.
 - Readers can search for titles using keywords and genre
 - If a writer wants to sign up, they can do so and then all of their writing projects can be compiled and stored within the application.
 - Writers can approve or reject edits from editors or collaborators on their work.
 - Community for avid readers and writers to meet and interact
-
-## How to Use
-
-Use React and node.Js to run the application and work on the code.
 
 ## Roadmap
 
@@ -98,9 +78,7 @@ In the future, we want to add more to the application to make it even more usefu
 - Apply to Collaborate Modal that includes qualifications
 - Ability to submit Book Cover art and view it
 
-## Deployed Application
-
-Application is deployed at https://vast-gorge-54301.herokuapp.com/
+## [Deployed Application](https://vast-gorge-54301.herokuapp.com/)
 
 ## Authors and Acknowledgement
 
