@@ -2,7 +2,7 @@
 
 ## Introduction
 
-AuthorHub is best described as the GitHub for authors. It's an application for authors to share ideas and get feedback. Editors can offer their skills via an "apply to collaborate" button. Last but not least, the application would not be complete without readers who can also read upcoming authors’ work.
+Best described as the GitHub for authors, AuthorHub is an application for authors to share ideas and get feedback from a variety of places. Editors can offer their skills to authors via an "apply to collaborate" button, which offers them access to the project. Of course the application wouldn't be complete without an abundance of readers to give their thoughts via a forum that can be found on any author's published works.
 
 ## Demo
 
